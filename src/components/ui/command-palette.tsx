@@ -3,41 +3,70 @@
 import { useEffect, useState, useCallback } from "react";
 import { useRouter, usePathname } from "next/navigation";
 import { Command } from "cmdk";
-import { Home, FolderOpen, Newspaper, Award, Search, ArrowRight, Code2 } from "lucide-react";
+import { Home, FolderOpen, Newspaper, Award, Search, Code2 } from "lucide-react";
 import { MOCK_PROJECTS, MOCK_CERTIFICATES } from "@/lib/mock-data";
 
 const PAGES = [
-  { label: "Home", href: "/", icon: Home, desc: "Back to the main page" },
-  { label: "Projects", href: "/project", icon: FolderOpen, desc: "All my projects" },
-  { label: "Blog", href: "/blog", icon: Newspaper, desc: "Articles and writings" },
-  { label: "Certificates", href: "/certificates", icon: Award, desc: "Professional certifications" },
+  { label: "Home",         href: "/",             icon: Home,       shortcut: "1", desc: "Main page" },
+  { label: "Projects",     href: "/project",       icon: FolderOpen, shortcut: "2", desc: "All projects" },
+  { label: "Blog",         href: "/blog",          icon: Newspaper,  shortcut: "3", desc: "Articles" },
+  { label: "Certificates", href: "/certificates",  icon: Award,      shortcut: "4", desc: "Certifications" },
 ];
+
+function Kbd({ children }: { children: React.ReactNode }) {
+  return (
+    <kbd className="rounded border border-border bg-muted px-1.5 py-0.5 text-[10px] font-medium text-muted-foreground">
+      {children}
+    </kbd>
+  );
+}
 
 export function CommandPalette() {
   const [open, setOpen] = useState(false);
   const router = useRouter();
   const pathname = usePathname();
 
+  const go = useCallback(
+    (href: string) => {
+      setOpen(false);
+      router.push(href);
+    },
+    [router]
+  );
+
   // Close on route change
   useEffect(() => { setOpen(false); }, [pathname]);
 
-  // Cmd+K / Ctrl+K
+  // Global keyboard shortcuts
   useEffect(() => {
     const handler = (e: KeyboardEvent) => {
-      if ((e.metaKey || e.ctrlKey) && e.key === "k") {
+      if (!(e.metaKey || e.ctrlKey)) return;
+
+      if (e.key === "k") {
         e.preventDefault();
         setOpen((o) => !o);
+        return;
       }
-      if (e.key === "Escape") setOpen(false);
+
+      // Cmd+1-4 → navigate directly (no palette needed)
+      const idx = parseInt(e.key, 10) - 1;
+      if (idx >= 0 && idx < PAGES.length) {
+        e.preventDefault();
+        setOpen(false);
+        router.push(PAGES[idx].href);
+      }
     };
     window.addEventListener("keydown", handler);
     return () => window.removeEventListener("keydown", handler);
-  }, []);
-
-  const go = useCallback((href: string) => {
-    setOpen(false);
-    router.push(href);
   }, [router]);
+
+  // Escape when open
+  useEffect(() => {
+    if (!open) return;
+    const handler = (e: KeyboardEvent) => { if (e.key === "Escape") setOpen(false); };
+    window.addEventListener("keydown", handler);
+    return () => window.removeEventListener("keydown", handler);
+  }, [open]);
 
   if (!open) return null;
 
@@ -46,16 +75,14 @@ export function CommandPalette() {
       className="fixed inset-0 z-[100] flex items-start justify-center px-4 pt-[12vh]"
       onClick={() => setOpen(false)}
     >
-      {/* Backdrop */}
       <div className="absolute inset-0 bg-background/70 backdrop-blur-sm" />
 
-      {/* Palette */}
       <Command
         className="relative w-full max-w-lg overflow-hidden rounded-2xl border border-border bg-card shadow-2xl"
         onClick={(e) => e.stopPropagation()}
         loop
       >
-        {/* Search input */}
+        {/* Input */}
         <div className="flex items-center gap-3 border-b border-border px-4 py-3">
           <Search className="h-4 w-4 shrink-0 text-muted-foreground" />
           <Command.Input
@@ -63,9 +90,7 @@ export function CommandPalette() {
             placeholder="Search pages, projects, certificates…"
             className="flex-1 bg-transparent text-sm text-foreground outline-none placeholder:text-muted-foreground"
           />
-          <kbd className="hidden rounded-md border border-border bg-muted px-1.5 py-0.5 text-[10px] font-medium text-muted-foreground sm:inline">
-            ESC
-          </kbd>
+          <Kbd>ESC</Kbd>
         </div>
 
         <Command.List className="max-h-[60vh] overflow-y-auto overscroll-contain p-2">
@@ -75,7 +100,7 @@ export function CommandPalette() {
 
           {/* Navigation */}
           <Command.Group heading="Navigation">
-            {PAGES.map(({ label, href, icon: Icon, desc }) => (
+            {PAGES.map(({ label, href, icon: Icon, shortcut, desc }) => (
               <Command.Item
                 key={href}
                 value={`nav-${label}`}
@@ -85,7 +110,7 @@ export function CommandPalette() {
                 <Icon className="h-4 w-4 shrink-0 text-muted-foreground" />
                 <span className="flex-1 font-medium">{label}</span>
                 <span className="text-xs text-muted-foreground">{desc}</span>
-                <ArrowRight className="h-3.5 w-3.5 text-muted-foreground/40" />
+                <Kbd>⌘{shortcut}</Kbd>
               </Command.Item>
             ))}
           </Command.Group>
@@ -129,16 +154,16 @@ export function CommandPalette() {
           </Command.Group>
         </Command.List>
 
-        {/* Footer hint */}
+        {/* Footer */}
         <div className="flex items-center justify-between border-t border-border px-4 py-2.5 text-[11px] text-muted-foreground">
-          <span>
-            <kbd className="rounded border border-border bg-muted px-1 py-0.5 text-[10px]">↑↓</kbd> navigate
-            {" · "}
-            <kbd className="rounded border border-border bg-muted px-1 py-0.5 text-[10px]">↵</kbd> open
-          </span>
           <span className="flex items-center gap-1">
-            <kbd className="rounded border border-border bg-muted px-1 py-0.5 text-[10px]">⌘K</kbd> to close
+            <Kbd>↑↓</Kbd> navigate
+            <span className="mx-1">·</span>
+            <Kbd>↵</Kbd> open
+            <span className="mx-1">·</span>
+            <Kbd>⌘1–4</Kbd> jump
           </span>
+          <Kbd>⌘K</Kbd>
         </div>
       </Command>
     </div>

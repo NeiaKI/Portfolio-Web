@@ -21,17 +21,17 @@ import { Separator } from "@/components/ui/separator";
 import { cn } from "@/lib/utils";
 import { LanguageSwitcher } from "@/components/layout/language-switcher";
 
-type NavItem = { href: string; labelKey: string; icon: LucideIcon };
+type NavItem = { href: string; labelKey: string; icon: LucideIcon; shortcut: string };
 type NavGroup = { sectionLabel: string | null; items: NavItem[] };
 
 const NAV_GROUPS: NavGroup[] = [
   {
     sectionLabel: null,
     items: [
-      { href: "/", labelKey: "home", icon: Home },
-      { href: "/project", labelKey: "project", icon: FolderOpen },
-      { href: "/blog", labelKey: "blog", icon: Newspaper },
-      { href: "/certificates", labelKey: "certificates", icon: Award },
+      { href: "/", labelKey: "home", icon: Home, shortcut: "1" },
+      { href: "/project", labelKey: "project", icon: FolderOpen, shortcut: "2" },
+      { href: "/blog", labelKey: "blog", icon: Newspaper, shortcut: "3" },
+      { href: "/certificates", labelKey: "certificates", icon: Award, shortcut: "4" },
     ],
   },
 ];
@@ -76,7 +76,7 @@ export function NavSidebar() {
                 {group.sectionLabel}
               </p>
             )}
-            {group.items.map(({ href, labelKey, icon: Icon }) => (
+            {group.items.map(({ href, labelKey, icon: Icon, shortcut }) => (
               <Link
                 key={href}
                 href={href}
@@ -89,8 +89,12 @@ export function NavSidebar() {
               >
                 <Icon className="h-4 w-4 shrink-0" />
                 <span className="flex-1">{t(labelKey as Parameters<typeof t>[0])}</span>
-                {isActive(href) && (
+                {isActive(href) ? (
                   <ChevronRight className="h-3.5 w-3.5 text-muted-foreground/60" />
+                ) : (
+                  <kbd className="rounded border border-border bg-muted px-1 py-0.5 text-[10px] font-medium text-muted-foreground/50">
+                    ⌘{shortcut}
+                  </kbd>
                 )}
               </Link>
             ))}
