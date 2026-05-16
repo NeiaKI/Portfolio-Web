@@ -92,7 +92,7 @@ export function CodingProgress() {
         {/* WakaTime stat grid */}
         {waka ? (
           <>
-            <div className="grid grid-cols-2 gap-2.5">
+            <div className="grid grid-cols-1 gap-2.5 sm:grid-cols-2">
               <StatCard label="Start Date">{waka.start}</StatCard>
               <StatCard label="End Date">{waka.end}</StatCard>
               <StatCard label="Daily Coding Average">{waka.daily_avg}</StatCard>
@@ -104,7 +104,7 @@ export function CodingProgress() {
             </div>
 
             {/* Languages + Categories */}
-            <div className="grid grid-cols-2 gap-2.5">
+            <div className="grid grid-cols-1 gap-2.5 sm:grid-cols-2">
               <div className="rounded-lg border border-border/60 bg-background/50 p-3 flex flex-col gap-2">
                 <p className="text-[11px] font-semibold text-foreground">Languages</p>
                 {waka.languages.map((l) => (
@@ -120,7 +120,7 @@ export function CodingProgress() {
             </div>
           </>
         ) : (
-          <div className="grid grid-cols-2 gap-2.5">
+          <div className="grid grid-cols-1 gap-2.5 sm:grid-cols-2">
             {Array.from({ length: 6 }).map((_, i) => (
               <div key={i} className="h-16 rounded-lg bg-muted animate-pulse" />
             ))}
@@ -129,7 +129,7 @@ export function CodingProgress() {
 
         {/* GitHub commit stats */}
         {ghStats && (
-          <div className="grid grid-cols-4 gap-2">
+          <div className="grid grid-cols-2 gap-2 sm:grid-cols-4">
             {[
               { label: "Total", value: ghStats.total.toLocaleString(), suffix: undefined },
               { label: "This Week", value: String(ghStats.thisWeek), suffix: undefined },

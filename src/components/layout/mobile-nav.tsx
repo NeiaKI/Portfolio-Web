@@ -5,21 +5,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useTranslations } from "next-intl";
 import { useTheme } from "next-themes";
-import {
-  Home,
-  FolderOpen,
-  Newspaper,
-  Bot,
-  MessageCircle,
-  Wrench,
-  Map,
-  Award,
-  ScrollText,
-  Menu,
-  X,
-  Moon,
-  Sun,
-} from "lucide-react";
+import { Home, FolderOpen, Newspaper, Award, Menu, Moon, Sun, Search } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { cn } from "@/lib/utils";
@@ -30,11 +16,6 @@ const NAV_ITEMS = [
   { href: "/project", labelKey: "project" as const, icon: FolderOpen },
   { href: "/blog", labelKey: "blog" as const, icon: Newspaper },
   { href: "/certificates", labelKey: "certificates" as const, icon: Award },
-  { href: "/ai", labelKey: "ai" as const, icon: Bot },
-  { href: "/chat", labelKey: "chat" as const, icon: MessageCircle },
-  { href: "/tools", labelKey: "tools" as const, icon: Wrench },
-  { href: "/roadmap", labelKey: "roadmap" as const, icon: Map },
-  { href: "/changelog", labelKey: "changelog" as const, icon: ScrollText },
 ];
 
 export function MobileNav() {
@@ -48,20 +29,33 @@ export function MobileNav() {
     return pathname.includes(href);
   };
 
+  const triggerSearch = () => {
+    window.dispatchEvent(new KeyboardEvent("keydown", { key: "k", ctrlKey: true, bubbles: true }));
+  };
+
   return (
     <header className="sticky top-0 z-50 flex items-center justify-between border-b border-border bg-background/80 px-4 py-3 backdrop-blur lg:hidden">
-      <span className="font-semibold text-foreground">Eki</span>
-      <div className="flex items-center gap-2">
+      <span className="font-semibold text-foreground">nateeki</span>
+
+      <div className="flex items-center gap-1">
+        {/* Search button */}
+        <Button variant="ghost" size="icon" className="h-8 w-8" onClick={triggerSearch} aria-label="Search">
+          <Search className="h-4 w-4" />
+        </Button>
+
         <LanguageSwitcher />
+
         <Button
           variant="ghost"
           size="icon"
           className="h-8 w-8"
           onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
+          aria-label="Toggle theme"
         >
           <Sun className="h-4 w-4 dark:hidden" />
           <Moon className="hidden h-4 w-4 dark:block" />
         </Button>
+
         <Sheet open={open} onOpenChange={setOpen}>
           <SheetTrigger>
             <span className="inline-flex h-8 w-8 items-center justify-center rounded-lg text-muted-foreground hover:bg-muted hover:text-foreground transition-colors">
@@ -69,7 +63,11 @@ export function MobileNav() {
             </span>
           </SheetTrigger>
           <SheetContent side="left" className="w-64 p-4">
-            <nav className="flex flex-col gap-1 pt-4">
+            <div className="mb-4">
+              <p className="text-sm font-semibold text-foreground">Febiyanto Rizki</p>
+              <p className="text-xs text-muted-foreground">@nateeki</p>
+            </div>
+            <nav className="flex flex-col gap-1">
               {NAV_ITEMS.map(({ href, labelKey, icon: Icon }) => (
                 <Link
                   key={href}

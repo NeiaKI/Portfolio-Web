@@ -10,7 +10,7 @@ export function LanguageSwitcher() {
 
   const toggle = () => {
     const next = locale === "en" ? "id" : "en";
-    router.replace(pathname, { locale: next });
+    router.replace(pathname, { locale: next, scroll: false });
   };
 
   return (

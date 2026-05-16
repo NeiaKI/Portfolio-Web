@@ -13,6 +13,7 @@ import {
   Moon,
   ChevronRight,
   Languages,
+  Search,
 } from "lucide-react";
 import type { LucideIcon } from "lucide-react";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
@@ -96,6 +97,16 @@ export function NavSidebar() {
           </div>
         ))}
       </nav>
+
+      {/* Search shortcut */}
+      <button
+        onClick={() => window.dispatchEvent(new KeyboardEvent("keydown", { key: "k", ctrlKey: true, bubbles: true }))}
+        className="mx-1 mb-2 flex items-center gap-2 rounded-lg border border-border/60 px-3 py-1.5 text-xs text-muted-foreground transition-colors hover:bg-muted hover:text-foreground"
+      >
+        <Search className="h-3.5 w-3.5" />
+        <span className="flex-1 text-left">Search…</span>
+        <kbd className="rounded bg-muted px-1 py-0.5 text-[10px]">⌘K</kbd>
+      </button>
 
       {/* Theming — pinned to bottom */}
       <div className="mt-2 flex flex-col gap-0.5">

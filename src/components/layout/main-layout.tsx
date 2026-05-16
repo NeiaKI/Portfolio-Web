@@ -1,12 +1,16 @@
 import { NavSidebar } from "./nav-sidebar";
 import { WidgetSidebar } from "./widget-sidebar";
 import { MobileNav } from "./mobile-nav";
+import { PageTransition } from "./page-transition";
 import { ScrollToTop } from "@/components/ui/scroll-to-top";
+import { CommandPalette } from "@/components/ui/command-palette";
 
 export function MainLayout({ children }: { children: React.ReactNode }) {
   return (
     <div className="relative min-h-screen dot-bg">
-      {/* Mobile top nav */}
+      <CommandPalette />
+
+      {/* Mobile top nav — shown below lg */}
       <MobileNav />
 
       <div className="mx-auto flex max-w-[1400px]">
@@ -16,9 +20,9 @@ export function MainLayout({ children }: { children: React.ReactNode }) {
         </div>
 
         {/* Main content */}
-        <main className="flex-1 min-w-0 overflow-y-auto">
-          <div className="w-full px-6 py-8">
-            {children}
+        <main className="flex-1 min-w-0">
+          <div className="w-full px-4 py-6 sm:px-6 sm:py-8">
+            <PageTransition>{children}</PageTransition>
           </div>
         </main>
 
@@ -27,6 +31,7 @@ export function MainLayout({ children }: { children: React.ReactNode }) {
           <WidgetSidebar />
         </div>
       </div>
+
       <ScrollToTop />
     </div>
   );

@@ -1,19 +1,13 @@
 import { NextResponse } from "next/server";
 
-export const revalidate = 60; // 1 min
-
-const CLIENT_ID = process.env.SPOTIFY_CLIENT_ID;
-const CLIENT_SECRET = process.env.SPOTIFY_CLIENT_SECRET;
-const REFRESH_TOKEN = process.env.SPOTIFY_REFRESH_TOKEN;
-
-async function getAccessToken(): Promise<string> {
+async function getAccessToken(clientId: string, clientSecret: string, refreshToken: string): Promise<string> {
   const res = await fetch("https://accounts.spotify.com/api/token", {
     method: "POST",
     headers: {
       "Content-Type": "application/x-www-form-urlencoded",
-      Authorization: `Basic ${Buffer.from(`${CLIENT_ID}:${CLIENT_SECRET}`).toString("base64")}`,
+      Authorization: `Basic ${Buffer.from(`${clientId}:${clientSecret}`).toString("base64")}`,
     },
-    body: new URLSearchParams({ grant_type: "refresh_token", refresh_token: REFRESH_TOKEN! }),
+    body: new URLSearchParams({ grant_type: "refresh_token", refresh_token: refreshToken }),
     cache: "no-store",
   });
   const data = await res.json();
@@ -21,12 +15,16 @@ async function getAccessToken(): Promise<string> {
 }
 
 export async function GET() {
+  const CLIENT_ID = process.env.SPOTIFY_CLIENT_ID;
+  const CLIENT_SECRET = process.env.SPOTIFY_CLIENT_SECRET;
+  const REFRESH_TOKEN = process.env.SPOTIFY_REFRESH_TOKEN;
+
   if (!CLIENT_ID || !CLIENT_SECRET || !REFRESH_TOKEN) {
     return NextResponse.json({ isPlaying: false, configured: false });
   }
 
   try {
-    const token = await getAccessToken();
+    const token = await getAccessToken(CLIENT_ID, CLIENT_SECRET, REFRESH_TOKEN);
     const headers = { Authorization: `Bearer ${token}` };
 
     const nowRes = await fetch("https://api.spotify.com/v1/me/player/currently-playing", {
