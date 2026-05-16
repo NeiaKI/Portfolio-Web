@@ -1,0 +1,95 @@
+{
+  "nav": {
+    "main": "Utama",
+    "home": "Beranda",
+    "project": "Proyek",
+    "blog": "Blog",
+    "application": "Aplikasi",
+    "ai": "Neki AI",
+    "chat": "Obrolan",
+    "playground": "Playground",
+    "tools": "Tools",
+    "roadmap": "Roadmap",
+    "certificates": "Sertifikat",
+    "changelog": "Changelog"
+  },
+  "sidebar": {
+    "online": "Online",
+    "signIn": "Masuk",
+    "signInCaption": "Untuk mengakses semua fitur dan personalisasi",
+    "openToWork": "Buka untuk Kerja",
+    "darkMode": "Mode Gelap",
+    "lightMode": "Mode Terang",
+    "visitorInfo": "Info Pengunjung",
+    "ip": "Alamat IP",
+    "browser": "Browser",
+    "location": "Lokasi",
+    "quickStats": "Statistik Singkat",
+    "projects": "Proyek",
+    "yearsExp": "Tahun Pengalaman",
+    "technologies": "Teknologi",
+    "coffeeCups": "Cangkir Kopi"
+  },
+  "home": {
+    "greeting": "Halo, Saya Eki",
+    "typingPrefix": "Saya seorang",
+    "roles": ["Software Engineer", "3D Artist", "Linux Enthusiast", "Open Source Contributor"],
+    "aboutTitle": "Tentang Saya",
+    "aboutDesc": "Software engineer dan 3D artist yang bersemangat, berbasis di Indonesia. Saya suka membangun hal-hal di web, membuat aset 3D, dan bereksperimen dengan Linux.",
+    "viewCV": "Lihat CV",
+    "downloadCV": "Unduh CV",
+    "skillsTitle": "Skill & Teknologi",
+    "experienceTitle": "Pengalaman Kerja",
+    "educationTitle": "Pendidikan",
+    "presentLabel": "Sekarang",
+    "certificatesTitle": "Sertifikat Terbaru",
+    "activityTitle": "Aktivitas"
+  },
+  "project": {
+    "title": "Proyek",
+    "subtitle": "Hal-hal yang telah saya bangun",
+    "search": "Cari proyek...",
+    "allTag": "Semua",
+    "viewDemo": "Demo",
+    "viewSource": "Sumber",
+    "noResults": "Tidak ada proyek ditemukan."
+  },
+  "blog": {
+    "title": "Blog",
+    "subtitle": "Pemikiran dan tulisan",
+    "devto": "Dev.to",
+    "medium": "Medium",
+    "readMore": "Baca selengkapnya",
+    "noPosts": "Tidak ada postingan."
+  },
+  "tools": {
+    "title": "Tools",
+    "subtitle": "Utilitas berguna"
+  },
+  "roadmap": {
+    "title": "Roadmap",
+    "subtitle": "Yang sedang dibangun",
+    "planned": "Direncanakan",
+    "inProgress": "Dalam Proses",
+    "done": "Selesai"
+  },
+  "auth": {
+    "signIn": "Masuk",
+    "signOut": "Keluar",
+    "email": "Email",
+    "password": "Kata Sandi",
+    "orContinueWith": "Atau lanjutkan dengan",
+    "github": "Lanjutkan dengan GitHub",
+    "noAccount": "Belum punya akun?",
+    "hasAccount": "Sudah punya akun?",
+    "signUp": "Daftar"
+  },
+  "common": {
+    "loading": "Memuat...",
+    "error": "Terjadi kesalahan.",
+    "retry": "Coba lagi",
+    "backToHome": "Kembali ke Beranda",
+    "seeAll": "Lihat semua",
+    "learnMore": "Pelajari lebih lanjut"
+  }
+}

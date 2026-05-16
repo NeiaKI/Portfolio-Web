@@ -1,0 +1,95 @@
+{
+  "nav": {
+    "main": "Main",
+    "home": "Home",
+    "project": "Project",
+    "blog": "Blog",
+    "application": "Application",
+    "ai": "Neki AI",
+    "chat": "Chat",
+    "playground": "Playground",
+    "tools": "Tools",
+    "roadmap": "Roadmap",
+    "certificates": "Certificates",
+    "changelog": "Changelog"
+  },
+  "sidebar": {
+    "online": "Online",
+    "signIn": "Sign in",
+    "signInCaption": "To access all features and personalization",
+    "openToWork": "Open to Work",
+    "darkMode": "Dark Mode",
+    "lightMode": "Light Mode",
+    "visitorInfo": "Visitor Info",
+    "ip": "IP Address",
+    "browser": "Browser",
+    "location": "Location",
+    "quickStats": "Quick Stats",
+    "projects": "Projects",
+    "yearsExp": "Years Experience",
+    "technologies": "Technologies",
+    "coffeeCups": "Coffee Cups"
+  },
+  "home": {
+    "greeting": "Hi, I'm Eki",
+    "typingPrefix": "I'm a",
+    "roles": ["Software Engineer", "3D Artist", "Linux Enthusiast", "Open Source Contributor"],
+    "aboutTitle": "About Me",
+    "aboutDesc": "A passionate software engineer and 3D artist based in Indonesia. I love building things on the web, crafting 3D assets, and tinkering with Linux.",
+    "viewCV": "View CV",
+    "downloadCV": "Download CV",
+    "skillsTitle": "Skills & Technologies",
+    "experienceTitle": "Work Experience",
+    "educationTitle": "Education",
+    "presentLabel": "Present",
+    "certificatesTitle": "Latest Certifications",
+    "activityTitle": "Activity"
+  },
+  "project": {
+    "title": "Projects",
+    "subtitle": "Things I've built",
+    "search": "Search projects...",
+    "allTag": "All",
+    "viewDemo": "Demo",
+    "viewSource": "Source",
+    "noResults": "No projects found."
+  },
+  "blog": {
+    "title": "Blog",
+    "subtitle": "Thoughts and writings",
+    "devto": "Dev.to",
+    "medium": "Medium",
+    "readMore": "Read more",
+    "noPosts": "No posts found."
+  },
+  "tools": {
+    "title": "Tools",
+    "subtitle": "Useful utilities"
+  },
+  "roadmap": {
+    "title": "Roadmap",
+    "subtitle": "What's being built",
+    "planned": "Planned",
+    "inProgress": "In Progress",
+    "done": "Done"
+  },
+  "auth": {
+    "signIn": "Sign In",
+    "signOut": "Sign Out",
+    "email": "Email",
+    "password": "Password",
+    "orContinueWith": "Or continue with",
+    "github": "Continue with GitHub",
+    "noAccount": "Don't have an account?",
+    "hasAccount": "Already have an account?",
+    "signUp": "Sign up"
+  },
+  "common": {
+    "loading": "Loading...",
+    "error": "Something went wrong.",
+    "retry": "Try again",
+    "backToHome": "Back to Home",
+    "seeAll": "See all",
+    "learnMore": "Learn more"
+  }
+}
