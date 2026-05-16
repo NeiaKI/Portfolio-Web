@@ -1,5 +1,6 @@
 "use client";
 
+import { useState, useEffect } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useTranslations } from "next-intl";
@@ -8,54 +9,32 @@ import {
   Home,
   FolderOpen,
   Newspaper,
-  Bot,
-  MessageCircle,
-  Wrench,
-  Map,
   Award,
-  ScrollText,
-  Sun,
   Moon,
-  Briefcase,
+  ChevronRight,
+  Languages,
 } from "lucide-react";
-import { Badge } from "@/components/ui/badge";
-import { Separator } from "@/components/ui/separator";
-import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { Separator } from "@/components/ui/separator";
 import { cn } from "@/lib/utils";
 import { LanguageSwitcher } from "@/components/layout/language-switcher";
 
-const NAV_GROUPS = [
-  {
-    labelKey: "main" as const,
-    items: [
-      { href: "/", labelKey: "home" as const, icon: Home },
-      { href: "/project", labelKey: "project" as const, icon: FolderOpen },
-      { href: "/blog", labelKey: "blog" as const, icon: Newspaper },
-      { href: "/certificates", labelKey: "certificates" as const, icon: Award },
-    ],
-  },
-  {
-    labelKey: "application" as const,
-    items: [
-      { href: "/ai", labelKey: "ai" as const, icon: Bot },
-      { href: "/chat", labelKey: "chat" as const, icon: MessageCircle },
-    ],
-  },
-  {
-    labelKey: "playground" as const,
-    items: [
-      { href: "/tools", labelKey: "tools" as const, icon: Wrench },
-      { href: "/roadmap", labelKey: "roadmap" as const, icon: Map },
-      { href: "/changelog", labelKey: "changelog" as const, icon: ScrollText },
-    ],
-  },
+const NAV_ITEMS = [
+  { href: "/", labelKey: "home" as const, icon: Home },
+  { href: "/project", labelKey: "project" as const, icon: FolderOpen },
+  { href: "/blog", labelKey: "blog" as const, icon: Newspaper },
+  { href: "/certificates", labelKey: "certificates" as const, icon: Award },
 ];
 
 export function NavSidebar() {
   const t = useTranslations("nav");
   const pathname = usePathname();
   const { theme, setTheme } = useTheme();
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => { setMounted(true); }, []);
+
+  const isDark = mounted ? theme === "dark" : true;
 
   const isActive = (href: string) => {
     if (href === "/") return pathname === "/" || pathname === "/id" || pathname === "/en";
@@ -63,73 +42,79 @@ export function NavSidebar() {
   };
 
   return (
-    <aside className="flex h-full w-64 flex-col gap-4 p-4">
-      {/* Profile card */}
-      <div className="flex flex-col items-center gap-3 rounded-xl bg-card p-4">
-        <div className="relative">
-          <Avatar className="h-16 w-16 border-2 border-primary/30">
-            <AvatarImage src="/images/avatar-placeholder.jpg" alt="Eki" />
-            <AvatarFallback className="bg-primary/20 text-primary font-bold text-lg">
-              EK
-            </AvatarFallback>
-          </Avatar>
-          <span className="absolute bottom-0 right-0 h-3 w-3 rounded-full border-2 border-card bg-green-500" />
-        </div>
+    <aside className="flex h-full w-52 flex-col py-6 px-3">
+      {/* Profile */}
+      <div className="flex flex-col items-center gap-2 px-2 mb-6">
+        <Avatar className="h-[72px] w-[72px] border-2 border-border/60">
+          <AvatarImage src="/images/avatar-placeholder.jpg" alt="Febiyanto Rizki" />
+          <AvatarFallback className="bg-muted text-foreground font-bold text-2xl">
+            FR
+          </AvatarFallback>
+        </Avatar>
         <div className="text-center">
-          <p className="font-semibold text-foreground">Eki</p>
-          <p className="text-xs text-muted-foreground">@neki</p>
-          <Badge
-            variant="outline"
-            className="mt-1 border-primary/40 text-primary text-[10px]"
-          >
-            <Briefcase className="mr-1 h-2.5 w-2.5" />
-            Open to Work
-          </Badge>
+          <p className="font-semibold text-foreground text-[15px]">Febiyanto Rizki</p>
+          <span className="text-xs text-muted-foreground">@nateeki</span>
         </div>
       </div>
 
       {/* Navigation */}
-      <nav className="flex flex-1 flex-col gap-1 overflow-y-auto scrollbar-hide">
-        {NAV_GROUPS.map((group, groupIdx) => (
-          <div key={group.labelKey}>
-            {groupIdx > 0 && <Separator className="my-2" />}
-            <p className="mb-1 px-2 text-[10px] font-semibold uppercase tracking-widest text-muted-foreground">
-              {t(group.labelKey)}
-            </p>
-            {group.items.map(({ href, labelKey, icon: Icon }) => (
-              <Link
-                key={href}
-                href={href}
-                className={cn(
-                  "flex items-center gap-3 rounded-lg px-3 py-2 text-sm transition-colors",
-                  isActive(href)
-                    ? "bg-primary/15 text-primary font-medium"
-                    : "text-muted-foreground hover:bg-accent hover:text-foreground"
-                )}
-              >
-                <Icon className="h-4 w-4 shrink-0" />
-                {t(labelKey)}
-              </Link>
-            ))}
-          </div>
+      <nav className="flex flex-1 flex-col gap-0.5 overflow-y-auto scrollbar-hide">
+        {NAV_ITEMS.map(({ href, labelKey, icon: Icon }) => (
+          <Link
+            key={href}
+            href={href}
+            className={cn(
+              "flex items-center gap-3 rounded-lg px-3 py-2 text-sm transition-colors",
+              isActive(href)
+                ? "bg-secondary text-foreground font-medium"
+                : "text-muted-foreground hover:bg-secondary/50 hover:text-foreground"
+            )}
+          >
+            <Icon className="h-4 w-4 shrink-0" />
+            <span className="flex-1">{t(labelKey)}</span>
+            {isActive(href) && (
+              <ChevronRight className="h-3.5 w-3.5 text-muted-foreground/60" />
+            )}
+          </Link>
         ))}
       </nav>
 
-      {/* Bottom controls */}
-      <div className="flex flex-col gap-2">
-        <Separator />
-        <div className="flex items-center justify-between px-1">
-          <LanguageSwitcher />
-          <Button
-            variant="ghost"
-            size="icon"
-            className="h-8 w-8"
-            onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
-            aria-label="Toggle theme"
+      {/* Theming — pinned to bottom */}
+      <div className="mt-2 flex flex-col gap-0.5">
+        <Separator className="mb-2" />
+        <p className="px-3 pb-0.5 text-[11px] font-medium text-muted-foreground/60 uppercase tracking-widest">
+          Theming
+        </p>
+        <div className="flex items-center justify-between rounded-lg px-3 py-2">
+          <div className="flex items-center gap-3">
+            <Moon className="h-4 w-4 text-muted-foreground" />
+            <span className="text-sm text-muted-foreground">Dark Mode</span>
+          </div>
+          <button
+            role="switch"
+            suppressHydrationWarning
+            aria-checked={isDark}
+            onClick={() => setTheme(isDark ? "light" : "dark")}
+            className={cn(
+              "relative inline-flex h-5 w-9 shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors",
+              isDark ? "bg-primary" : "bg-muted-foreground/30"
+            )}
           >
-            <Sun className="h-4 w-4 rotate-0 scale-100 transition-all dark:-rotate-90 dark:scale-0" />
-            <Moon className="absolute h-4 w-4 rotate-90 scale-0 transition-all dark:rotate-0 dark:scale-100" />
-          </Button>
+            <span
+              suppressHydrationWarning
+              className={cn(
+                "pointer-events-none inline-block h-4 w-4 rounded-full bg-background shadow-sm transition-transform",
+                isDark ? "translate-x-4" : "translate-x-0"
+              )}
+            />
+          </button>
+        </div>
+        <div className="flex items-center justify-between rounded-lg px-3 py-2">
+          <div className="flex items-center gap-3">
+            <Languages className="h-4 w-4 text-muted-foreground" />
+            <span className="text-sm text-muted-foreground">Language</span>
+          </div>
+          <LanguageSwitcher />
         </div>
       </div>
     </aside>
