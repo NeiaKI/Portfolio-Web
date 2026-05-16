@@ -14,16 +14,25 @@ import {
   ChevronRight,
   Languages,
 } from "lucide-react";
+import type { LucideIcon } from "lucide-react";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Separator } from "@/components/ui/separator";
 import { cn } from "@/lib/utils";
 import { LanguageSwitcher } from "@/components/layout/language-switcher";
 
-const NAV_ITEMS = [
-  { href: "/", labelKey: "home" as const, icon: Home },
-  { href: "/project", labelKey: "project" as const, icon: FolderOpen },
-  { href: "/blog", labelKey: "blog" as const, icon: Newspaper },
-  { href: "/certificates", labelKey: "certificates" as const, icon: Award },
+type NavItem = { href: string; labelKey: string; icon: LucideIcon };
+type NavGroup = { sectionLabel: string | null; items: NavItem[] };
+
+const NAV_GROUPS: NavGroup[] = [
+  {
+    sectionLabel: null,
+    items: [
+      { href: "/", labelKey: "home", icon: Home },
+      { href: "/project", labelKey: "project", icon: FolderOpen },
+      { href: "/blog", labelKey: "blog", icon: Newspaper },
+      { href: "/certificates", labelKey: "certificates", icon: Award },
+    ],
+  },
 ];
 
 export function NavSidebar() {
@@ -44,7 +53,7 @@ export function NavSidebar() {
   return (
     <aside className="flex h-full w-52 flex-col py-6 px-3">
       {/* Profile */}
-      <div className="flex flex-col items-center gap-2 px-2 mb-6">
+      <div className="flex flex-col items-center gap-2 px-2 mb-3">
         <Avatar className="h-[72px] w-[72px] border-2 border-border/60">
           <AvatarImage src="/images/avatar-placeholder.jpg" alt="Febiyanto Rizki" />
           <AvatarFallback className="bg-muted text-foreground font-bold text-2xl">
@@ -53,29 +62,38 @@ export function NavSidebar() {
         </Avatar>
         <div className="text-center">
           <p className="font-semibold text-foreground text-[15px]">Febiyanto Rizki</p>
-          <span className="text-xs text-muted-foreground">@nateeki</span>
+          <p className="text-xs text-muted-foreground mt-0.5">@nateeki</p>
         </div>
       </div>
 
       {/* Navigation */}
-      <nav className="flex flex-1 flex-col gap-0.5 overflow-y-auto scrollbar-hide">
-        {NAV_ITEMS.map(({ href, labelKey, icon: Icon }) => (
-          <Link
-            key={href}
-            href={href}
-            className={cn(
-              "flex items-center gap-3 rounded-lg px-3 py-2 text-sm transition-colors",
-              isActive(href)
-                ? "bg-secondary text-foreground font-medium"
-                : "text-muted-foreground hover:bg-secondary/50 hover:text-foreground"
+      <nav className="flex flex-1 flex-col gap-1 overflow-y-auto scrollbar-hide">
+        {NAV_GROUPS.map((group, idx) => (
+          <div key={idx} className="flex flex-col gap-0.5">
+            {group.sectionLabel && (
+              <p className="px-3 pt-1 pb-0.5 text-[11px] font-medium text-muted-foreground/60 uppercase tracking-widest">
+                {group.sectionLabel}
+              </p>
             )}
-          >
-            <Icon className="h-4 w-4 shrink-0" />
-            <span className="flex-1">{t(labelKey)}</span>
-            {isActive(href) && (
-              <ChevronRight className="h-3.5 w-3.5 text-muted-foreground/60" />
-            )}
-          </Link>
+            {group.items.map(({ href, labelKey, icon: Icon }) => (
+              <Link
+                key={href}
+                href={href}
+                className={cn(
+                  "flex items-center gap-3 rounded-lg px-3 py-2 text-sm transition-colors",
+                  isActive(href)
+                    ? "bg-secondary text-foreground font-medium"
+                    : "text-muted-foreground hover:bg-secondary/50 hover:text-foreground"
+                )}
+              >
+                <Icon className="h-4 w-4 shrink-0" />
+                <span className="flex-1">{t(labelKey as Parameters<typeof t>[0])}</span>
+                {isActive(href) && (
+                  <ChevronRight className="h-3.5 w-3.5 text-muted-foreground/60" />
+                )}
+              </Link>
+            ))}
+          </div>
         ))}
       </nav>
 
