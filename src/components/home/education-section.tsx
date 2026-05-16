@@ -6,11 +6,18 @@ import { GraduationCap } from "lucide-react";
 
 const EDUCATION = [
   {
-    institution: "Your University",
-    degree: "Bachelor of Computer Science",
-    startDate: "2021-09",
-    endDate: "2025-07",
-    description: "Focus on software engineering and computer systems.",
+    institution: "Universitas Bina Nusantara (BINUS)",
+    degree: "S1 Teknik Informatika",
+    startDate: "2020-09",
+    endDate: "2024-07",
+    description: "Specialization in Software Engineering. Active member of the Programming Club and participated in national competitive programming events.",
+  },
+  {
+    institution: "SMKN 1 Tangerang Selatan",
+    degree: "Teknik Komputer dan Jaringan",
+    startDate: "2017-07",
+    endDate: "2020-06",
+    description: "Graduated with distinction. Developed foundational skills in networking, Linux administration, and web development.",
   },
 ];
 

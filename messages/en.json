@@ -29,10 +29,15 @@
     "coffeeCups": "Coffee Cups"
   },
   "home": {
-    "greeting": "Hi, I'm Eki",
+    "greeting": "Hi, I'm Febiyanto Rizki",
     "typingPrefix": "I'm a",
-    "roles": ["Software Engineer", "3D Artist", "Linux Enthusiast", "Open Source Contributor"],
-    "aboutTitle": "About Me",
+    "roles": [
+      "Software Engineer",
+      "3D Artist",
+      "Linux Enthusiast",
+      "Open Source Contributor"
+    ],
+    "aboutTitle": "About",
     "aboutDesc": "A passionate software engineer and 3D artist based in Indonesia. I love building things on the web, crafting 3D assets, and tinkering with Linux.",
     "viewCV": "View CV",
     "downloadCV": "Download CV",
@@ -41,7 +46,12 @@
     "educationTitle": "Education",
     "presentLabel": "Present",
     "certificatesTitle": "Latest Certifications",
-    "activityTitle": "Activity"
+    "activityTitle": "Activity",
+    "heroDesc": "Passionate about web, mobile, cloud, and DevOps development. I love creating innovative solutions using modern technologies like React, Next.js, TypeScript, and more. Currently focused on building high-performance applications and learning CI/CD pipelines.",
+    "viewProjects": "View Projects",
+    "viewChangelog": "View Changelog",
+    "findMeOn": "Find me on",
+    "viewPortfolioPDF": "View Portfolio in PDF"
   },
   "project": {
     "title": "Projects",

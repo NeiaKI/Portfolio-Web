@@ -29,10 +29,15 @@
     "coffeeCups": "Cangkir Kopi"
   },
   "home": {
-    "greeting": "Halo, Saya Eki",
+    "greeting": "Halo, Saya Febiyanto Rizki",
     "typingPrefix": "Saya seorang",
-    "roles": ["Software Engineer", "3D Artist", "Linux Enthusiast", "Open Source Contributor"],
-    "aboutTitle": "Tentang Saya",
+    "roles": [
+      "Software Engineer",
+      "3D Artist",
+      "Linux Enthusiast",
+      "Open Source Contributor"
+    ],
+    "aboutTitle": "Tentang",
     "aboutDesc": "Software engineer dan 3D artist yang bersemangat, berbasis di Indonesia. Saya suka membangun hal-hal di web, membuat aset 3D, dan bereksperimen dengan Linux.",
     "viewCV": "Lihat CV",
     "downloadCV": "Unduh CV",
@@ -41,7 +46,12 @@
     "educationTitle": "Pendidikan",
     "presentLabel": "Sekarang",
     "certificatesTitle": "Sertifikat Terbaru",
-    "activityTitle": "Aktivitas"
+    "activityTitle": "Aktivitas",
+    "heroDesc": "Bersemangat dalam pengembangan web, mobile, cloud, dan DevOps. Saya suka menciptakan solusi inovatif menggunakan teknologi modern seperti React, Next.js, TypeScript, dan lainnya. Saat ini fokus membangun aplikasi performa tinggi dan mempelajari CI/CD pipeline.",
+    "viewProjects": "Lihat Proyek",
+    "viewChangelog": "Lihat Changelog",
+    "findMeOn": "Temukan saya di",
+    "viewPortfolioPDF": "Lihat Portfolio PDF"
   },
   "project": {
     "title": "Proyek",

@@ -7,20 +7,28 @@ import { Badge } from "@/components/ui/badge";
 
 const EXPERIENCES = [
   {
-    company: "Your Company",
-    position: "Software Engineer",
-    startDate: "2024-01",
+    company: "PT. Teknologi Nusantara Digital",
+    position: "Full Stack Developer",
+    startDate: "2024-03",
     endDate: null,
     logo: null,
-    description: "Working on full-stack web applications.",
+    description: "Building and maintaining internal web applications using Next.js, TypeScript, and PostgreSQL. Led the migration from a legacy CMS to a modern headless architecture.",
   },
   {
     company: "Freelance",
-    position: "Full Stack Developer",
-    startDate: "2022-06",
-    endDate: "2023-12",
+    position: "Web & Mobile Developer",
+    startDate: "2022-08",
+    endDate: "2024-02",
     logo: null,
-    description: "Building web projects for clients.",
+    description: "Delivered 10+ projects for clients — ranging from company profiles and e-commerce stores to REST APIs and mobile apps. Stack: React, Node.js, Flutter, and Supabase.",
+  },
+  {
+    company: "PT. Solusi Kreatif Indonesia",
+    position: "Junior Frontend Developer",
+    startDate: "2021-07",
+    endDate: "2022-07",
+    logo: null,
+    description: "Developed UI components and landing pages for SaaS products. Collaborated with the design team to implement Figma designs using React and Tailwind CSS.",
   },
 ];
 
