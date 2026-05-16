@@ -13,27 +13,30 @@ export default function BlogPage() {
 
   return (
     <MainLayout>
-      <div className="flex flex-col gap-6">
-        <div>
+      <div className="flex flex-col gap-8">
+        {/* Header — centered */}
+        <div className="text-center">
           <h1 className="text-2xl font-bold text-foreground">{t("title")}</h1>
-          <p className="text-sm text-muted-foreground">{t("subtitle")}</p>
+          <p className="mt-1 text-sm text-muted-foreground">{t("subtitle")}</p>
         </div>
 
-        {/* Source tabs */}
-        <div className="flex gap-1 rounded-lg border border-border bg-muted p-1 w-fit">
-          {(["devto", "medium"] as Source[]).map((s) => (
-            <button
-              key={s}
-              onClick={() => setSource(s)}
-              className={`rounded-md px-4 py-1.5 text-sm font-medium transition-colors ${
-                source === s
-                  ? "bg-background text-foreground shadow-sm"
-                  : "text-muted-foreground hover:text-foreground"
-              }`}
-            >
-              {s === "devto" ? t("devto") : t("medium")}
-            </button>
-          ))}
+        {/* Source tabs — centered pill style */}
+        <div className="flex justify-center">
+          <div className="flex gap-1 rounded-full border border-border bg-card p-1">
+            {(["devto", "medium"] as Source[]).map((s) => (
+              <button
+                key={s}
+                onClick={() => setSource(s)}
+                className={`rounded-full px-5 py-1.5 text-sm font-medium transition-colors ${
+                  source === s
+                    ? "bg-foreground text-background"
+                    : "text-muted-foreground hover:text-foreground"
+                }`}
+              >
+                {s === "devto" ? t("devto") : t("medium")}
+              </button>
+            ))}
+          </div>
         </div>
 
         <BlogList source={source} />

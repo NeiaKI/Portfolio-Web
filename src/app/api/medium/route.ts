@@ -1,68 +1,66 @@
 import { NextResponse } from "next/server";
 
-export const revalidate = 1800; // 30 minutes
+export const revalidate = 1800;
 
-const MEDIUM_USERNAME = process.env.MEDIUM_USERNAME ?? "neki";
+const MEDIUM_USERNAME = process.env.MEDIUM_USERNAME ?? "nateeki";
 
-interface MediumItem {
-  title: string[];
-  link: string[];
-  description: string[];
-  pubDate: string[];
-  "content:encoded"?: string[];
+interface Rss2JsonItem {
+  title: string;
+  link: string;
+  pubDate: string;
+  thumbnail?: string;
+  description?: string;
+  content?: string;
+  categories?: string[];
 }
 
 function extractExcerpt(html: string): string {
-  const text = html.replace(/<[^>]+>/g, "").replace(/&[^;]+;/g, " ").trim();
-  return text.slice(0, 200) + (text.length > 200 ? "..." : "");
+  const text = html.replace(/<[^>]+>/g, "").replace(/&[^;]+;/g, " ").replace(/\s+/g, " ").trim();
+  return text.length > 220 ? text.slice(0, 220) + "…" : text;
 }
 
 export async function GET() {
   try {
     const rssUrl = `https://medium.com/feed/@${MEDIUM_USERNAME}`;
-    const rss2json = `https://api.rss2json.com/v1/api.json?rss_url=${encodeURIComponent(rssUrl)}`;
+    const apiUrl = `https://api.rss2json.com/v1/api.json?rss_url=${encodeURIComponent(rssUrl)}&count=10`;
 
-    const res = await fetch(rss2json, { next: { revalidate } });
-    if (!res.ok) throw new Error("Medium RSS fetch failed");
+    const res = await fetch(apiUrl, { next: { revalidate } });
+    if (!res.ok) throw new Error("rss2json fetch failed");
 
     const data = await res.json();
+    if (data.status !== "ok" || !Array.isArray(data.items)) throw new Error("RSS error");
 
-    if (data.status !== "ok") throw new Error("RSS2JSON error");
-
-    const articles = (data.items as MediumItem[]).slice(0, 10).map((item, i) => ({
+    const articles = (data.items as Rss2JsonItem[]).map((item, i) => ({
       id: i + 1,
       title: item.title,
-      description: extractExcerpt((item["content:encoded"]?.[0] ?? item.description?.[0] ?? "")),
+      description: extractExcerpt(item.content ?? item.description ?? ""),
       url: item.link,
       published_at: item.pubDate,
-      cover_image: null,
-      tags: [],
+      cover_image: item.thumbnail || null,
+      tags: item.categories ?? [],
     }));
 
     return NextResponse.json(articles);
   } catch {
-    return NextResponse.json(
-      [
-        {
-          id: 1,
-          title: "Building a 3D Portfolio with Three.js and React",
-          description: "How I integrated interactive 3D asset viewers into my portfolio using React Three Fiber and Drei.",
-          url: "#",
-          published_at: "2026-03-20T00:00:00Z",
-          cover_image: null,
-          tags: ["threejs", "react", "3d"],
-        },
-        {
-          id: 2,
-          title: "Why I Switched to Bun",
-          description: "After years of npm and pnpm, I made the switch to Bun as my primary JavaScript runtime. Here's why.",
-          url: "#",
-          published_at: "2026-01-05T00:00:00Z",
-          cover_image: null,
-          tags: ["javascript", "bun", "performance"],
-        },
-      ],
-      { status: 200 }
-    );
+    return NextResponse.json([
+      {
+        id: 1,
+        title: "Membangun Portfolio 3D dengan Three.js dan React",
+        description: "Bagaimana saya mengintegrasikan tampilan 3D interaktif ke dalam portfolio menggunakan React Three Fiber dan Drei.",
+        url: `https://medium.com/@${MEDIUM_USERNAME}`,
+        published_at: "2026-03-20T00:00:00Z",
+        cover_image: null,
+        tags: ["threejs", "react", "3d"],
+      },
+      {
+        id: 2,
+        title: "Kenapa Saya Pindah ke Bun",
+        description: "Setelah bertahun-tahun menggunakan npm dan pnpm, saya beralih ke Bun sebagai runtime JavaScript utama. Inilah alasannya.",
+        url: `https://medium.com/@${MEDIUM_USERNAME}`,
+        published_at: "2026-01-05T00:00:00Z",
+        cover_image: null,
+        tags: ["javascript", "bun", "performance"],
+      },
+    ]);
   }
 }

@@ -2,10 +2,6 @@
 
 import { useTranslations } from "next-intl";
 import { motion } from "framer-motion";
-import { Download, ExternalLink } from "lucide-react";
-import { buttonVariants } from "@/components/ui/button";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { cn } from "@/lib/utils";
 
 export function AboutSection() {
   const t = useTranslations("home");
@@ -15,40 +11,31 @@ export function AboutSection() {
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.5, delay: 0.1 }}
-      className="flex flex-col gap-4"
+      className="flex flex-col gap-3"
     >
-      <h2 className="text-lg font-semibold text-foreground">{t("aboutTitle")}</h2>
-      <div className="flex gap-4 rounded-xl border border-border bg-card p-4">
-        <Avatar className="h-20 w-20 shrink-0 rounded-xl border border-border">
-          <AvatarImage src="/images/avatar-placeholder.jpg" alt="Eki" />
-          <AvatarFallback className="rounded-xl bg-primary/20 text-primary font-bold text-2xl">
-            EK
-          </AvatarFallback>
-        </Avatar>
-        <div className="flex flex-col gap-2">
-          <p className="text-sm text-muted-foreground leading-relaxed">
-            {t("aboutDesc")}
-          </p>
-          <div className="flex gap-2 flex-wrap">
-            <a
-              href="#"
-              target="_blank"
-              rel="noopener noreferrer"
-              className={cn(buttonVariants({ variant: "outline", size: "sm" }), "gap-1.5 text-xs")}
-            >
-              <ExternalLink className="h-3.5 w-3.5" />
-              {t("viewCV")}
-            </a>
-            <a
-              href="/cv.pdf"
-              download
-              className={cn(buttonVariants({ size: "sm" }), "gap-1.5 text-xs")}
-            >
-              <Download className="h-3.5 w-3.5" />
-              {t("downloadCV")}
-            </a>
-          </div>
-        </div>
+      <h2 className="text-xl font-bold text-foreground">{t("aboutTitle")}</h2>
+
+      <p className="text-sm text-muted-foreground leading-relaxed">
+        {t("aboutDesc")}
+      </p>
+
+      <div className="flex flex-wrap gap-3 pt-1">
+        <a
+          href="#"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="inline-flex items-center gap-2 rounded-full border border-border px-5 py-2 text-sm font-medium text-foreground transition-colors hover:bg-muted"
+        >
+          ✨ {t("viewCV")}
+        </a>
+        <a
+          href="/portfolio.pdf"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="inline-flex items-center gap-2 rounded-full border border-foreground/20 bg-foreground/5 px-5 py-2 text-sm font-medium text-foreground transition-colors hover:bg-foreground/10"
+        >
+          {t("viewPortfolioPDF")} 📄
+        </a>
       </div>
     </motion.section>
   );

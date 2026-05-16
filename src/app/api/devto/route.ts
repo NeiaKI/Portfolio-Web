@@ -2,7 +2,7 @@ import { NextResponse } from "next/server";
 
 export const revalidate = 1800; // 30 minutes
 
-const DEVTO_USERNAME = process.env.DEVTO_USERNAME ?? "neki";
+const DEVTO_USERNAME = process.env.DEVTO_USERNAME ?? "nateeki";
 
 export async function GET() {
   try {

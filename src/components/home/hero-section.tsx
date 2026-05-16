@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import { useTranslations } from "next-intl";
 import { motion } from "framer-motion";
-import { buttonVariants } from "@/components/ui/button";
+import Link from "next/link";
 import { cn } from "@/lib/utils";
 
 const SOCIAL_LINKS = [
@@ -56,7 +56,6 @@ export function HeroSection() {
   useEffect(() => {
     const current = roles[roleIdx];
     let timeout: ReturnType<typeof setTimeout>;
-
     if (!deleting && displayed.length < current.length) {
       timeout = setTimeout(() => setDisplayed(current.slice(0, displayed.length + 1)), 80);
     } else if (!deleting && displayed.length === current.length) {
@@ -67,37 +66,71 @@ export function HeroSection() {
       setDeleting(false);
       setRoleIdx((prev) => (prev + 1) % roles.length);
     }
-
     return () => clearTimeout(timeout);
   }, [displayed, deleting, roleIdx, roles]);
 
   return (
-    <section className="flex flex-col gap-6 py-8">
+    <section className="flex flex-col gap-5 py-6">
+      {/* Heading + typewriter */}
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.5 }}
-        className="flex flex-col gap-3"
+        transition={{ duration: 0.5, delay: 0.05 }}
+        className="flex flex-col gap-2"
       >
         <h1 className="text-4xl font-bold tracking-tight text-foreground sm:text-5xl">
-          {t("greeting")} 👋
+          {t("greeting")}
         </h1>
         <p className="text-xl text-muted-foreground min-h-[1.75rem]">
           {t("typingPrefix")}{" "}
-          <span className="text-primary font-semibold">
+          <span className="font-semibold text-foreground">
             {displayed}
             <span className="animate-pulse">|</span>
           </span>
         </p>
       </motion.div>
 
-      {/* Social links */}
+      {/* Description with bold keywords */}
+      <motion.p
+        initial={{ opacity: 0, y: 10 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.5, delay: 0.1 }}
+        className="text-sm text-muted-foreground leading-relaxed"
+      >
+        Passionate about <strong className="text-foreground font-semibold">web, mobile, cloud, and DevOps development</strong>. I love creating innovative
+        solutions using modern technologies like <strong className="text-foreground font-semibold">React, Next.js, TypeScript</strong>, and more. Currently focused
+        on building high-performance applications and learning CI/CD pipelines.
+      </motion.p>
+
+      {/* Action buttons */}
       <motion.div
         initial={{ opacity: 0, y: 10 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5, delay: 0.2 }}
-        className="flex items-center gap-2"
+        className="flex flex-wrap gap-3"
       >
+        <Link
+          href="/project"
+          className="inline-flex items-center rounded-full border border-border px-5 py-2 text-sm font-medium text-foreground transition-colors hover:bg-muted"
+        >
+          {t("viewProjects")}
+        </Link>
+        <Link
+          href="/changelog"
+          className="inline-flex items-center rounded-full border border-border px-5 py-2 text-sm font-medium text-foreground transition-colors hover:bg-muted"
+        >
+          {t("viewChangelog")}
+        </Link>
+      </motion.div>
+
+      {/* Social links */}
+      <motion.div
+        initial={{ opacity: 0, y: 10 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.5, delay: 0.3 }}
+        className="flex items-center gap-3"
+      >
+        <span className="text-sm text-muted-foreground">{t("findMeOn")}</span>
         {SOCIAL_LINKS.map(({ svg, href, label }) => (
           <a
             key={label}
@@ -105,7 +138,9 @@ export function HeroSection() {
             target="_blank"
             rel="noopener noreferrer"
             aria-label={label}
-            className={cn(buttonVariants({ variant: "outline", size: "icon" }))}
+            className={cn(
+              "flex h-9 w-9 items-center justify-center rounded-full border border-border bg-card text-muted-foreground transition-colors hover:border-primary/40 hover:text-foreground"
+            )}
           >
             {svg}
           </a>

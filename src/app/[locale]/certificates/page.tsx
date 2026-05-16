@@ -1,6 +1,6 @@
 import { getTranslations } from "next-intl/server";
 import { MainLayout } from "@/components/layout/main-layout";
-import { CertificateCard } from "@/components/certificates/certificate-card";
+import { CertificateList } from "@/components/certificates/certificate-list";
 import { getCertificates } from "@/lib/data";
 import type { Metadata } from "next";
 
@@ -23,15 +23,10 @@ export default async function CertificatesPage({ params }: Props) {
         <div>
           <h1 className="text-2xl font-bold text-foreground">{t("certificates")}</h1>
           <p className="text-sm text-muted-foreground">
-            {certificates.length} certificates
+            {certificates.length} professional certifications and completed courses
           </p>
         </div>
-
-        <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
-          {certificates.map((cert) => (
-            <CertificateCard key={cert.id} certificate={cert} />
-          ))}
-        </div>
+        <CertificateList certificates={certificates} />
       </div>
     </MainLayout>
   );

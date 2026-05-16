@@ -1,8 +1,7 @@
 "use client";
 
 import { useLocale } from "next-intl";
-import { useRouter, usePathname } from "next/navigation";
-import { Button } from "@/components/ui/button";
+import { useRouter, usePathname } from "@/i18n/navigation";
 
 export function LanguageSwitcher() {
   const locale = useLocale();
@@ -11,30 +10,17 @@ export function LanguageSwitcher() {
 
   const toggle = () => {
     const next = locale === "en" ? "id" : "en";
-    const segments = pathname.split("/");
-
-    if (segments[1] === "id" || segments[1] === "en") {
-      segments[1] = next === "en" ? "" : next;
-    } else {
-      if (next !== "en") {
-        segments.splice(1, 0, next);
-      }
-    }
-
-    const newPath = segments.filter(Boolean).join("/") || "/";
-    router.push(`/${newPath}`);
+    router.replace(pathname, { locale: next });
   };
 
   return (
-    <Button
-      variant="ghost"
-      size="sm"
+    <button
       onClick={toggle}
-      className="h-8 gap-1.5 text-xs font-medium text-muted-foreground hover:text-foreground"
+      className="flex h-8 items-center gap-1 px-2 text-xs font-medium text-muted-foreground transition-colors hover:text-foreground"
     >
-      <span className={locale === "en" ? "text-primary font-bold" : ""}>EN</span>
-      <span className="text-muted-foreground/50">/</span>
-      <span className={locale === "id" ? "text-primary font-bold" : ""}>ID</span>
-    </Button>
+      <span className={locale === "en" ? "text-foreground font-semibold" : ""}>EN</span>
+      <span className="text-muted-foreground/40">/</span>
+      <span className={locale === "id" ? "text-foreground font-semibold" : ""}>ID</span>
+    </button>
   );
 }

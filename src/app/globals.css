@@ -130,6 +130,16 @@
   }
 }
 
+/* Dot background pattern like azure.nateee.com */
+.dot-bg {
+  background-image: radial-gradient(circle, oklch(0.3 0.015 268 / 0.4) 1px, transparent 1px);
+  background-size: 24px 24px;
+}
+:root .dot-bg {
+  background-image: radial-gradient(circle, oklch(0.7 0.01 268 / 0.25) 1px, transparent 1px);
+  background-size: 24px 24px;
+}
+
 @layer utilities {
   .scrollbar-hide {
     -ms-overflow-style: none;
@@ -142,9 +152,20 @@
 
 @keyframes marquee {
   0% { transform: translateX(0); }
-  100% { transform: translateX(-50%); }
+  100% { transform: translateX(-33.333%); }
+}
+
+@keyframes marquee-reverse {
+  0% { transform: translateX(-33.333%); }
+  100% { transform: translateX(0); }
 }
 
 .animate-marquee {
-  animation: marquee 30s linear infinite;
+  animation: marquee 18s linear infinite;
+  will-change: transform;
+}
+
+.animate-marquee-reverse {
+  animation: marquee-reverse 22s linear infinite;
+  will-change: transform;
 }

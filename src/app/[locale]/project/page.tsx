@@ -19,10 +19,10 @@ export default async function ProjectPage({ params }: Props) {
 
   return (
     <MainLayout>
-      <div className="flex flex-col gap-6">
-        <div>
+      <div className="flex flex-col gap-8">
+        <div className="text-center">
           <h1 className="text-2xl font-bold text-foreground">{t("title")}</h1>
-          <p className="text-sm text-muted-foreground">{t("subtitle")}</p>
+          <p className="mt-1 text-sm text-muted-foreground">{t("subtitle")}</p>
         </div>
         <ProjectList projects={projects} locale={locale} />
       </div>

@@ -5,20 +5,28 @@ import { SkillsSection } from "@/components/home/skills-section";
 import { ExperienceSection } from "@/components/home/experience-section";
 import { EducationSection } from "@/components/home/education-section";
 import { WeatherWidget } from "@/components/widgets/weather-widget";
+import { SpotifyWidget } from "@/components/widgets/spotify-widget";
 import { CodingProgress } from "@/components/widgets/coding-progress";
 
 export default function HomePage() {
   return (
     <MainLayout>
       <div className="flex flex-col gap-10">
-        <div className="flex flex-col gap-5">
+        <div className="flex flex-col gap-2">
           <HeroSection />
           <AboutSection />
         </div>
+
+        {/* Mini widgets row */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+          <WeatherWidget />
+          <SpotifyWidget />
+        </div>
+
         <SkillsSection />
-        <CodingProgress />
         <ExperienceSection />
         <EducationSection />
+        <CodingProgress />
       </div>
     </MainLayout>
   );
