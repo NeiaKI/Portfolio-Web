@@ -17,7 +17,6 @@ export default function HomePage() {
           <AboutSection />
         </div>
 
-        {/* Mini widgets row */}
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
           <WeatherWidget />
           <SpotifyWidget />
