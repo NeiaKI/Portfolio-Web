@@ -4,9 +4,9 @@ import { AboutSection } from "@/components/home/about-section";
 import { SkillsSection } from "@/components/home/skills-section";
 import { ExperienceSection } from "@/components/home/experience-section";
 import { EducationSection } from "@/components/home/education-section";
-import { WeatherWidget } from "@/components/widgets/weather-widget";
-import { SpotifyWidget } from "@/components/widgets/spotify-widget";
 import { CodingProgress } from "@/components/widgets/coding-progress";
+import { DuolingoProgress } from "@/components/widgets/duolingo-progress";
+import { MonkeyTypeWidget } from "@/components/widgets/monkeytype-widget";
 
 export default function HomePage() {
   return (
@@ -17,15 +17,12 @@ export default function HomePage() {
           <AboutSection />
         </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-          <WeatherWidget />
-          <SpotifyWidget />
-        </div>
-
         <SkillsSection />
         <ExperienceSection />
         <EducationSection />
         <CodingProgress />
+        <DuolingoProgress />
+        <MonkeyTypeWidget />
       </div>
     </MainLayout>
   );

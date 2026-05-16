@@ -73,53 +73,33 @@ export const MOCK_PROJECTS: Project[] = [
   },
 ];
 
+const LOGO = (domain: string) => `https://logo.clearbit.com/${domain}`;
+
 export const MOCK_CERTIFICATES: Certificate[] = [
-  {
-    id: "1",
-    title: "AWS Certified Cloud Practitioner",
-    issuer: "Amazon Web Services",
-    thumbnail_url: null,
-    certificate_url: "#",
-    issued_date: "2025-09-01",
-  },
-  {
-    id: "2",
-    title: "Next.js Advanced Patterns",
-    issuer: "Vercel",
-    thumbnail_url: null,
-    certificate_url: "#",
-    issued_date: "2025-07-15",
-  },
-  {
-    id: "3",
-    title: "TypeScript Deep Dive",
-    issuer: "Udemy",
-    thumbnail_url: null,
-    certificate_url: "#",
-    issued_date: "2025-04-20",
-  },
-  {
-    id: "4",
-    title: "Docker & Kubernetes Fundamentals",
-    issuer: "Linux Foundation",
-    thumbnail_url: null,
-    certificate_url: "#",
-    issued_date: "2024-12-01",
-  },
-  {
-    id: "5",
-    title: "Blender for Game Artists",
-    issuer: "CG Cookie",
-    thumbnail_url: null,
-    certificate_url: "#",
-    issued_date: "2024-08-10",
-  },
-  {
-    id: "6",
-    title: "PostgreSQL for Developers",
-    issuer: "pganalyze",
-    thumbnail_url: null,
-    certificate_url: "#",
-    issued_date: "2024-05-22",
-  },
+  // AWS — Dec 2025
+  { id: "1",  title: "AWS Amplify Getting Started",                              issuer: "Amazon Web Services (AWS)", thumbnail_url: LOGO("aws.amazon.com"),        certificate_url: "#", issued_date: "2025-12-01" },
+  { id: "2",  title: "AWS Command Line Interface (CLI) Basics",                  issuer: "Amazon Web Services (AWS)", thumbnail_url: LOGO("aws.amazon.com"),        certificate_url: "#", issued_date: "2025-12-01" },
+  { id: "3",  title: "Introduction to Amazon CloudFront",                        issuer: "Amazon Web Services (AWS)", thumbnail_url: LOGO("aws.amazon.com"),        certificate_url: "#", issued_date: "2025-12-01" },
+  { id: "4",  title: "Job Roles in the Cloud",                                   issuer: "Amazon Web Services (AWS)", thumbnail_url: LOGO("aws.amazon.com"),        certificate_url: "#", issued_date: "2025-12-01" },
+  { id: "5",  title: "Official Practice Question Set: AWS Certified Cloud Practitioner (CLF-C02)", issuer: "Amazon Web Services (AWS)", thumbnail_url: LOGO("aws.amazon.com"), certificate_url: "#", issued_date: "2025-12-01" },
+  // Frontend Masters — Nov 2025
+  { id: "6",  title: "Course Completed: AWS For Front-End Engineers, v2",        issuer: "Frontend Masters",          thumbnail_url: LOGO("frontendmasters.com"),   certificate_url: "#", issued_date: "2025-11-01" },
+  // AWS — Jul 2025
+  { id: "7",  title: "AWS Educate Introduction to Generative AI",                issuer: "Amazon Web Services (AWS)", thumbnail_url: LOGO("aws.amazon.com"),        certificate_url: "#", issued_date: "2025-07-01" },
+  // Dicoding — May 2025
+  { id: "8",  title: "Financial Literacy 101",                                   issuer: "Dicoding Indonesia",        thumbnail_url: LOGO("dicoding.com"),          certificate_url: "#", issued_date: "2025-05-01" },
+  // Google — Feb 2025
+  { id: "9",  title: "Automate Data Capture at Scale with Document AI",          issuer: "Google",                    thumbnail_url: LOGO("google.com"),            certificate_url: "#", issued_date: "2025-02-01" },
+  { id: "10", title: "Boost Productivity with Gemini in BigQuery",               issuer: "Google",                    thumbnail_url: LOGO("google.com"),            certificate_url: "#", issued_date: "2025-02-01" },
+  // Page 2
+  { id: "11", title: "React and TypeScript",                                     issuer: "Frontend Masters",          thumbnail_url: LOGO("frontendmasters.com"),   certificate_url: "#", issued_date: "2025-01-15" },
+  { id: "12", title: "Introduction to Go Programming",                           issuer: "Udemy",                     thumbnail_url: LOGO("udemy.com"),             certificate_url: "#", issued_date: "2024-12-10" },
+  { id: "13", title: "Docker & Kubernetes: The Practical Guide",                 issuer: "Udemy",                     thumbnail_url: LOGO("udemy.com"),             certificate_url: "#", issued_date: "2024-11-20" },
+  { id: "14", title: "Belajar Dasar Pemrograman Web",                            issuer: "Dicoding Indonesia",        thumbnail_url: LOGO("dicoding.com"),          certificate_url: "#", issued_date: "2024-10-05" },
+  { id: "15", title: "PostgreSQL for Everybody",                                 issuer: "Coursera",                  thumbnail_url: LOGO("coursera.org"),          certificate_url: "#", issued_date: "2024-09-01" },
+  { id: "16", title: "Blender 3D: Your First 3D Character",                     issuer: "Udemy",                     thumbnail_url: LOGO("udemy.com"),             certificate_url: "#", issued_date: "2024-08-10" },
+  { id: "17", title: "Introduction to Linux",                                    issuer: "Linux Foundation",          thumbnail_url: LOGO("linuxfoundation.org"),   certificate_url: "#", issued_date: "2024-07-01" },
+  { id: "18", title: "Belajar Fundamental Aplikasi Back-End",                    issuer: "Dicoding Indonesia",        thumbnail_url: LOGO("dicoding.com"),          certificate_url: "#", issued_date: "2024-06-15" },
+  { id: "19", title: "Complete Next.js Developer in 2024",                       issuer: "Udemy",                     thumbnail_url: LOGO("udemy.com"),             certificate_url: "#", issued_date: "2024-05-20" },
+  { id: "20", title: "Google Cloud Fundamentals: Core Infrastructure",           issuer: "Google",                    thumbnail_url: LOGO("google.com"),            certificate_url: "#", issued_date: "2024-04-10" },
 ];

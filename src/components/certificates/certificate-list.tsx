@@ -20,26 +20,25 @@ export function CertificateList({ certificates }: { certificates: Certificate[] 
         ))}
       </div>
 
-      {/* Pagination */}
       {total > 1 && (
-        <div className="flex items-center justify-center gap-4">
+        <div className="flex items-center justify-center gap-3">
           <button
             onClick={() => setPage((p) => Math.max(1, p - 1))}
             disabled={page === 1}
-            className="flex items-center gap-1 rounded-lg px-3 py-1.5 text-sm text-muted-foreground transition-colors hover:bg-muted hover:text-foreground disabled:pointer-events-none disabled:opacity-40"
+            className="flex items-center gap-1.5 rounded-lg border border-border px-4 py-2 text-sm text-muted-foreground transition-colors hover:bg-muted hover:text-foreground disabled:pointer-events-none disabled:opacity-40"
           >
             <ChevronLeft className="h-4 w-4" />
             Previous
           </button>
 
-          <span className="text-sm text-muted-foreground">
+          <span className="rounded-lg border border-border px-4 py-2 text-sm text-foreground">
             Page {page} of {total}
           </span>
 
           <button
             onClick={() => setPage((p) => Math.min(total, p + 1))}
             disabled={page === total}
-            className="flex items-center gap-1 rounded-lg px-3 py-1.5 text-sm text-muted-foreground transition-colors hover:bg-muted hover:text-foreground disabled:pointer-events-none disabled:opacity-40"
+            className="flex items-center gap-1.5 rounded-lg border border-border px-4 py-2 text-sm text-muted-foreground transition-colors hover:bg-muted hover:text-foreground disabled:pointer-events-none disabled:opacity-40"
           >
             Next
             <ChevronRight className="h-4 w-4" />
