@@ -15,8 +15,6 @@
   },
   "sidebar": {
     "online": "Online",
-    "signIn": "Sign in",
-    "signInCaption": "To access all features and personalization",
     "openToWork": "Open to Work",
     "darkMode": "Dark Mode",
     "lightMode": "Light Mode",
@@ -72,17 +70,6 @@
     "planned": "Planned",
     "inProgress": "In Progress",
     "done": "Done"
-  },
-  "auth": {
-    "signIn": "Sign In",
-    "signOut": "Sign Out",
-    "email": "Email",
-    "password": "Password",
-    "orContinueWith": "Or continue with",
-    "github": "Continue with GitHub",
-    "noAccount": "Don't have an account?",
-    "hasAccount": "Already have an account?",
-    "signUp": "Sign up"
   },
   "common": {
     "loading": "Loading...",

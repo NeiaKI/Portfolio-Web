@@ -16,13 +16,11 @@ import {
   ScrollText,
   Sun,
   Moon,
-  LogIn,
   Briefcase,
 } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
 import { Button } from "@/components/ui/button";
-import { buttonVariants } from "@/components/ui/button";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { cn } from "@/lib/utils";
 import { LanguageSwitcher } from "@/components/layout/language-switcher";
@@ -56,7 +54,6 @@ const NAV_GROUPS = [
 
 export function NavSidebar() {
   const t = useTranslations("nav");
-  const ts = useTranslations("sidebar");
   const pathname = usePathname();
   const { theme, setTheme } = useTheme();
 
@@ -86,19 +83,9 @@ export function NavSidebar() {
             className="mt-1 border-primary/40 text-primary text-[10px]"
           >
             <Briefcase className="mr-1 h-2.5 w-2.5" />
-            {ts("openToWork")}
+            Open to Work
           </Badge>
         </div>
-        <Link
-          href="/auth"
-          className={cn(buttonVariants({ variant: "outline", size: "sm" }), "w-full gap-2 text-xs")}
-        >
-          <LogIn className="h-3.5 w-3.5" />
-          {ts("signIn")}
-        </Link>
-        <p className="text-center text-[10px] text-muted-foreground">
-          {ts("signInCaption")}
-        </p>
       </div>
 
       {/* Navigation */}

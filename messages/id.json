@@ -15,8 +15,6 @@
   },
   "sidebar": {
     "online": "Online",
-    "signIn": "Masuk",
-    "signInCaption": "Untuk mengakses semua fitur dan personalisasi",
     "openToWork": "Buka untuk Kerja",
     "darkMode": "Mode Gelap",
     "lightMode": "Mode Terang",
@@ -72,17 +70,6 @@
     "planned": "Direncanakan",
     "inProgress": "Dalam Proses",
     "done": "Selesai"
-  },
-  "auth": {
-    "signIn": "Masuk",
-    "signOut": "Keluar",
-    "email": "Email",
-    "password": "Kata Sandi",
-    "orContinueWith": "Atau lanjutkan dengan",
-    "github": "Lanjutkan dengan GitHub",
-    "noAccount": "Belum punya akun?",
-    "hasAccount": "Sudah punya akun?",
-    "signUp": "Daftar"
   },
   "common": {
     "loading": "Memuat...",
