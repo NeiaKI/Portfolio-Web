@@ -1,10 +1,9 @@
 "use client";
 
-import { useEffect, useState, useCallback, useRef } from "react";
+import { useEffect, useState, useCallback, useRef, cloneElement, type ReactElement } from "react";
 import { GitHubCalendar } from "react-github-calendar";
 import { useTheme } from "next-themes";
 import { Code2 } from "lucide-react";
-import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
 
 type Activity = { date: string; count: number; level: 0 | 1 | 2 | 3 | 4 };
 
@@ -22,8 +21,8 @@ type WakaStats = {
 type GHStats = { total: number; thisWeek: number; bestDay: number; avg: number };
 
 const GH_THEME = {
-  dark: ["#1e1e2e", "#1e3a1a", "#2d5a27", "#4a9040", "#a6e3a1"],
-  light: ["#eff1f5", "#c6e8c4", "#8dc68f", "#3da644", "#1b5e20"],
+  dark: ["#313244", "#1e3a1a", "#2d5a27", "#4a9040", "#a6e3a1"],
+  light: ["#ccd0da", "#c6e8c4", "#8dc68f", "#3da644", "#1b5e20"],
 };
 
 function StatCard({ label, children }: { label: string; children: React.ReactNode }) {
@@ -56,6 +55,7 @@ export function CodingProgress() {
   const [waka, setWaka] = useState<WakaStats | null>(null);
   const [ghStats, setGhStats] = useState<GHStats | null>(null);
   const captured = useRef(false);
+  const calendarRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => setMounted(true), []);
 
@@ -85,16 +85,20 @@ export function CodingProgress() {
 
   const colorScheme = resolvedTheme === "dark" ? "dark" : "light";
 
-  const renderBlock = (block: React.ReactElement, activity: Activity) => (
-    <Tooltip>
-      <TooltipTrigger asChild>{block}</TooltipTrigger>
-      <TooltipContent side="top" className="text-xs">
-        {activity.count === 0
-          ? `No contributions on ${activity.date}`
-          : `${activity.count} contribution${activity.count !== 1 ? "s" : ""} on ${activity.date}`}
-      </TooltipContent>
-    </Tooltip>
-  );
+  const [hoverLabel, setHoverLabel] = useState<string | null>(null);
+
+  const legendColors = resolvedTheme === "dark" ? GH_THEME.dark : GH_THEME.light;
+
+  const renderBlock = (block: React.ReactElement, activity: Activity) => {
+    const label = activity.count === 0
+      ? `No contributions on ${activity.date}`
+      : `${activity.count} contribution${activity.count !== 1 ? "s" : ""} on ${activity.date}`;
+    return cloneElement(block, {
+      onMouseEnter: () => setHoverLabel(label),
+      onMouseLeave: () => setHoverLabel(null),
+      style: { cursor: "default" },
+    });
+  };
 
   return (
     <section className="flex flex-col gap-4">
@@ -168,18 +172,41 @@ export function CodingProgress() {
 
         {/* GitHub contribution calendar — circular blocks */}
         {mounted ? (
-          <div className="overflow-x-auto">
-            <GitHubCalendar
-              username="NeiaKI"
-              colorScheme={colorScheme}
-              theme={GH_THEME}
-              fontSize={10}
-              blockSize={11}
-              blockMargin={3}
-              blockRadius={6}
-              transformData={captureGH}
-              renderBlock={renderBlock}
-            />
+          <div ref={calendarRef} className="flex flex-col gap-2">
+            <div className="overflow-x-auto">
+              <GitHubCalendar
+                username="NeiaKI"
+                colorScheme={colorScheme}
+                theme={GH_THEME}
+                fontSize={10}
+                blockSize={11}
+                blockMargin={3}
+                blockRadius={6}
+                showColorLegend={false}
+                showTotalCount={false}
+                transformData={captureGH}
+                renderBlock={renderBlock}
+              />
+            </div>
+            {/* Custom footer */}
+            <div className="flex items-center justify-between px-0.5">
+              {/* Less … More legend */}
+              <div className="flex items-center gap-1.5 text-[11px] text-muted-foreground">
+                <span>Less</span>
+                {legendColors.map((color, i) => (
+                  <svg key={i} width="11" height="11">
+                    <rect width="11" height="11" rx="6" fill={color} />
+                  </svg>
+                ))}
+                <span>More</span>
+              </div>
+              {/* Hover tooltip text */}
+              {hoverLabel && (
+                <span className="rounded-md bg-foreground px-2.5 py-1 text-[11px] font-medium text-background whitespace-nowrap">
+                  {hoverLabel}
+                </span>
+              )}
+            </div>
           </div>
         ) : (
           <div className="h-24 rounded-lg bg-muted animate-pulse" />
