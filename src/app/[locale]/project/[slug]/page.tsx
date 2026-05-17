@@ -1,3 +1,4 @@
+import Image from "next/image";
 import { notFound } from "next/navigation";
 import Link from "next/link";
 import { getTranslations } from "next-intl/server";
@@ -44,16 +45,20 @@ export default async function ProjectDetailPage({ params }: Props) {
         </Link>
 
         {/* Thumbnail */}
-        <div className="flex h-56 items-center justify-center rounded-xl border border-border bg-muted overflow-hidden">
+        <div className="relative h-56 rounded-xl border border-border bg-muted overflow-hidden">
           {project.thumbnail_url ? (
-            // eslint-disable-next-line @next/next/no-img-element
-            <img
+            <Image
               src={project.thumbnail_url}
               alt={project.title}
-              className="h-full w-full object-cover"
+              fill
+              className="object-cover"
+              sizes="(max-width: 1024px) 100vw, 800px"
+              priority
             />
           ) : (
-            <Code2 className="h-16 w-16 text-muted-foreground/30" />
+            <div className="flex h-full items-center justify-center">
+              <Code2 className="h-16 w-16 text-muted-foreground/30" />
+            </div>
           )}
         </div>
 

@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import Link from "next/link";
 import { useTranslations } from "next-intl";
 import { Globe, Code2 } from "lucide-react";
@@ -38,16 +39,17 @@ export function ProjectCard({ project, locale }: ProjectCardProps) {
   const t = useTranslations("project");
 
   return (
-    <div className="group flex flex-col rounded-2xl border border-border/40 bg-card overflow-hidden transition-all hover:border-border hover:shadow-md">
+    <div className="group flex flex-col rounded-2xl border border-border/40 bg-card overflow-hidden transition-all duration-300 hover:border-primary/30 hover:shadow-xl hover:-translate-y-1.5">
       {/* Thumbnail */}
       <Link href={`/${locale}/project/${project.slug}`} className="block">
         <div className="relative h-44 bg-muted/50 overflow-hidden">
           {project.thumbnail_url ? (
-            // eslint-disable-next-line @next/next/no-img-element
-            <img
+            <Image
               src={project.thumbnail_url}
               alt={project.title}
-              className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
+              fill
+              className="object-cover transition-transform duration-500 group-hover:scale-105"
+              sizes="(max-width: 640px) 100vw, 50vw"
             />
           ) : (
             <div className="flex h-full items-center justify-center">

@@ -4,7 +4,8 @@ import { useEffect, useState, useCallback } from "react";
 import { useRouter, usePathname } from "next/navigation";
 import { Command } from "cmdk";
 import { Home, FolderOpen, Newspaper, Award, Coffee, Search, Code2 } from "lucide-react";
-import { MOCK_PROJECTS, MOCK_CERTIFICATES } from "@/lib/mock-data";
+import { CERTIFICATES } from "@/data/certificates";
+import type { Project } from "@/types/database";
 
 const PAGES = [
   { label: "Home",         href: "/",            icon: Home,       shortcut: "1", desc: "Main page"       },
@@ -24,8 +25,16 @@ function Kbd({ children }: { children: React.ReactNode }) {
 
 export function CommandPalette() {
   const [open, setOpen] = useState(false);
+  const [projects, setProjects] = useState<Project[]>([]);
   const router = useRouter();
   const pathname = usePathname();
+
+  useEffect(() => {
+    fetch("/api/github", { cache: "no-store" })
+      .then((r) => r.ok ? r.json() : [])
+      .then(setProjects)
+      .catch(() => {});
+  }, []);
 
   const go = useCallback(
     (href: string) => {
@@ -133,7 +142,7 @@ export function CommandPalette() {
 
           {/* Projects */}
           <Command.Group heading="Projects">
-            {MOCK_PROJECTS.map((p) => (
+            {projects.map((p) => (
               <Command.Item
                 key={p.id}
                 value={`project-${p.title}`}
@@ -153,7 +162,7 @@ export function CommandPalette() {
 
           {/* Certificates */}
           <Command.Group heading="Certificates">
-            {MOCK_CERTIFICATES.slice(0, 8).map((c) => (
+            {CERTIFICATES.slice(0, 8).map((c) => (
               <Command.Item
                 key={c.id}
                 value={`cert-${c.title}`}

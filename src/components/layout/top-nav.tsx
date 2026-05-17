@@ -87,7 +87,7 @@ export function TopNav() {
           {/* Avatar + username (desktop) */}
           <div className="hidden items-center gap-2 rounded-full border border-border bg-card px-2.5 py-1 sm:flex">
             <Avatar className="h-6 w-6">
-              <AvatarImage src="/images/avatar-placeholder.jpg" alt="Febiyanto Rizki" />
+              <AvatarImage src="/images/avatar-placeholder.jpg" alt="Febiyanto Rizki Qurbandi" />
               <AvatarFallback className="bg-primary/20 text-primary text-[10px] font-bold">
                 FR
               </AvatarFallback>
@@ -105,13 +105,13 @@ export function TopNav() {
             <SheetContent side="left" className="w-64 p-4">
               <div className="mb-4 flex items-center gap-3">
                 <Avatar className="h-10 w-10">
-                  <AvatarImage src="/images/avatar-placeholder.jpg" alt="Febiyanto Rizki" />
+                  <AvatarImage src="/images/avatar-placeholder.jpg" alt="Febiyanto Rizki Qurbandi" />
                   <AvatarFallback className="bg-primary/20 text-primary font-bold">
                     FR
                   </AvatarFallback>
                 </Avatar>
                 <div>
-                  <p className="text-sm font-semibold">Febiyanto Rizki</p>
+                  <p className="text-sm font-semibold">Febiyanto Rizki Qurbandi</p>
                   <p className="text-xs text-muted-foreground">@nateeki</p>
                 </div>
               </div>

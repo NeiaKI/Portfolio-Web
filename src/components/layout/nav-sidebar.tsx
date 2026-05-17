@@ -21,6 +21,7 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Separator } from "@/components/ui/separator";
 import { cn } from "@/lib/utils";
 import { LanguageSwitcher } from "@/components/layout/language-switcher";
+import { ViewCounter } from "@/components/widgets/view-counter";
 
 type NavItem = { href: string; labelKey: string; icon: LucideIcon; shortcut: string };
 type NavGroup = { sectionLabel: string | null; items: NavItem[] };
@@ -69,14 +70,15 @@ export function NavSidebar() {
       {/* Profile */}
       <div className="flex flex-col items-center gap-2 px-2 mb-3">
         <Avatar className="h-[72px] w-[72px] border-2 border-border/60">
-          <AvatarImage src="/images/avatar.jpg" alt="Febiyanto Rizki" />
+          <AvatarImage src="/images/avatar.jpg" alt="Febiyanto Rizki Qurbandi" />
           <AvatarFallback className="bg-muted text-foreground font-bold text-2xl">
             FR
           </AvatarFallback>
         </Avatar>
         <div className="text-center">
-          <p className="font-semibold text-foreground text-[15px]">Febiyanto Rizki</p>
+          <p className="font-semibold text-foreground text-[15px]">Febiyanto Rizki Qurbandi</p>
           <p className="text-xs text-muted-foreground mt-0.5">@nateeki</p>
+          <ViewCounter />
         </div>
       </div>
 

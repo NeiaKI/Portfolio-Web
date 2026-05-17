@@ -73,8 +73,12 @@
     "subtitle": "Thoughts and writings",
     "devto": "Dev",
     "medium": "Medium",
+    "posts": "Posts",
     "readMore": "Read more",
-    "noPosts": "No posts found."
+    "noPosts": "No posts found.",
+    "backToBlog": "Back to Blog",
+    "minRead": "min read",
+    "publishedOn": "Published on"
   },
   "tools": {
     "title": "Tools",

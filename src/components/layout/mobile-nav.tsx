@@ -64,7 +64,7 @@ export function MobileNav() {
           </SheetTrigger>
           <SheetContent side="left" className="w-64 p-4">
             <div className="mb-4">
-              <p className="text-sm font-semibold text-foreground">Febiyanto Rizki</p>
+              <p className="text-sm font-semibold text-foreground">Febiyanto Rizki Qurbandi</p>
               <p className="text-xs text-muted-foreground">@nateeki</p>
             </div>
             <nav className="flex flex-col gap-1">

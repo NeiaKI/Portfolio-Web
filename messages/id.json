@@ -73,8 +73,12 @@
     "subtitle": "Pemikiran dan tulisan",
     "devto": "Dev",
     "medium": "Medium",
+    "posts": "Tulisan",
     "readMore": "Baca selengkapnya",
-    "noPosts": "Tidak ada postingan."
+    "noPosts": "Tidak ada postingan.",
+    "backToBlog": "Kembali ke Blog",
+    "minRead": "menit baca",
+    "publishedOn": "Diterbitkan pada"
   },
   "tools": {
     "title": "Tools",

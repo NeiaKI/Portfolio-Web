@@ -60,7 +60,7 @@ create policy "Public read api_cache" on api_cache for select using (true);
 -- Seed: initial profile
 insert into profile (full_name, username, bio, tagline, is_open_to_work)
 values (
-  'Eki',
+  'Febiyanto Rizki Qurbandi',
   'neki',
   'A passionate software engineer and 3D artist based in Indonesia. I love building things on the web, crafting 3D assets, and tinkering with Linux.',
   'Software Engineer · 3D Artist · Linux Enthusiast',

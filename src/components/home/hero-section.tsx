@@ -78,7 +78,7 @@ export function HeroSection() {
         transition={{ duration: 0.5, delay: 0.05 }}
         className="flex flex-col gap-2"
       >
-        <h1 className="text-4xl font-bold tracking-tight text-foreground sm:text-5xl">
+        <h1 className="text-3xl font-bold tracking-tight text-foreground sm:text-4xl lg:text-5xl">
           {t("greeting")}
         </h1>
         <p className="text-xl text-muted-foreground min-h-[1.75rem]">

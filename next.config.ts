@@ -11,6 +11,8 @@ const nextConfig: NextConfig = {
       { hostname: "images.unsplash.com" },
       { hostname: "image.thum.io" },
       { hostname: "opengraph.githubassets.com" },
+      { hostname: "i.scdn.co" },
+      { hostname: "mosaic.scdn.co" },
     ],
   },
 };

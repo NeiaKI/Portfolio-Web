@@ -1,13 +1,25 @@
 import type { Project, Certificate } from "@/types/database";
-import { MOCK_PROJECTS, MOCK_CERTIFICATES } from "./mock-data";
+import { CERTIFICATES } from "@/data/certificates";
 
 const isSupabaseConfigured =
   !!process.env.NEXT_PUBLIC_SUPABASE_URL &&
   !!process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY &&
   process.env.NEXT_PUBLIC_SUPABASE_URL !== "https://placeholder.supabase.co";
 
+const BASE = process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000";
+
+async function getGithubProjects(): Promise<Project[]> {
+  try {
+    const res = await fetch(`${BASE}/api/github`, { cache: "no-store" });
+    if (!res.ok) return [];
+    return await res.json();
+  } catch {
+    return [];
+  }
+}
+
 export async function getProjects(): Promise<Project[]> {
-  if (!isSupabaseConfigured) return MOCK_PROJECTS;
+  if (!isSupabaseConfigured) return getGithubProjects();
 
   try {
     const { createClient } = await import("./supabase/server");
@@ -18,15 +30,16 @@ export async function getProjects(): Promise<Project[]> {
       .order("created_at", { ascending: false });
 
     if (error) throw error;
-    return data ?? MOCK_PROJECTS;
+    return data ?? (await getGithubProjects());
   } catch {
-    return MOCK_PROJECTS;
+    return getGithubProjects();
   }
 }
 
 export async function getProjectBySlug(slug: string): Promise<Project | null> {
   if (!isSupabaseConfigured) {
-    return MOCK_PROJECTS.find((p) => p.slug === slug) ?? null;
+    const projects = await getGithubProjects();
+    return projects.find((p) => p.slug === slug) ?? null;
   }
 
   try {
@@ -39,16 +52,18 @@ export async function getProjectBySlug(slug: string): Promise<Project | null> {
       .single();
 
     if (error) {
-      return MOCK_PROJECTS.find((p) => p.slug === slug) ?? null;
+      const projects = await getGithubProjects();
+      return projects.find((p) => p.slug === slug) ?? null;
     }
     return data;
   } catch {
-    return MOCK_PROJECTS.find((p) => p.slug === slug) ?? null;
+    const projects = await getGithubProjects();
+    return projects.find((p) => p.slug === slug) ?? null;
   }
 }
 
 export async function getCertificates(): Promise<Certificate[]> {
-  if (!isSupabaseConfigured) return MOCK_CERTIFICATES;
+  if (!isSupabaseConfigured) return CERTIFICATES;
 
   try {
     const { createClient } = await import("./supabase/server");
@@ -59,8 +74,8 @@ export async function getCertificates(): Promise<Certificate[]> {
       .order("issued_date", { ascending: false });
 
     if (error) throw error;
-    return data ?? MOCK_CERTIFICATES;
+    return data ?? CERTIFICATES;
   } catch {
-    return MOCK_CERTIFICATES;
+    return CERTIFICATES;
   }
 }

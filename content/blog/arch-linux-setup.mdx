@@ -1,0 +1,53 @@
+---
+title: "My Arch Linux + Hyprland Setup in 2025"
+description: "How I configured my daily driver: Arch Linux, Hyprland compositor, Catppuccin everywhere, and a workflow built for speed."
+date: "2025-11-20"
+tags: ["Arch Linux", "Hyprland", "Linux", "Dotfiles"]
+published: true
+---
+
+I've been running Arch Linux as my primary OS for over two years now. This post covers my current setup — what works, what I've abandoned, and the dotfiles behind it.
+
+## Why Arch?
+
+Rolling release means I get software updates immediately. The AUR has almost everything. And the process of setting it up taught me more about how Linux actually works than any other distribution.
+
+## Compositor: Hyprland
+
+Hyprland is a Wayland compositor that feels like the spiritual successor to i3/sway — tiling, keyboard-driven, but with smooth animations. The config is declarative and lives in `~/.config/hypr/hyprland.conf`.
+
+```ini
+# Catppuccin Mocha border colors
+general {
+  col.active_border = rgba(89b4faee) rgba(cba6f7ee) 45deg
+  col.inactive_border = rgba(45475aaa)
+}
+```
+
+## Terminal Stack
+
+| Tool | What |
+|------|------|
+| `kitty` | GPU-accelerated terminal |
+| `fish` | Shell (with Starship prompt) |
+| `neovim` | Editor (LazyVim config) |
+| `tmux` | Session management |
+| `yazi` | File manager |
+
+## Theming Everything with Catppuccin
+
+The goal was a unified palette across all tools. Catppuccin supports almost every app through community ports:
+
+- `kitty` → Catppuccin Mocha
+- `neovim` → `catppuccin/nvim`
+- `rofi` / `fuzzel` → custom Mocha config
+- `gtk` → `catppuccin-gtk` theme
+- `cursors` → Bibata cursors with Mocha tint
+
+## Performance
+
+On my machine (Ryzen 5 + 16GB RAM), boot to desktop takes about **8 seconds**. Idle RAM usage is under 600MB. No GNOME, no KDE, no bloat.
+
+## Dotfiles
+
+All my config lives in a bare git repo synced to GitHub. If you want to steal something, the README explains the setup.

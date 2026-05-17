@@ -91,7 +91,7 @@ export function CodingProgress() {
         <h2 className="text-xl font-bold text-foreground">Coding Progress</h2>
       </div>
 
-      <div className="rounded-xl border border-border bg-card p-5 flex flex-col gap-4">
+      <div className="rounded-xl border border-border bg-card p-3 sm:p-5 flex flex-col gap-4">
         {/* WakaTime stat grid */}
         {waka ? (
           <>
@@ -139,9 +139,9 @@ export function CodingProgress() {
               { label: "Best Day", value: String(ghStats.bestDay), suffix: undefined },
               { label: "Average", value: String(ghStats.avg), suffix: "/ day" },
             ].map(({ label, value, suffix }) => (
-              <div key={label} className="rounded-lg border border-border bg-background p-3 shadow-sm">
+              <div key={label} className="rounded-lg border border-border bg-background p-2.5 sm:p-3 shadow-sm">
                 <p className="text-[11px] text-muted-foreground mb-1">{label}</p>
-                <p className="text-xl font-bold text-foreground">
+                <p className="text-lg sm:text-xl font-bold text-foreground">
                   {value}
                   {suffix && (
                     <span className="text-[10px] text-muted-foreground font-normal ml-1">

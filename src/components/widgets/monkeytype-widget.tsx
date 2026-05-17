@@ -7,6 +7,7 @@ import {
   CartesianGrid, Tooltip, ResponsiveContainer,
 } from "recharts";
 import { Keyboard, Target, Zap, Clock, TrendingUp, Award } from "lucide-react";
+import { SkeletonStatGrid, Skeleton } from "@/components/ui/skeleton";
 
 interface PBMode { mode: string; wpm: number; acc: number; consistency: number }
 
@@ -76,7 +77,7 @@ export function MonkeyTypeWidget() {
 
   return (
     <section className="flex flex-col gap-4">
-      <div className="flex items-center justify-between">
+      <div className="flex flex-wrap items-center justify-between gap-2">
         <div className="flex items-center gap-2">
           <Keyboard className="h-4 w-4 text-primary" />
           <h2 className="text-xl font-bold text-foreground">MonkeyType Performance</h2>
@@ -86,13 +87,15 @@ export function MonkeyTypeWidget() {
         </span>
       </div>
 
-      <div className="rounded-xl border border-border bg-card p-5 flex flex-col gap-4">
+      <div className="rounded-xl border border-border bg-card p-3 sm:p-5 flex flex-col gap-4">
         {loading ? (
-          <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
-            {Array.from({ length: 6 }).map((_, i) => (
-              <div key={i} className="h-20 rounded-lg bg-muted animate-pulse" />
-            ))}
-          </div>
+          <>
+            <SkeletonStatGrid cols={3} count={6} />
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <Skeleton className="h-[188px] w-full" />
+              <Skeleton className="h-[188px] w-full" />
+            </div>
+          </>
         ) : data ? (
           <>
             {/* Stat grid */}
@@ -109,44 +112,52 @@ export function MonkeyTypeWidget() {
             {data.pbByMode.length > 0 && (
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 {/* WPM by mode line chart */}
-                <div className="rounded-lg border border-border bg-background p-3 shadow-sm">
+                <div className="rounded-lg border border-border bg-background p-3 shadow-sm min-w-0">
                   <div className="flex items-center gap-2 mb-3">
                     <TrendingUp className="h-3.5 w-3.5 text-muted-foreground" />
                     <p className="text-[11px] font-semibold text-foreground">WPM by Mode</p>
                   </div>
-                  <ResponsiveContainer width="100%" height={140}>
-                    <LineChart data={data.pbByMode}>
-                      <CartesianGrid strokeDasharray="3 3" stroke={C.border} />
-                      <XAxis dataKey="mode" tick={{ fontSize: 10, fill: C.muted }} />
-                      <YAxis tick={{ fontSize: 10, fill: C.muted }} />
-                      <Tooltip
-                        contentStyle={{ background: C.card, border: `1px solid ${C.border}`, borderRadius: 8, fontSize: 11, color: C.foreground }}
-                        labelStyle={{ color: C.foreground }}
-                      />
-                      <Line type="monotone" dataKey="wpm" stroke={C.primary} strokeWidth={2} dot={{ r: 4, fill: C.primary }} />
-                    </LineChart>
-                  </ResponsiveContainer>
+                  <div className="overflow-x-auto">
+                    <div style={{ minWidth: 200 }}>
+                      <ResponsiveContainer width="100%" height={140}>
+                        <LineChart data={data.pbByMode}>
+                          <CartesianGrid strokeDasharray="3 3" stroke={C.border} />
+                          <XAxis dataKey="mode" tick={{ fontSize: 10, fill: C.muted }} />
+                          <YAxis tick={{ fontSize: 10, fill: C.muted }} />
+                          <Tooltip
+                            contentStyle={{ background: C.card, border: `1px solid ${C.border}`, borderRadius: 8, fontSize: 11, color: C.foreground }}
+                            labelStyle={{ color: C.foreground }}
+                          />
+                          <Line type="monotone" dataKey="wpm" stroke={C.primary} strokeWidth={2} dot={{ r: 4, fill: C.primary }} />
+                        </LineChart>
+                      </ResponsiveContainer>
+                    </div>
+                  </div>
                 </div>
 
                 {/* Accuracy & Consistency bar chart */}
-                <div className="rounded-lg border border-border bg-background p-3 shadow-sm">
+                <div className="rounded-lg border border-border bg-background p-3 shadow-sm min-w-0">
                   <div className="flex items-center gap-2 mb-3">
                     <Target className="h-3.5 w-3.5 text-muted-foreground" />
                     <p className="text-[11px] font-semibold text-foreground">Accuracy & Consistency</p>
                   </div>
-                  <ResponsiveContainer width="100%" height={140}>
-                    <BarChart data={data.pbByMode}>
-                      <CartesianGrid strokeDasharray="3 3" stroke={C.border} />
-                      <XAxis dataKey="mode" tick={{ fontSize: 10, fill: C.muted }} />
-                      <YAxis domain={[0, 100]} tick={{ fontSize: 10, fill: C.muted }} />
-                      <Tooltip
-                        contentStyle={{ background: C.card, border: `1px solid ${C.border}`, borderRadius: 8, fontSize: 11, color: C.foreground }}
-                        labelStyle={{ color: C.foreground }}
-                      />
-                      <Bar dataKey="acc" name="Accuracy" fill={C.accBar} radius={[3, 3, 0, 0]} />
-                      <Bar dataKey="consistency" name="Consistency" fill={C.conBar} radius={[3, 3, 0, 0]} />
-                    </BarChart>
-                  </ResponsiveContainer>
+                  <div className="overflow-x-auto">
+                    <div style={{ minWidth: 200 }}>
+                      <ResponsiveContainer width="100%" height={140}>
+                        <BarChart data={data.pbByMode}>
+                          <CartesianGrid strokeDasharray="3 3" stroke={C.border} />
+                          <XAxis dataKey="mode" tick={{ fontSize: 10, fill: C.muted }} />
+                          <YAxis domain={[0, 100]} tick={{ fontSize: 10, fill: C.muted }} />
+                          <Tooltip
+                            contentStyle={{ background: C.card, border: `1px solid ${C.border}`, borderRadius: 8, fontSize: 11, color: C.foreground }}
+                            labelStyle={{ color: C.foreground }}
+                          />
+                          <Bar dataKey="acc" name="Accuracy" fill={C.accBar} radius={[3, 3, 0, 0]} />
+                          <Bar dataKey="consistency" name="Consistency" fill={C.conBar} radius={[3, 3, 0, 0]} />
+                        </BarChart>
+                      </ResponsiveContainer>
+                    </div>
+                  </div>
                 </div>
               </div>
             )}

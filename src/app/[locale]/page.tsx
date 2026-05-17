@@ -1,4 +1,5 @@
 import { MainLayout } from "@/components/layout/main-layout";
+import { FadeSection } from "@/components/layout/page-transition";
 import { HeroSection } from "@/components/home/hero-section";
 import { AboutSection } from "@/components/home/about-section";
 import { SkillsSection } from "@/components/home/skills-section";
@@ -13,18 +14,18 @@ export default function HomePage() {
   return (
     <MainLayout>
       <div className="flex flex-col gap-10">
-        <div className="flex flex-col gap-2">
+        <FadeSection className="flex flex-col gap-2">
           <HeroSection />
           <AboutSection />
-        </div>
+        </FadeSection>
 
-        <SkillsSection />
-        <ExperienceSection />
-        <EducationSection />
-        <CodingProgress />
-        <DuolingoProgress />
-        <MonkeyTypeWidget />
-        <ContactSection />
+        <FadeSection><SkillsSection /></FadeSection>
+        <FadeSection><ExperienceSection /></FadeSection>
+        <FadeSection><EducationSection /></FadeSection>
+        <FadeSection><CodingProgress /></FadeSection>
+        <FadeSection><DuolingoProgress /></FadeSection>
+        <FadeSection><MonkeyTypeWidget /></FadeSection>
+        <FadeSection><ContactSection /></FadeSection>
       </div>
     </MainLayout>
   );

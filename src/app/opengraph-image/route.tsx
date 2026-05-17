@@ -66,7 +66,7 @@ export async function GET() {
 
         {/* Name */}
         <div style={{ fontSize: 52, fontWeight: 700, color: "#cdd6f4", lineHeight: 1.1, marginBottom: 16 }}>
-          Febiyanto Rizki
+          Febiyanto Rizki Qurbandi
         </div>
 
         {/* Role */}

@@ -1,0 +1,44 @@
+---
+title: "Building This Portfolio with Next.js 16"
+description: "A behind-the-scenes look at how I built my personal portfolio using the latest Next.js, Tailwind v4, and Catppuccin."
+date: "2026-01-15"
+tags: ["Next.js", "TypeScript", "Tailwind CSS"]
+published: true
+---
+
+When I decided to rebuild my portfolio, I had one goal: ship something that feels *mine* — fast, clean, and opinionated. Here's what I ended up with and why.
+
+## The Stack
+
+- **Next.js 16** — App Router, Turbopack, React Server Components
+- **Tailwind CSS v4** — CSS-first config, OKLCH color system
+- **Catppuccin** — Mocha (dark) and Latte (light) themes
+- **next-intl v4** — Bilingual support (EN + ID)
+- **Supabase** — Database for projects and analytics
+
+## Why Catppuccin?
+
+I've been a Catppuccin user on my desktop (Arch + Hyprland) for over a year. Having the same palette across my terminal, editor, and now website feels cohesive. The OKLCH color model maps perfectly to Tailwind v4's new color system.
+
+```css
+:root {
+  --background: oklch(0.235 0.015 268);
+  --primary: oklch(0.737 0.176 229);
+}
+```
+
+## Lessons Learned
+
+**Tailwind v4 is a breaking change.** The old `tailwind.config.js` approach is gone. Everything lives in CSS now. It took me a day to migrate but the result is cleaner.
+
+**React Server Components change how you think.** Most of my data fetching happens at the page level — no `useEffect`, no loading states for the initial render. Widgets that need client interactivity (`useTheme`, charts) are isolated into `"use client"` components.
+
+**`next-intl` v4 has a new routing API.** The `createLocalizedPathnamesNavigation` API I was used to is deprecated. The new approach is simpler but the docs lag behind.
+
+## What's Next
+
+- Real Spotify "Now Playing" integration (needs Premium API access)
+- Blog post series on Arch Linux dotfiles
+- Visitor analytics without sacrificing privacy
+
+The source is on [GitHub](https://github.com/nateeki). Feel free to fork and adapt.
