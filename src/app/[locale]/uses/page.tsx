@@ -61,24 +61,15 @@ export default function UsesPage() {
           <h2>Hardware</h2>
           <ul>
             <li>
-              For my laptop, I use a{" "}
-              <strong>
-                {/* ganti dengan nama laptop kamu */}
-                [Your Laptop Model]
-              </strong>
-              . {/* tambahkan deskripsi */}
-            </li>
-            <li>
-              For my monitor, I use a <strong>[Monitor Model]</strong>.
-            </li>
-            <li>
-              For my keyboard, I use a <strong>[Keyboard Model]</strong>.
-            </li>
-            <li>
-              For my mouse, I use a <strong>[Mouse Model]</strong>.
-            </li>
-            <li>
-              For audio, I use <strong>[Headphones/Speaker Model]</strong>.
+              My only machine is a{" "}
+              <A href="https://www.lenovo.com/us/en/p/laptops/thinkpad/thinkpadT/ThinkPad-T480s/22TP2TT480S">
+                Lenovo ThinkPad T480s
+              </A>
+              . It's a thin and light business laptop with a great keyboard,
+              solid build quality, and good Linux compatibility out of the box.
+              The T480s hits the sweet spot between portability and performance —
+              lightweight enough to carry daily, yet powerful enough for
+              development, 3D work, and running a full Wayland compositor.
             </li>
           </ul>
 
