@@ -4,7 +4,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useTranslations } from "next-intl";
 import { useTheme } from "next-themes";
-import { Home, FolderOpen, Newspaper, Award, Coffee, Search, Moon, Sun, Languages } from "lucide-react";
+import { Home, FolderOpen, Newspaper, Award, Coffee, Search, Moon, Sun } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { LanguageSwitcher } from "./language-switcher";
 
@@ -63,41 +63,34 @@ export function MobileNav() {
         aria-label="Mobile navigation"
         className="fixed bottom-0 left-0 right-0 z-50 border-t border-border bg-background/95 backdrop-blur-md pb-safe lg:hidden"
       >
-        <div className="flex items-stretch">
+        <div className="flex">
           {NAV_ITEMS.map(({ href, labelKey, icon: Icon }) => {
             const active = isActive(href);
             return (
               <Link
                 key={href}
                 href={href}
-                aria-label={t(labelKey)}
                 aria-current={active ? "page" : undefined}
                 className={cn(
-                  "flex flex-1 flex-col items-center justify-center gap-0.5 py-2.5 text-[10px] font-medium transition-colors",
-                  active
-                    ? "text-primary"
-                    : "text-muted-foreground hover:text-foreground"
+                  "relative flex flex-1 flex-col items-center justify-center gap-0.5 py-2.5 text-[10px] font-medium transition-colors",
+                  active ? "text-primary" : "text-muted-foreground"
                 )}
               >
+                {/* Active top indicator */}
+                {active && (
+                  <span className="absolute top-0 h-0.5 w-8 rounded-b-full bg-primary" />
+                )}
                 <Icon
-                  className={cn(
-                    "h-5 w-5 transition-all",
-                    active && "scale-110"
-                  )}
+                  className="h-5 w-5 transition-transform"
+                  style={{ transform: active ? "scale(1.1)" : "scale(1)" }}
                   strokeWidth={active ? 2.2 : 1.8}
                 />
-                <span className="truncate">{t(labelKey)}</span>
-                {active && (
-                  <span className="absolute bottom-0 h-0.5 w-8 rounded-t-full bg-primary" />
-                )}
+                <span>{t(labelKey)}</span>
               </Link>
             );
           })}
         </div>
       </nav>
-
-      {/* Spacer so content isn't hidden behind bottom nav */}
-      <div className="h-16 lg:hidden" aria-hidden />
     </>
   );
 }
