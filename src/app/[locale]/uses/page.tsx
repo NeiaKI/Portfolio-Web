@@ -41,15 +41,13 @@ export default function UsesPage() {
 
           {/* Desktop screenshot */}
           <div className="not-prose my-8 flex flex-col gap-2">
-            <div className="overflow-hidden rounded-xl border border-border">
+            <div className="relative overflow-hidden rounded-xl border border-border" style={{ aspectRatio: "16/9" }}>
               <Image
                 src="/images/desktop.png"
                 alt="My desktop — Arch Linux + Hyprland"
-                width={1280}
-                height={800}
-                className="w-full object-cover"
+                fill
+                className="object-cover"
                 priority
-                onError={undefined}
               />
             </div>
             <p className="text-center text-xs text-muted-foreground italic">
