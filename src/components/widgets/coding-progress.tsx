@@ -1,11 +1,9 @@
 "use client";
 
 import { useEffect, useState, useCallback, useRef, cloneElement, type ReactElement } from "react";
-import { GitHubCalendar } from "react-github-calendar";
+import { GitHubCalendar, type Activity } from "react-github-calendar";
 import { useTheme } from "next-themes";
 import { Code2 } from "lucide-react";
-
-type Activity = { date: string; count: number; level: 0 | 1 | 2 | 3 | 4 };
 
 type WakaStats = {
   start: string;
@@ -34,17 +32,36 @@ function StatCard({ label, children }: { label: string; children: React.ReactNod
   );
 }
 
-function ProgressRow({ name, percent }: { name: string; percent: number }) {
+function useCountUp(target: number, duration: number, active: boolean) {
+  const [val, setVal] = useState(0);
+  useEffect(() => {
+    if (!active) return;
+    setVal(0);
+    const start = performance.now();
+    const tick = (now: number) => {
+      const t = Math.min((now - start) / duration, 1);
+      const eased = 1 - (1 - t) ** 3;
+      setVal(Math.round(eased * target));
+      if (t < 1) requestAnimationFrame(tick);
+      else setVal(target);
+    };
+    requestAnimationFrame(tick);
+  }, [active, target, duration]);
+  return val;
+}
+
+function ProgressRow({ name, percent, animStarted }: { name: string; percent: number; animStarted: boolean }) {
+  const animated = useCountUp(percent, 1000, animStarted);
   return (
     <div className="flex items-center gap-2">
       <span className="w-28 text-xs text-foreground truncate shrink-0">{name}</span>
       <div className="flex-1 h-1.5 rounded-full bg-muted overflow-hidden">
         <div
           className="h-full rounded-full bg-primary/70 transition-all duration-500"
-          style={{ width: `${percent}%` }}
+          style={{ width: `${animated}%` }}
         />
       </div>
-      <span className="text-xs text-muted-foreground w-7 text-right shrink-0">{percent}%</span>
+      <span className="text-xs text-muted-foreground w-7 text-right shrink-0 tabular-nums">{animated}%</span>
     </div>
   );
 }
@@ -54,10 +71,33 @@ export function CodingProgress() {
   const [mounted, setMounted] = useState(false);
   const [waka, setWaka] = useState<WakaStats | null>(null);
   const [ghStats, setGhStats] = useState<GHStats | null>(null);
+  const [animStarted, setAnimStarted] = useState(false);
   const captured = useRef(false);
   const calendarRef = useRef<HTMLDivElement>(null);
+  const sectionRef = useRef<HTMLElement>(null);
 
   useEffect(() => setMounted(true), []);
+
+  useEffect(() => {
+    const el = sectionRef.current;
+    if (!el) return;
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setAnimStarted(true);
+          observer.disconnect();
+        }
+      },
+      { threshold: 0.1 }
+    );
+    observer.observe(el);
+    return () => observer.disconnect();
+  }, []);
+
+  const ghTotal    = useCountUp(ghStats?.total    ?? 0, 1400, animStarted && !!ghStats);
+  const ghThisWeek = useCountUp(ghStats?.thisWeek ?? 0, 1200, animStarted && !!ghStats);
+  const ghBestDay  = useCountUp(ghStats?.bestDay  ?? 0, 1000, animStarted && !!ghStats);
+  const ghAvg      = useCountUp(ghStats?.avg      ?? 0,  800, animStarted && !!ghStats);
 
   useEffect(() => {
     fetch("/api/wakatime")
@@ -128,7 +168,7 @@ export function CodingProgress() {
     const label = activity.count === 0
       ? `No contributions on ${activity.date}`
       : `${activity.count} contribution${activity.count !== 1 ? "s" : ""} on ${activity.date}`;
-    return cloneElement(block, {
+    return cloneElement(block as React.ReactElement<React.HTMLAttributes<SVGRectElement>>, {
       onMouseEnter: () => setHoverLabel(label),
       onMouseLeave: () => setHoverLabel(null),
       style: { cursor: "default" },
@@ -136,7 +176,7 @@ export function CodingProgress() {
   };
 
   return (
-    <section className="flex flex-col gap-4">
+    <section ref={sectionRef} className="flex flex-col gap-4">
       <div className="flex items-center gap-2">
         <Code2 className="h-4 w-4 text-primary" />
         <h2 className="text-xl font-bold text-foreground">Coding Progress</h2>
@@ -162,13 +202,13 @@ export function CodingProgress() {
               <div className="rounded-lg border border-border/60 bg-background/50 p-3 flex flex-col gap-2">
                 <p className="text-[11px] font-semibold text-foreground">Languages</p>
                 {waka.languages.map((l) => (
-                  <ProgressRow key={l.name} name={l.name} percent={l.percent} />
+                  <ProgressRow key={l.name} name={l.name} percent={l.percent} animStarted={animStarted} />
                 ))}
               </div>
               <div className="rounded-lg border border-border/60 bg-background/50 p-3 flex flex-col gap-2">
                 <p className="text-[11px] font-semibold text-foreground">Categories</p>
                 {waka.categories.map((c) => (
-                  <ProgressRow key={c.name} name={c.name} percent={c.percent} />
+                  <ProgressRow key={c.name} name={c.name} percent={c.percent} animStarted={animStarted} />
                 ))}
               </div>
             </div>
@@ -185,14 +225,14 @@ export function CodingProgress() {
         {ghStats && (
           <div className="grid grid-cols-2 gap-2 sm:grid-cols-4">
             {[
-              { label: "Total", value: ghStats.total.toLocaleString(), suffix: undefined },
-              { label: "This Week", value: String(ghStats.thisWeek), suffix: undefined },
-              { label: "Best Day", value: String(ghStats.bestDay), suffix: undefined },
-              { label: "Average", value: String(ghStats.avg), suffix: "/ day" },
+              { label: "Total",     value: ghTotal.toLocaleString(),    suffix: undefined },
+              { label: "This Week", value: String(ghThisWeek),          suffix: undefined },
+              { label: "Best Day",  value: String(ghBestDay),           suffix: undefined },
+              { label: "Average",   value: String(ghAvg),               suffix: "/ day"   },
             ].map(({ label, value, suffix }) => (
               <div key={label} className="rounded-lg border border-border bg-background p-2.5 sm:p-3 shadow-sm">
                 <p className="text-[11px] text-muted-foreground mb-1">{label}</p>
-                <p className="text-lg sm:text-xl font-bold text-foreground">
+                <p className="text-lg sm:text-xl font-bold text-foreground tabular-nums">
                   {value}
                   {suffix && (
                     <span className="text-[10px] text-muted-foreground font-normal ml-1">
@@ -219,8 +259,10 @@ export function CodingProgress() {
                 blockRadius={7}
                 showColorLegend={false}
                 showTotalCount={false}
-                transformData={(data) => captureGH(padData(data))}
-                renderBlock={renderBlock}
+                // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                transformData={(data) => captureGH(padData(data as any)) as any}
+                // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                renderBlock={renderBlock as any}
                 style={{ width: "100%" }}
               />
             </div>
