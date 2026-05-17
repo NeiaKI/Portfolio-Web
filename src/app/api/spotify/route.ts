@@ -86,6 +86,7 @@ export async function GET() {
       songUrl: track.external_urls.spotify,
     });
   } catch (err) {
-    return NextResponse.json({ isPlaying: false, configured: false, error: String(err) });
+    console.error("[spotify]", err);
+    return NextResponse.json({ isPlaying: false, configured: false });
   }
 }

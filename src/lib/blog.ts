@@ -18,7 +18,9 @@ export interface Post extends PostMeta {
 }
 
 function parsePost(slug: string): Post | null {
+  if (!/^[a-z0-9-]+$/i.test(slug)) return null;
   const filePath = path.join(CONTENT_DIR, `${slug}.mdx`);
+  if (!filePath.startsWith(CONTENT_DIR + path.sep)) return null;
   if (!fs.existsSync(filePath)) return null;
 
   const raw = fs.readFileSync(filePath, "utf-8");

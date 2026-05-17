@@ -2,6 +2,13 @@ import { getAllPosts } from "@/lib/blog";
 
 export const dynamic = "force-static";
 
+function escapeXml(str: string): string {
+  return str
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;");
+}
+
 export function GET() {
   const base = process.env.NEXT_PUBLIC_SITE_URL ?? "https://nateeki.vercel.app";
   const posts = getAllPosts();
@@ -16,7 +23,7 @@ export function GET() {
     <guid isPermaLink="true">${url}</guid>
     <description><![CDATA[${p.description}]]></description>
     <pubDate>${new Date(p.date).toUTCString()}</pubDate>
-    ${p.tags.map((t) => `<category>${t}</category>`).join("\n    ")}
+    ${p.tags.map((t) => `<category>${escapeXml(t)}</category>`).join("\n    ")}
   </item>`.trim();
     })
     .join("\n  ");
