@@ -11,6 +11,7 @@ import {
   Newspaper,
   Award,
   Coffee,
+  Layers,
   Moon,
   ChevronRight,
   Languages,
@@ -33,7 +34,8 @@ const NAV_GROUPS: NavGroup[] = [
       { href: "/project",      labelKey: "project",      icon: FolderOpen, shortcut: "2" },
       { href: "/blog",         labelKey: "blog",         icon: Newspaper,  shortcut: "3" },
       { href: "/certificates", labelKey: "certificates", icon: Award,      shortcut: "4" },
-      { href: "/donate",       labelKey: "donate",       icon: Coffee,      shortcut: "5" },
+      { href: "/uses",         labelKey: "uses",         icon: Layers,      shortcut: "5" },
+      { href: "/donate",       labelKey: "donate",       icon: Coffee,      shortcut: "6" },
     ],
   },
 ];
