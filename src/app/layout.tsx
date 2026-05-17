@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Geist, JetBrains_Mono } from "next/font/google";
+import { Providers } from "@/components/providers";
 import "./globals.css";
 
 const geistSans = Geist({
@@ -40,7 +41,9 @@ export default function RootLayout({
       <head>
         <link rel="alternate" type="application/rss+xml" title="Febiyanto Rizki Qurbandi — Blog" href="/feed.xml" />
       </head>
-      <body className="min-h-full" suppressHydrationWarning>{children}</body>
+      <body className="min-h-full" suppressHydrationWarning>
+        <Providers>{children}</Providers>
+      </body>
     </html>
   );
 }

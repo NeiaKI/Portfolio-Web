@@ -8,7 +8,8 @@ import { getPostBySlug, getAllPosts } from "@/lib/blog";
 import { compileMDX } from "@/lib/mdx";
 import { CodeCopyInit } from "@/components/blog/code-copy";
 import { ReadingProgress } from "@/components/blog/reading-progress";
-import { TableOfContents, extractHeadings } from "@/components/blog/table-of-contents";
+import { TableOfContents } from "@/components/blog/table-of-contents";
+import { extractHeadings } from "@/lib/mdx-utils";
 import { ShareButtons } from "@/components/blog/share-buttons";
 import type { Metadata } from "next";
 
