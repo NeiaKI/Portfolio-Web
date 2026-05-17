@@ -40,6 +40,12 @@ function getThumbnail(repo: string, config: RepoConfig): string {
 export const dynamic = "force-dynamic";
 
 export async function GET() {
+  const token = process.env.GITHUB_TOKEN;
+  const ghHeaders: HeadersInit = {
+    Accept: "application/vnd.github+json",
+    ...(token ? { Authorization: `Bearer ${token}` } : {}),
+  };
+
   try {
     const results = await Promise.all(
       REPOS.map(async (repo) => {
@@ -48,11 +54,11 @@ export async function GET() {
 
         const [repoRes, langsRes] = await Promise.all([
           fetch(`https://api.github.com/repos/${OWNER}/${repo}`, {
-            headers: { Accept: "application/vnd.github+json" },
+            headers: ghHeaders,
             cache: "no-store",
           }),
           fetch(`https://api.github.com/repos/${OWNER}/${repo}/languages`, {
-            headers: { Accept: "application/vnd.github+json" },
+            headers: ghHeaders,
             cache: "no-store",
           }),
         ]);
