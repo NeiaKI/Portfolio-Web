@@ -3,6 +3,8 @@
 import { useEffect } from "react";
 import { ThemeProvider } from "next-themes";
 import { TooltipProvider } from "@/components/ui/tooltip";
+import { ScrollProgress } from "@/components/ui/scroll-progress";
+import { BackToTop } from "@/components/ui/back-to-top";
 
 const SCROLL_STEP = 96;
 
@@ -35,9 +37,12 @@ export function Providers({ children }: { children: React.ReactNode }) {
       defaultTheme="dark"
       enableSystem={false}
       disableTransitionOnChange={false}
+      scriptProps={{ suppressHydrationWarning: true }}
     >
-      <TooltipProvider>
+      <TooltipProvider delay={500}>
         <VimKeys />
+        <ScrollProgress />
+        <BackToTop />
         {children}
       </TooltipProvider>
     </ThemeProvider>

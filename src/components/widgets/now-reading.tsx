@@ -3,11 +3,11 @@
 import { BookOpen } from "lucide-react";
 
 const BOOK = {
-  title: "The Pragmatic Programmer",
-  author: "David Thomas & Andrew Hunt",
-  cover: null as string | null,
+  title: "The Psychology of Money",
+  author: "Morgan Housel",
+  cover: "https://covers.openlibrary.org/b/isbn/9780857197689-M.jpg" as string | null,
   progress: 42,
-  url: "https://pragprog.com/titles/tpp20/the-pragmatic-programmer-20th-anniversary-edition/",
+  url: "https://www.gramedia.com/products/the-psychology-money-edisi-revisi",
 };
 
 export function NowReading() {

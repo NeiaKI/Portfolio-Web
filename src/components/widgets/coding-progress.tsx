@@ -4,6 +4,7 @@ import { useEffect, useState, useCallback, useRef } from "react";
 import { GitHubCalendar } from "react-github-calendar";
 import { useTheme } from "next-themes";
 import { Code2 } from "lucide-react";
+import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
 
 type Activity = { date: string; count: number; level: 0 | 1 | 2 | 3 | 4 };
 
@@ -83,6 +84,17 @@ export function CodingProgress() {
   }, []);
 
   const colorScheme = resolvedTheme === "dark" ? "dark" : "light";
+
+  const renderBlock = (block: React.ReactElement, activity: Activity) => (
+    <Tooltip>
+      <TooltipTrigger asChild>{block}</TooltipTrigger>
+      <TooltipContent side="top" className="text-xs">
+        {activity.count === 0
+          ? `No contributions on ${activity.date}`
+          : `${activity.count} contribution${activity.count !== 1 ? "s" : ""} on ${activity.date}`}
+      </TooltipContent>
+    </Tooltip>
+  );
 
   return (
     <section className="flex flex-col gap-4">
@@ -166,6 +178,7 @@ export function CodingProgress() {
               blockMargin={3}
               blockRadius={6}
               transformData={captureGH}
+              renderBlock={renderBlock}
             />
           </div>
         ) : (

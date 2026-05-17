@@ -21,7 +21,6 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Separator } from "@/components/ui/separator";
 import { cn } from "@/lib/utils";
 import { LanguageSwitcher } from "@/components/layout/language-switcher";
-import { ViewCounter } from "@/components/widgets/view-counter";
 
 type NavItem = { href: string; labelKey: string; icon: LucideIcon; shortcut: string };
 type NavGroup = { sectionLabel: string | null; items: NavItem[] };
@@ -34,7 +33,7 @@ const NAV_GROUPS: NavGroup[] = [
       { href: "/project",      labelKey: "project",      icon: FolderOpen, shortcut: "2" },
       { href: "/blog",         labelKey: "blog",         icon: Newspaper,  shortcut: "3" },
       { href: "/certificates", labelKey: "certificates", icon: Award,      shortcut: "4" },
-      { href: "/donate",       labelKey: "donate",       icon: Coffee,     shortcut: "5" },
+      { href: "/donate",       labelKey: "donate",       icon: Coffee,      shortcut: "5" },
     ],
   },
 ];
@@ -78,14 +77,13 @@ export function NavSidebar() {
         <div className="text-center">
           <p className="font-semibold text-foreground text-[15px]">Febiyanto Rizki Qurbandi</p>
           <p className="text-xs text-muted-foreground mt-0.5">@nateeki</p>
-          <ViewCounter />
         </div>
       </div>
 
       {/* Navigation */}
       <nav className="flex flex-1 flex-col gap-1 overflow-y-auto scrollbar-hide">
         {NAV_GROUPS.map((group, idx) => (
-          <div key={idx} className="flex flex-col gap-0.5">
+          <div key={idx} className="flex flex-col gap-1">
             {group.sectionLabel && (
               <p className="px-3 pt-1 pb-0.5 text-[11px] font-medium text-muted-foreground/60 uppercase tracking-widest">
                 {group.sectionLabel}
@@ -95,6 +93,7 @@ export function NavSidebar() {
               <Link
                 key={href}
                 href={href}
+                title={`${t(labelKey as Parameters<typeof t>[0])} (⌘${shortcut})`}
                 className={cn(
                   "flex items-center gap-3 rounded-lg px-3 py-2 text-sm transition-colors",
                   isActive(href)
@@ -120,6 +119,7 @@ export function NavSidebar() {
       {/* Search shortcut */}
       <button
         onClick={() => window.dispatchEvent(new KeyboardEvent("keydown", { key: "k", ctrlKey: true, bubbles: true }))}
+        title="Command Palette (⌘K)"
         className="mx-1 mb-2 flex items-center gap-2 rounded-lg border border-border/60 px-3 py-1.5 text-xs text-muted-foreground transition-colors hover:bg-muted hover:text-foreground"
       >
         <Search className="h-3.5 w-3.5" />
@@ -142,6 +142,7 @@ export function NavSidebar() {
             role="switch"
             suppressHydrationWarning
             aria-checked={isDark}
+            title={isDark ? "Switch to Light (⌘⇧L)" : "Switch to Dark (⌘⇧L)"}
             onClick={() => setTheme(isDark ? "light" : "dark")}
             className={cn(
               "relative inline-flex h-5 w-9 shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors",

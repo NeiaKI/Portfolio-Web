@@ -34,15 +34,6 @@ export interface Database {
         Insert: Omit<Database["public"]["Tables"]["certificates"]["Row"], "id">;
         Update: Partial<Database["public"]["Tables"]["certificates"]["Insert"]>;
       };
-      page_views: {
-        Row: {
-          pathname: string;
-          count: number;
-          updated_at: string;
-        };
-        Insert: { pathname: string; count?: number; updated_at?: string };
-        Update: { count?: number; updated_at?: string };
-      };
       profile: {
         Row: {
           id: string;

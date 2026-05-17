@@ -41,7 +41,12 @@ export function ProjectCard({ project, locale }: ProjectCardProps) {
   return (
     <div className="group flex flex-col rounded-2xl border border-border/40 bg-card overflow-hidden transition-all duration-300 hover:border-primary/30 hover:shadow-xl hover:-translate-y-1.5">
       {/* Thumbnail */}
-      <Link href={`/${locale}/project/${project.slug}`} className="block">
+      <a
+        href={project.source_url}
+        target="_blank"
+        rel="noopener noreferrer"
+        className="block"
+      >
         <div className="relative h-44 bg-muted/50 overflow-hidden">
           {project.thumbnail_url ? (
             <Image
@@ -57,16 +62,18 @@ export function ProjectCard({ project, locale }: ProjectCardProps) {
             </div>
           )}
         </div>
-      </Link>
+      </a>
 
       {/* Content */}
       <div className="flex flex-1 flex-col gap-2.5 p-4">
-        <Link
-          href={`/${locale}/project/${project.slug}`}
+        <a
+          href={project.source_url}
+          target="_blank"
+          rel="noopener noreferrer"
           className="font-semibold text-foreground hover:text-primary transition-colors line-clamp-1"
         >
           {project.title}
-        </Link>
+        </a>
 
         <p className="text-sm text-muted-foreground line-clamp-2 leading-relaxed flex-1">
           {project.description}

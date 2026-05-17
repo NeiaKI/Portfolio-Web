@@ -1,6 +1,7 @@
 @import "tailwindcss";
 @import "tw-animate-css";
 @import "shadcn/tailwind.css";
+@import "highlight.js/styles/github-dark.css";
 @plugin "@tailwindcss/typography";
 
 @custom-variant dark (&:is(.dark *));
@@ -150,6 +151,32 @@
     display: none;
   }
 }
+
+/* Catppuccin overrides for highlight.js */
+.hljs {
+  background: var(--muted) !important;
+  color: #cdd6f4 !important;
+  border-radius: 0.75rem;
+  padding: 1.25rem 1.5rem;
+}
+:root .hljs { color: #4c4f69 !important; background: oklch(0.795 0.016 265 / 0.5) !important; }
+.hljs-keyword, .hljs-selector-tag { color: #cba6f7; }
+.hljs-string, .hljs-attr { color: #a6e3a1; }
+.hljs-number, .hljs-literal { color: #fab387; }
+.hljs-comment { color: #585b70; font-style: italic; }
+.hljs-function, .hljs-title { color: #89b4fa; }
+.hljs-variable, .hljs-name { color: #cdd6f4; }
+.hljs-type, .hljs-class { color: #f9e2af; }
+.hljs-built_in { color: #89dceb; }
+.hljs-meta { color: #f38ba8; }
+:root .hljs-keyword { color: #8839ef; }
+:root .hljs-string { color: #40a02b; }
+:root .hljs-number { color: #fe640b; }
+:root .hljs-comment { color: #8c8fa1; }
+:root .hljs-function, :root .hljs-title { color: #1e66f5; }
+:root .hljs-type { color: #df8e1d; }
+:root .hljs-built_in { color: #04a5e5; }
+:root .hljs-meta { color: #d20f39; }
 
 @keyframes marquee {
   from { transform: translateX(0); }

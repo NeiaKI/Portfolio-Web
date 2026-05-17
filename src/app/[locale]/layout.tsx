@@ -41,7 +41,17 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       creator: "@nateeki",
       images: ["/opengraph-image"],
     },
+    alternates: {
+      canonical: `${baseUrl}/${locale}`,
+      languages: {
+        "en": `${baseUrl}/en`,
+        "id": `${baseUrl}/id`,
+      },
+    },
     robots: { index: true, follow: true },
+    other: {
+      "application-name": "nateeki",
+    },
   };
 }
 
