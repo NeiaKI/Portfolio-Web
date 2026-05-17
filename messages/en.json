@@ -11,7 +11,13 @@
     "tools": "Tools",
     "roadmap": "Roadmap",
     "certificates": "Certificates",
-    "changelog": "Changelog"
+    "changelog": "Changelog",
+    "search": "Search…",
+    "darkMode": "Dark Mode",
+    "language": "Language",
+    "theming": "Theming",
+    "donate": "Donate",
+    "contact": "Contact"
   },
   "sidebar": {
     "online": "Online",
@@ -49,9 +55,9 @@
     "activityTitle": "Activity",
     "heroDesc": "Passionate about web, mobile, cloud, and DevOps development. I love creating innovative solutions using modern technologies like React, Next.js, TypeScript, and more. Currently focused on building high-performance applications and learning CI/CD pipelines.",
     "viewProjects": "View Projects",
-    "viewChangelog": "View Changelog",
     "findMeOn": "Find me on",
-    "viewPortfolioPDF": "View Portfolio in PDF"
+    "viewPortfolioPDF": "View Portfolio in PDF",
+    "viewBlog": "Blog"
   },
   "project": {
     "title": "Projects",
@@ -65,7 +71,7 @@
   "blog": {
     "title": "Blog",
     "subtitle": "Thoughts and writings",
-    "devto": "Dev.to",
+    "devto": "Dev",
     "medium": "Medium",
     "readMore": "Read more",
     "noPosts": "No posts found."
@@ -88,5 +94,46 @@
     "backToHome": "Back to Home",
     "seeAll": "See all",
     "learnMore": "Learn more"
+  },
+  "donate": {
+    "title": "Support My Work",
+    "subtitle": "If you enjoy my work, consider buying me a coffee!",
+    "donate": "Donate",
+    "saweria": "Saweria",
+    "kofi": "Ko-fi",
+    "saweriaDesc": "For Indonesian supporters — IDR via QRIS, GoPay, OVO, bank transfer",
+    "kofiDesc": "For international supporters — USD via credit card or PayPal",
+    "whyTitle": "What your support helps with",
+    "reason1": "Hosting & domain costs",
+    "reason2": "Open source projects & tools",
+    "reason3": "3D assets & software licenses",
+    "reason4": "Time to write articles & tutorials",
+    "thankYou": "Thank you for your support!",
+    "evmTitle": "Crypto (EVM)",
+    "evmDesc": "Send ETH or any EVM-compatible token directly to my wallet",
+    "copyAddress": "Copy Address",
+    "copied": "Copied!",
+    "evmNote": "Supports ETH, MATIC, BNB, and all EVM-compatible networks"
+  },
+  "contact": {
+    "title": "Contact",
+    "subtitle": "Have something to say? I'd love to hear from you.",
+    "connectTitle": "Connect With Me",
+    "preferEmail": "Prefer email?",
+    "formTitle": "Send a Message",
+    "name": "Name",
+    "email": "Email",
+    "message": "Message",
+    "send": "Send Message",
+    "sending": "Sending…",
+    "success": "Message sent!",
+    "successDesc": "Thanks for reaching out — I'll get back to you soon.",
+    "error": "Something went wrong. Please try again or email me directly.",
+    "namePlaceholder": "Your name",
+    "emailPlaceholder": "your@email.com",
+    "messagePlaceholder": "What's on your mind?",
+    "connectSub": "Find me on these platforms",
+    "preferEmailSub": "Use the form or reach out at",
+    "formSub": "I'll get back to you as soon as possible"
   }
 }

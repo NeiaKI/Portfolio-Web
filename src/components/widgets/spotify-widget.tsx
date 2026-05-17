@@ -103,7 +103,7 @@ export function SpotifyWidget() {
         {/* Status label + progress */}
         <div className="flex items-center gap-2 mt-0.5">
           <span className={cn("text-[10px] font-medium", data?.isPlaying ? "text-green-500" : "text-muted-foreground/60")}>
-            {data?.isPlaying ? "Now Playing" : data?.title ? "Recently Played" : "Offline"}
+            {data?.isPlaying ? "Now Playing" : data?.title ? "Recently Played" : "Not listening"}
           </span>
         </div>
 

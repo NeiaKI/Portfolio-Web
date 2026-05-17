@@ -29,9 +29,8 @@ export function DuolingoProgress() {
   return (
     <section className="flex flex-col gap-4">
       <div className="flex items-center gap-2">
-        <svg className="h-4 w-4" viewBox="0 0 24 24" fill="#58cc02">
-          <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 14H9V8h2v8zm4 0h-2V8h2v8z"/>
-        </svg>
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img src="https://cdn.simpleicons.org/duolingo/58cc02" className="h-5 w-5" alt="Duolingo" />
         <h2 className="text-xl font-bold text-foreground">Duolingo Progress</h2>
       </div>
 
@@ -46,19 +45,19 @@ export function DuolingoProgress() {
           <>
             {/* Stat cards */}
             <div className="grid grid-cols-3 gap-3">
-              <div className="rounded-lg border border-border/60 bg-background/50 p-3 flex flex-col gap-1">
-                <Flame className="h-5 w-5 text-orange-500" />
-                <p className="text-2xl font-bold text-orange-500">{data.streak.toLocaleString()}</p>
+              <div className="rounded-lg border border-border bg-background p-3 flex flex-col gap-1 shadow-sm">
+                <Flame className="h-5 w-5 text-muted-foreground" />
+                <p className="text-2xl font-bold text-foreground">{data.streak.toLocaleString()}</p>
                 <p className="text-[11px] text-muted-foreground">Day Streak</p>
               </div>
-              <div className="rounded-lg border border-border/60 bg-background/50 p-3 flex flex-col gap-1">
-                <Trophy className="h-5 w-5 text-yellow-500" />
-                <p className="text-2xl font-bold text-yellow-500">{data.totalXp.toLocaleString()}</p>
+              <div className="rounded-lg border border-border bg-background p-3 flex flex-col gap-1 shadow-sm">
+                <Trophy className="h-5 w-5 text-primary" />
+                <p className="text-2xl font-bold text-primary">{data.totalXp.toLocaleString()}</p>
                 <p className="text-[11px] text-muted-foreground">Total XP</p>
               </div>
-              <div className="rounded-lg border border-border/60 bg-background/50 p-3 flex flex-col gap-1">
-                <BookOpen className="h-5 w-5 text-primary" />
-                <p className="text-2xl font-bold text-primary">{data.courses.length}</p>
+              <div className="rounded-lg border border-border bg-background p-3 flex flex-col gap-1 shadow-sm">
+                <BookOpen className="h-5 w-5 text-muted-foreground" />
+                <p className="text-2xl font-bold text-foreground">{data.courses.length}</p>
                 <p className="text-[11px] text-muted-foreground">Active Courses</p>
               </div>
             </div>
@@ -68,7 +67,7 @@ export function DuolingoProgress() {
               {data.courses.map((course) => (
                 <div
                   key={course.lang}
-                  className="rounded-lg border border-border/60 bg-background/50 px-3 py-2.5 flex items-center justify-between"
+                  className="rounded-lg border border-border bg-background px-3 py-2.5 flex items-center justify-between shadow-sm"
                 >
                   <span className="text-sm font-medium text-foreground">{course.title}</span>
                   <span className="text-xs text-muted-foreground bg-muted rounded-full px-2 py-0.5">

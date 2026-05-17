@@ -32,14 +32,14 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       siteName: "Febiyanto Rizki",
       title: "Febiyanto Rizki — Software Engineer & 3D Artist",
       description: t("heroDesc"),
-      images: [{ url: "/og-image.png", width: 1200, height: 630, alt: "Febiyanto Rizki Portfolio" }],
+      images: [{ url: "/opengraph-image", width: 1200, height: 630, alt: "Febiyanto Rizki Portfolio" }],
     },
     twitter: {
       card: "summary_large_image",
       title: "Febiyanto Rizki — Software Engineer & 3D Artist",
       description: t("heroDesc"),
       creator: "@nateeki",
-      images: ["/og-image.png"],
+      images: ["/opengraph-image"],
     },
     robots: { index: true, follow: true },
   };

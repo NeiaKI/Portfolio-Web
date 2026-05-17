@@ -9,6 +9,8 @@ const nextConfig: NextConfig = {
       { hostname: "avatars.githubusercontent.com" },
       { hostname: "res.cloudinary.com" },
       { hostname: "images.unsplash.com" },
+      { hostname: "image.thum.io" },
+      { hostname: "opengraph.githubassets.com" },
     ],
   },
 };

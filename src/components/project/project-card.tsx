@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { useTranslations } from "next-intl";
-import { Globe } from "lucide-react";
+import { Globe, Code2 } from "lucide-react";
 import type { Project } from "@/types/database";
 
 interface ProjectCardProps {
@@ -10,41 +10,55 @@ interface ProjectCardProps {
   locale: string;
 }
 
+const TECH_COLORS: Record<string, string> = {
+  "Next.js":      "bg-foreground/8 text-foreground",
+  "TypeScript":   "bg-blue-500/10 text-blue-400",
+  "React":        "bg-cyan-500/10 text-cyan-400",
+  "Go":           "bg-sky-500/10 text-sky-400",
+  "Python":       "bg-yellow-500/10 text-yellow-400",
+  "Tailwind CSS": "bg-teal-500/10 text-teal-400",
+  "Supabase":     "bg-emerald-500/10 text-emerald-400",
+  "Docker":       "bg-blue-600/10 text-blue-400",
+  "PostgreSQL":   "bg-indigo-500/10 text-indigo-400",
+  "Blender":      "bg-orange-500/10 text-orange-400",
+  "Arch Linux":   "bg-sky-400/10 text-sky-300",
+  "Hyprland":     "bg-purple-500/10 text-purple-400",
+};
+
+function TechPill({ tech }: { tech: string }) {
+  const cls = TECH_COLORS[tech] ?? "bg-muted text-muted-foreground";
+  return (
+    <span className={`rounded-full px-2.5 py-0.5 text-[11px] font-medium ${cls}`}>
+      {tech}
+    </span>
+  );
+}
+
 export function ProjectCard({ project, locale }: ProjectCardProps) {
   const t = useTranslations("project");
 
   return (
-    <div className="group flex flex-col rounded-2xl border border-border/40 bg-card overflow-hidden transition-all hover:border-border">
+    <div className="group flex flex-col rounded-2xl border border-border/40 bg-card overflow-hidden transition-all hover:border-border hover:shadow-md">
       {/* Thumbnail */}
       <Link href={`/${locale}/project/${project.slug}`} className="block">
-        <div className="relative h-48 bg-muted/60 overflow-hidden">
+        <div className="relative h-44 bg-muted/50 overflow-hidden">
           {project.thumbnail_url ? (
             // eslint-disable-next-line @next/next/no-img-element
             <img
               src={project.thumbnail_url}
               alt={project.title}
-              className="h-full w-full object-cover transition-transform group-hover:scale-105"
+              className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
             />
           ) : (
             <div className="flex h-full items-center justify-center">
-              <svg
-                className="h-16 w-16 text-muted-foreground/25"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="1"
-              >
-                <rect x="3" y="3" width="18" height="18" rx="2" />
-                <circle cx="8.5" cy="8.5" r="1.5" />
-                <polyline points="21 15 16 10 5 21" />
-              </svg>
+              <Code2 className="h-12 w-12 text-muted-foreground/20" />
             </div>
           )}
         </div>
       </Link>
 
       {/* Content */}
-      <div className="flex flex-col gap-2 p-4">
+      <div className="flex flex-1 flex-col gap-2.5 p-4">
         <Link
           href={`/${locale}/project/${project.slug}`}
           className="font-semibold text-foreground hover:text-primary transition-colors line-clamp-1"
@@ -52,11 +66,25 @@ export function ProjectCard({ project, locale }: ProjectCardProps) {
           {project.title}
         </Link>
 
-        <p className="text-sm text-muted-foreground line-clamp-2 leading-relaxed">
+        <p className="text-sm text-muted-foreground line-clamp-2 leading-relaxed flex-1">
           {project.description}
         </p>
 
-        {/* Buttons */}
+        {/* Tech stack pills */}
+        {project.tech_stack.length > 0 && (
+          <div className="flex flex-wrap gap-1.5 pt-0.5">
+            {project.tech_stack.slice(0, 4).map((tech) => (
+              <TechPill key={tech} tech={tech} />
+            ))}
+            {project.tech_stack.length > 4 && (
+              <span className="rounded-full px-2.5 py-0.5 text-[11px] text-muted-foreground bg-muted">
+                +{project.tech_stack.length - 4}
+              </span>
+            )}
+          </div>
+        )}
+
+        {/* Action links */}
         <div className="flex gap-2 pt-1">
           {project.website_url && (
             <a

@@ -27,7 +27,7 @@ const GH_THEME = {
 
 function StatCard({ label, children }: { label: string; children: React.ReactNode }) {
   return (
-    <div className="rounded-lg border border-border/60 bg-background/50 p-3">
+    <div className="rounded-lg border border-border bg-background p-3 shadow-sm">
       <p className="text-[11px] font-semibold text-foreground mb-1">{label}</p>
       <p className="text-sm text-muted-foreground leading-snug">{children}</p>
     </div>
@@ -40,7 +40,7 @@ function ProgressRow({ name, percent }: { name: string; percent: number }) {
       <span className="w-28 text-xs text-foreground truncate shrink-0">{name}</span>
       <div className="flex-1 h-1.5 rounded-full bg-muted overflow-hidden">
         <div
-          className="h-full rounded-full bg-muted-foreground/55 transition-all duration-500"
+          className="h-full rounded-full bg-primary/70 transition-all duration-500"
           style={{ width: `${percent}%` }}
         />
       </div>
@@ -51,9 +51,12 @@ function ProgressRow({ name, percent }: { name: string; percent: number }) {
 
 export function CodingProgress() {
   const { resolvedTheme } = useTheme();
+  const [mounted, setMounted] = useState(false);
   const [waka, setWaka] = useState<WakaStats | null>(null);
   const [ghStats, setGhStats] = useState<GHStats | null>(null);
   const captured = useRef(false);
+
+  useEffect(() => setMounted(true), []);
 
   useEffect(() => {
     fetch("/api/wakatime")
@@ -136,7 +139,7 @@ export function CodingProgress() {
               { label: "Best Day", value: String(ghStats.bestDay), suffix: undefined },
               { label: "Average", value: String(ghStats.avg), suffix: "/ day" },
             ].map(({ label, value, suffix }) => (
-              <div key={label} className="rounded-lg border border-border/60 bg-background/50 p-3">
+              <div key={label} className="rounded-lg border border-border bg-background p-3 shadow-sm">
                 <p className="text-[11px] text-muted-foreground mb-1">{label}</p>
                 <p className="text-xl font-bold text-foreground">
                   {value}
@@ -152,18 +155,22 @@ export function CodingProgress() {
         )}
 
         {/* GitHub contribution calendar — circular blocks */}
-        <div className="overflow-x-auto">
-          <GitHubCalendar
-            username="NeiaKI"
-            colorScheme={colorScheme}
-            theme={GH_THEME}
-            fontSize={10}
-            blockSize={11}
-            blockMargin={3}
-            blockRadius={6}
-            transformData={captureGH}
-          />
-        </div>
+        {mounted ? (
+          <div className="overflow-x-auto">
+            <GitHubCalendar
+              username="NeiaKI"
+              colorScheme={colorScheme}
+              theme={GH_THEME}
+              fontSize={10}
+              blockSize={11}
+              blockMargin={3}
+              blockRadius={6}
+              transformData={captureGH}
+            />
+          </div>
+        ) : (
+          <div className="h-24 rounded-lg bg-muted animate-pulse" />
+        )}
       </div>
     </section>
   );

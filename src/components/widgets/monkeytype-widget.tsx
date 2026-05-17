@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { useTheme } from "next-themes";
 import {
   BarChart, Bar, LineChart, Line, XAxis, YAxis,
   CartesianGrid, Tooltip, ResponsiveContainer,
@@ -36,7 +37,7 @@ function StatCard({
   color?: string;
 }) {
   return (
-    <div className="rounded-lg border border-border/60 bg-background/50 p-3 flex gap-3 items-start">
+    <div className="rounded-lg border border-border bg-background p-3 flex gap-3 items-start shadow-sm">
       <div className={`mt-0.5 rounded-md p-1.5 bg-muted ${color ?? "text-muted-foreground"}`}>
         <Icon className="h-4 w-4" />
       </div>
@@ -52,6 +53,19 @@ function StatCard({
 export function MonkeyTypeWidget() {
   const [data, setData] = useState<MonkeyData | null>(null);
   const [loading, setLoading] = useState(true);
+  const { resolvedTheme } = useTheme();
+  const isDark = resolvedTheme === "dark";
+
+  const C = {
+    primary:    isDark ? "#89b4fa" : "#1e66f5",
+    green:      isDark ? "#a6e3a1" : "#40a02b",
+    border:     isDark ? "#313244" : "#ccd0da",
+    muted:      isDark ? "#6c7086" : "#8c8fa1",
+    card:       isDark ? "#1e1e2e" : "#eff1f5",
+    foreground: isDark ? "#cdd6f4" : "#4c4f69",
+    accBar:     isDark ? "#89b4fa" : "#1e66f5",
+    conBar:     isDark ? "#585b70" : "#7c7f93",
+  };
 
   useEffect(() => {
     fetch("/api/monkeytype")
@@ -83,54 +97,54 @@ export function MonkeyTypeWidget() {
           <>
             {/* Stat grid */}
             <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
-              <StatCard icon={Zap} value={data.bestWpm} label="Best WPM" sub={`Avg: ${data.avgWpm} WPM`} color="text-yellow-500" />
-              <StatCard icon={Target} value={`${data.bestAcc}%`} label="Best Accuracy" sub={`Consistency: ${data.bestConsistency}%`} color="text-green-500" />
-              <StatCard icon={Keyboard} value={data.completedTests.toLocaleString()} label="Tests Completed" sub={`${data.startedTests.toLocaleString()} started`} color="text-primary" />
-              <StatCard icon={Clock} value={data.timeTyping} label="Time Typing" color="text-orange-400" />
-              <StatCard icon={Zap} value={data.bestRaw} label="Best Raw WPM" sub="Uncorrected speed" color="text-yellow-400" />
-              <StatCard icon={Award} value={`${data.bestConsistency}%`} label="Best Consistency" sub="Typing stability" color="text-violet-400" />
+              <StatCard icon={Zap} value={data.bestWpm} label="Best WPM" sub={`Avg: ${data.avgWpm} WPM`} color="text-primary" />
+              <StatCard icon={Target} value={`${data.bestAcc}%`} label="Best Accuracy" sub={`Consistency: ${data.bestConsistency}%`} color="text-primary" />
+              <StatCard icon={Keyboard} value={data.completedTests.toLocaleString()} label="Tests Completed" sub={`${data.startedTests.toLocaleString()} started`} color="text-foreground" />
+              <StatCard icon={Clock} value={data.timeTyping} label="Time Typing" color="text-foreground" />
+              <StatCard icon={Zap} value={data.bestRaw} label="Best Raw WPM" sub="Uncorrected speed" color="text-foreground" />
+              <StatCard icon={Award} value={`${data.bestConsistency}%`} label="Best Consistency" sub="Typing stability" color="text-primary" />
             </div>
 
             {/* Charts */}
             {data.pbByMode.length > 0 && (
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 {/* WPM by mode line chart */}
-                <div className="rounded-lg border border-border/60 bg-background/50 p-3">
+                <div className="rounded-lg border border-border bg-background p-3 shadow-sm">
                   <div className="flex items-center gap-2 mb-3">
                     <TrendingUp className="h-3.5 w-3.5 text-muted-foreground" />
                     <p className="text-[11px] font-semibold text-foreground">WPM by Mode</p>
                   </div>
                   <ResponsiveContainer width="100%" height={140}>
                     <LineChart data={data.pbByMode}>
-                      <CartesianGrid strokeDasharray="3 3" stroke="hsl(var(--border))" />
-                      <XAxis dataKey="mode" tick={{ fontSize: 10, fill: "hsl(var(--muted-foreground))" }} />
-                      <YAxis tick={{ fontSize: 10, fill: "hsl(var(--muted-foreground))" }} />
+                      <CartesianGrid strokeDasharray="3 3" stroke={C.border} />
+                      <XAxis dataKey="mode" tick={{ fontSize: 10, fill: C.muted }} />
+                      <YAxis tick={{ fontSize: 10, fill: C.muted }} />
                       <Tooltip
-                        contentStyle={{ background: "hsl(var(--card))", border: "1px solid hsl(var(--border))", borderRadius: 8, fontSize: 11 }}
-                        labelStyle={{ color: "hsl(var(--foreground))" }}
+                        contentStyle={{ background: C.card, border: `1px solid ${C.border}`, borderRadius: 8, fontSize: 11, color: C.foreground }}
+                        labelStyle={{ color: C.foreground }}
                       />
-                      <Line type="monotone" dataKey="wpm" stroke="hsl(var(--primary))" strokeWidth={2} dot={{ r: 4, fill: "hsl(var(--primary))" }} />
+                      <Line type="monotone" dataKey="wpm" stroke={C.primary} strokeWidth={2} dot={{ r: 4, fill: C.primary }} />
                     </LineChart>
                   </ResponsiveContainer>
                 </div>
 
                 {/* Accuracy & Consistency bar chart */}
-                <div className="rounded-lg border border-border/60 bg-background/50 p-3">
+                <div className="rounded-lg border border-border bg-background p-3 shadow-sm">
                   <div className="flex items-center gap-2 mb-3">
                     <Target className="h-3.5 w-3.5 text-muted-foreground" />
                     <p className="text-[11px] font-semibold text-foreground">Accuracy & Consistency</p>
                   </div>
                   <ResponsiveContainer width="100%" height={140}>
                     <BarChart data={data.pbByMode}>
-                      <CartesianGrid strokeDasharray="3 3" stroke="hsl(var(--border))" />
-                      <XAxis dataKey="mode" tick={{ fontSize: 10, fill: "hsl(var(--muted-foreground))" }} />
-                      <YAxis domain={[0, 100]} tick={{ fontSize: 10, fill: "hsl(var(--muted-foreground))" }} />
+                      <CartesianGrid strokeDasharray="3 3" stroke={C.border} />
+                      <XAxis dataKey="mode" tick={{ fontSize: 10, fill: C.muted }} />
+                      <YAxis domain={[0, 100]} tick={{ fontSize: 10, fill: C.muted }} />
                       <Tooltip
-                        contentStyle={{ background: "hsl(var(--card))", border: "1px solid hsl(var(--border))", borderRadius: 8, fontSize: 11 }}
-                        labelStyle={{ color: "hsl(var(--foreground))" }}
+                        contentStyle={{ background: C.card, border: `1px solid ${C.border}`, borderRadius: 8, fontSize: 11, color: C.foreground }}
+                        labelStyle={{ color: C.foreground }}
                       />
-                      <Bar dataKey="acc" name="Accuracy" fill="hsl(var(--foreground))" radius={[3, 3, 0, 0]} />
-                      <Bar dataKey="consistency" name="Consistency" fill="hsl(var(--muted-foreground))" radius={[3, 3, 0, 0]} />
+                      <Bar dataKey="acc" name="Accuracy" fill={C.accBar} radius={[3, 3, 0, 0]} />
+                      <Bar dataKey="consistency" name="Consistency" fill={C.conBar} radius={[3, 3, 0, 0]} />
                     </BarChart>
                   </ResponsiveContainer>
                 </div>

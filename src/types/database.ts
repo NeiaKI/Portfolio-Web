@@ -28,6 +28,7 @@ export interface Database {
           issuer: string;
           thumbnail_url: string | null;
           certificate_url: string | null;
+          credential_id: string | null;
           issued_date: string;
         };
         Insert: Omit<Database["public"]["Tables"]["certificates"]["Row"], "id">;

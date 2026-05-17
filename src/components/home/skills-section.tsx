@@ -59,7 +59,7 @@ export function SkillsSection() {
   const t = useTranslations("home");
   const [expanded, setExpanded] = useState(false);
 
-  const marqueeItems = [...ALL_SKILLS, ...ALL_SKILLS, ...ALL_SKILLS];
+  const row2 = [...ALL_SKILLS].reverse();
 
   return (
     <section className="flex flex-col gap-4">
@@ -89,17 +89,25 @@ export function SkillsSection() {
         </button>
       </div>
 
-      {/* Marquee rows */}
+      {/* Marquee rows — two separate divs per row for seamless loop */}
       <div className="flex flex-col gap-2 overflow-hidden">
-        <div className="flex gap-2 animate-marquee whitespace-nowrap">
-          {marqueeItems.map((skill, i) => (
-            <SkillTag key={`r1-${i}`} name={skill} />
-          ))}
+        {/* Row 1 — left */}
+        <div className="flex gap-2">
+          <div className="flex shrink-0 gap-2 animate-marquee">
+            {ALL_SKILLS.map((skill) => <SkillTag key={`r1a-${skill}`} name={skill} />)}
+          </div>
+          <div className="flex shrink-0 gap-2 animate-marquee" aria-hidden>
+            {ALL_SKILLS.map((skill) => <SkillTag key={`r1b-${skill}`} name={skill} />)}
+          </div>
         </div>
-        <div className="flex gap-2 animate-marquee-reverse whitespace-nowrap">
-          {[...marqueeItems].reverse().map((skill, i) => (
-            <SkillTag key={`r2-${i}`} name={skill} />
-          ))}
+        {/* Row 2 — right */}
+        <div className="flex gap-2">
+          <div className="flex shrink-0 gap-2 animate-marquee-reverse">
+            {row2.map((skill) => <SkillTag key={`r2a-${skill}`} name={skill} />)}
+          </div>
+          <div className="flex shrink-0 gap-2 animate-marquee-reverse" aria-hidden>
+            {row2.map((skill) => <SkillTag key={`r2b-${skill}`} name={skill} />)}
+          </div>
         </div>
       </div>
 

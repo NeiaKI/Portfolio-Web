@@ -10,6 +10,7 @@ import {
   FolderOpen,
   Newspaper,
   Award,
+  Coffee,
   Moon,
   ChevronRight,
   Languages,
@@ -28,10 +29,11 @@ const NAV_GROUPS: NavGroup[] = [
   {
     sectionLabel: null,
     items: [
-      { href: "/", labelKey: "home", icon: Home, shortcut: "1" },
-      { href: "/project", labelKey: "project", icon: FolderOpen, shortcut: "2" },
-      { href: "/blog", labelKey: "blog", icon: Newspaper, shortcut: "3" },
-      { href: "/certificates", labelKey: "certificates", icon: Award, shortcut: "4" },
+      { href: "/",             labelKey: "home",         icon: Home,      shortcut: "1" },
+      { href: "/project",      labelKey: "project",      icon: FolderOpen, shortcut: "2" },
+      { href: "/blog",         labelKey: "blog",         icon: Newspaper,  shortcut: "3" },
+      { href: "/certificates", labelKey: "certificates", icon: Award,      shortcut: "4" },
+      { href: "/donate",       labelKey: "donate",       icon: Coffee,     shortcut: "5" },
     ],
   },
 ];
@@ -46,6 +48,17 @@ export function NavSidebar() {
 
   const isDark = mounted ? theme === "dark" : true;
 
+  useEffect(() => {
+    const handler = (e: KeyboardEvent) => {
+      if ((e.metaKey || e.ctrlKey) && e.shiftKey && e.key === "L") {
+        e.preventDefault();
+        setTheme(isDark ? "light" : "dark");
+      }
+    };
+    window.addEventListener("keydown", handler);
+    return () => window.removeEventListener("keydown", handler);
+  }, [isDark, setTheme]);
+
   const isActive = (href: string) => {
     if (href === "/") return pathname === "/" || pathname === "/id" || pathname === "/en";
     return pathname.includes(href);
@@ -56,7 +69,7 @@ export function NavSidebar() {
       {/* Profile */}
       <div className="flex flex-col items-center gap-2 px-2 mb-3">
         <Avatar className="h-[72px] w-[72px] border-2 border-border/60">
-          <AvatarImage src="/images/avatar-placeholder.jpg" alt="Febiyanto Rizki" />
+          <AvatarImage src="/images/avatar.jpg" alt="Febiyanto Rizki" />
           <AvatarFallback className="bg-muted text-foreground font-bold text-2xl">
             FR
           </AvatarFallback>
@@ -108,7 +121,7 @@ export function NavSidebar() {
         className="mx-1 mb-2 flex items-center gap-2 rounded-lg border border-border/60 px-3 py-1.5 text-xs text-muted-foreground transition-colors hover:bg-muted hover:text-foreground"
       >
         <Search className="h-3.5 w-3.5" />
-        <span className="flex-1 text-left">Search…</span>
+        <span className="flex-1 text-left">{t("search")}</span>
         <kbd className="rounded bg-muted px-1 py-0.5 text-[10px]">⌘K</kbd>
       </button>
 
@@ -116,12 +129,12 @@ export function NavSidebar() {
       <div className="mt-2 flex flex-col gap-0.5">
         <Separator className="mb-2" />
         <p className="px-3 pb-0.5 text-[11px] font-medium text-muted-foreground/60 uppercase tracking-widest">
-          Theming
+          {t("theming")}
         </p>
         <div className="flex items-center justify-between rounded-lg px-3 py-2">
           <div className="flex items-center gap-3">
             <Moon className="h-4 w-4 text-muted-foreground" />
-            <span className="text-sm text-muted-foreground">Dark Mode</span>
+            <span className="text-sm text-muted-foreground">{t("darkMode")}</span>
           </div>
           <button
             role="switch"
@@ -145,7 +158,7 @@ export function NavSidebar() {
         <div className="flex items-center justify-between rounded-lg px-3 py-2">
           <div className="flex items-center gap-3">
             <Languages className="h-4 w-4 text-muted-foreground" />
-            <span className="text-sm text-muted-foreground">Language</span>
+            <span className="text-sm text-muted-foreground">{t("language")}</span>
           </div>
           <LanguageSwitcher />
         </div>

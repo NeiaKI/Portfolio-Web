@@ -3,14 +3,15 @@
 import { useEffect, useState, useCallback } from "react";
 import { useRouter, usePathname } from "next/navigation";
 import { Command } from "cmdk";
-import { Home, FolderOpen, Newspaper, Award, Search, Code2 } from "lucide-react";
+import { Home, FolderOpen, Newspaper, Award, Coffee, Search, Code2 } from "lucide-react";
 import { MOCK_PROJECTS, MOCK_CERTIFICATES } from "@/lib/mock-data";
 
 const PAGES = [
-  { label: "Home",         href: "/",             icon: Home,       shortcut: "1", desc: "Main page" },
-  { label: "Projects",     href: "/project",       icon: FolderOpen, shortcut: "2", desc: "All projects" },
-  { label: "Blog",         href: "/blog",          icon: Newspaper,  shortcut: "3", desc: "Articles" },
+  { label: "Home",         href: "/",            icon: Home,       shortcut: "1", desc: "Main page"       },
+  { label: "Projects",     href: "/project",      icon: FolderOpen, shortcut: "2", desc: "All projects"   },
+  { label: "Blog",         href: "/blog",          icon: Newspaper,  shortcut: "3", desc: "Articles"      },
   { label: "Certificates", href: "/certificates",  icon: Award,      shortcut: "4", desc: "Certifications" },
+  { label: "Donate",       href: "/donate",        icon: Coffee,     shortcut: "5", desc: "Support my work" },
 ];
 
 function Kbd({ children }: { children: React.ReactNode }) {
@@ -48,7 +49,7 @@ export function CommandPalette() {
         return;
       }
 
-      // Cmd+1-4 → navigate directly (no palette needed)
+      // Cmd+1-5 → navigate directly (no palette needed)
       const idx = parseInt(e.key, 10) - 1;
       if (idx >= 0 && idx < PAGES.length) {
         e.preventDefault();
@@ -64,6 +65,19 @@ export function CommandPalette() {
   useEffect(() => {
     if (!open) return;
     const handler = (e: KeyboardEvent) => { if (e.key === "Escape") setOpen(false); };
+    window.addEventListener("keydown", handler);
+    return () => window.removeEventListener("keydown", handler);
+  }, [open]);
+
+  // j/k page scroll (vim-style)
+  useEffect(() => {
+    const handler = (e: KeyboardEvent) => {
+      if (open) return;
+      if (e.target instanceof HTMLInputElement || e.target instanceof HTMLTextAreaElement) return;
+      if (e.metaKey || e.ctrlKey || e.altKey) return;
+      if (e.key === "j") window.scrollBy({ top: 80, behavior: "smooth" });
+      if (e.key === "k") window.scrollBy({ top: -80, behavior: "smooth" });
+    };
     window.addEventListener("keydown", handler);
     return () => window.removeEventListener("keydown", handler);
   }, [open]);
@@ -161,7 +175,11 @@ export function CommandPalette() {
             <span className="mx-1">·</span>
             <Kbd>↵</Kbd> open
             <span className="mx-1">·</span>
-            <Kbd>⌘1–4</Kbd> jump
+            <Kbd>⌘1–5</Kbd> jump
+            <span className="mx-1">·</span>
+            <Kbd>j</Kbd><Kbd>k</Kbd> scroll
+            <span className="mx-1">·</span>
+            <Kbd>⌘⇧L</Kbd> theme
           </span>
           <Kbd>⌘K</Kbd>
         </div>

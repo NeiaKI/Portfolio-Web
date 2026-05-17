@@ -11,7 +11,13 @@
     "tools": "Tools",
     "roadmap": "Roadmap",
     "certificates": "Sertifikat",
-    "changelog": "Changelog"
+    "changelog": "Changelog",
+    "search": "Cari…",
+    "darkMode": "Mode Gelap",
+    "language": "Bahasa",
+    "theming": "Tampilan",
+    "donate": "Donasi",
+    "contact": "Kontak"
   },
   "sidebar": {
     "online": "Online",
@@ -49,9 +55,9 @@
     "activityTitle": "Aktivitas",
     "heroDesc": "Bersemangat dalam pengembangan web, mobile, cloud, dan DevOps. Saya suka menciptakan solusi inovatif menggunakan teknologi modern seperti React, Next.js, TypeScript, dan lainnya. Saat ini fokus membangun aplikasi performa tinggi dan mempelajari CI/CD pipeline.",
     "viewProjects": "Lihat Proyek",
-    "viewChangelog": "Lihat Changelog",
     "findMeOn": "Temukan saya di",
-    "viewPortfolioPDF": "Lihat Portfolio PDF"
+    "viewPortfolioPDF": "Lihat Portfolio PDF",
+    "viewBlog": "Blog"
   },
   "project": {
     "title": "Proyek",
@@ -65,7 +71,7 @@
   "blog": {
     "title": "Blog",
     "subtitle": "Pemikiran dan tulisan",
-    "devto": "Dev.to",
+    "devto": "Dev",
     "medium": "Medium",
     "readMore": "Baca selengkapnya",
     "noPosts": "Tidak ada postingan."
@@ -88,5 +94,46 @@
     "backToHome": "Kembali ke Beranda",
     "seeAll": "Lihat semua",
     "learnMore": "Pelajari lebih lanjut"
+  },
+  "donate": {
+    "title": "Dukung Karya Saya",
+    "subtitle": "Jika kamu menikmati karya saya, pertimbangkan untuk mentraktir saya kopi!",
+    "donate": "Donasi",
+    "saweria": "Saweria",
+    "kofi": "Ko-fi",
+    "saweriaDesc": "Untuk supporter Indonesia — IDR via QRIS, GoPay, OVO, transfer bank",
+    "kofiDesc": "Untuk supporter internasional — USD via kartu kredit atau PayPal",
+    "whyTitle": "Apa yang didukung donasimu",
+    "reason1": "Biaya hosting & domain",
+    "reason2": "Proyek & tools open source",
+    "reason3": "Aset 3D & lisensi software",
+    "reason4": "Waktu untuk menulis artikel & tutorial",
+    "thankYou": "Terima kasih atas dukunganmu!",
+    "evmTitle": "Crypto (EVM)",
+    "evmDesc": "Kirim ETH atau token EVM lainnya langsung ke wallet saya",
+    "copyAddress": "Salin Alamat",
+    "copied": "Tersalin!",
+    "evmNote": "Mendukung ETH, MATIC, BNB, dan semua jaringan EVM"
+  },
+  "contact": {
+    "title": "Kontak",
+    "subtitle": "Ada yang ingin kamu sampaikan? Saya senang mendengarnya.",
+    "connectTitle": "Terhubung Dengan Saya",
+    "preferEmail": "Lebih suka email?",
+    "formTitle": "Kirim Pesan",
+    "name": "Nama",
+    "email": "Email",
+    "message": "Pesan",
+    "send": "Kirim Pesan",
+    "sending": "Mengirim…",
+    "success": "Pesan terkirim!",
+    "successDesc": "Terima kasih telah menghubungi — saya akan membalasmu segera.",
+    "error": "Terjadi kesalahan. Coba lagi atau hubungi saya langsung via email.",
+    "namePlaceholder": "Namamu",
+    "emailPlaceholder": "kamu@email.com",
+    "messagePlaceholder": "Apa yang ingin kamu sampaikan?",
+    "connectSub": "Temukan saya di platform-platform ini",
+    "preferEmailSub": "Gunakan form atau hubungi langsung di",
+    "formSub": "Saya akan membalasmu secepat mungkin"
   }
 }

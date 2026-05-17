@@ -7,6 +7,7 @@ import { EducationSection } from "@/components/home/education-section";
 import { CodingProgress } from "@/components/widgets/coding-progress";
 import { DuolingoProgress } from "@/components/widgets/duolingo-progress";
 import { MonkeyTypeWidget } from "@/components/widgets/monkeytype-widget";
+import { ContactSection } from "@/components/home/contact-section";
 
 export default function HomePage() {
   return (
@@ -23,6 +24,7 @@ export default function HomePage() {
         <CodingProgress />
         <DuolingoProgress />
         <MonkeyTypeWidget />
+        <ContactSection />
       </div>
     </MainLayout>
   );
