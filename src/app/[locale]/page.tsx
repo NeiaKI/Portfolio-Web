@@ -5,10 +5,12 @@ import { AboutSection } from "@/components/home/about-section";
 import { SkillsSection } from "@/components/home/skills-section";
 import { ExperienceSection } from "@/components/home/experience-section";
 import { EducationSection } from "@/components/home/education-section";
-import { CodingProgress } from "@/components/widgets/coding-progress";
-import { DuolingoProgress } from "@/components/widgets/duolingo-progress";
-import { MonkeyTypeWidget } from "@/components/widgets/monkeytype-widget";
 import { ContactSection } from "@/components/home/contact-section";
+import {
+  LazyCodingProgress,
+  LazyDuolingoProgress,
+  LazyMonkeyTypeWidget,
+} from "@/components/home/lazy-widgets";
 
 export default function HomePage() {
   return (
@@ -22,9 +24,9 @@ export default function HomePage() {
         <FadeSection><SkillsSection /></FadeSection>
         <FadeSection><ExperienceSection /></FadeSection>
         <FadeSection><EducationSection /></FadeSection>
-        <FadeSection><CodingProgress /></FadeSection>
-        <FadeSection><DuolingoProgress /></FadeSection>
-        <FadeSection><MonkeyTypeWidget /></FadeSection>
+        <FadeSection><LazyCodingProgress /></FadeSection>
+        <FadeSection><LazyDuolingoProgress /></FadeSection>
+        <FadeSection><LazyMonkeyTypeWidget /></FadeSection>
         <FadeSection><ContactSection /></FadeSection>
       </div>
     </MainLayout>

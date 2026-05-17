@@ -9,6 +9,7 @@ import type { Project } from "@/types/database";
 interface ProjectCardProps {
   project: Project;
   locale: string;
+  featured?: boolean;
 }
 
 const TECH_COLORS: Record<string, string> = {
@@ -35,14 +36,21 @@ function TechPill({ tech }: { tech: string }) {
   );
 }
 
-export function ProjectCard({ project, locale }: ProjectCardProps) {
+export function ProjectCard({ project, locale, featured }: ProjectCardProps) {
   const t = useTranslations("project");
 
   return (
-    <div className="group flex flex-col rounded-2xl border border-border/40 bg-card overflow-hidden transition-all duration-300 hover:border-primary/30 hover:shadow-xl hover:-translate-y-1.5">
+    <div className="group card-glow flex flex-col rounded-2xl border border-border/40 bg-card overflow-hidden relative">
+      {/* Featured badge */}
+      {featured && (
+        <span className="absolute top-3 left-3 z-10 rounded-full bg-primary/90 px-2 py-0.5 text-[10px] font-semibold text-primary-foreground">
+          Featured
+        </span>
+      )}
+
       {/* Thumbnail */}
       <a
-        href={project.source_url}
+        href={project.source_url ?? "#"}
         target="_blank"
         rel="noopener noreferrer"
         className="block"
@@ -67,7 +75,7 @@ export function ProjectCard({ project, locale }: ProjectCardProps) {
       {/* Content */}
       <div className="flex flex-1 flex-col gap-2.5 p-4">
         <a
-          href={project.source_url}
+          href={project.source_url ?? "#"}
           target="_blank"
           rel="noopener noreferrer"
           className="font-semibold text-foreground hover:text-primary transition-colors line-clamp-1"

@@ -5,6 +5,7 @@ import { getTranslations } from "next-intl/server";
 import { ArrowLeft, ExternalLink, Code2 } from "lucide-react";
 import { MainLayout } from "@/components/layout/main-layout";
 import { Badge } from "@/components/ui/badge";
+import { Lightbox } from "@/components/ui/lightbox";
 import { getProjectBySlug, getProjects } from "@/lib/data";
 import type { Metadata } from "next";
 
@@ -114,17 +115,7 @@ export default async function ProjectDetailPage({ params }: Props) {
         {project.screenshots.length > 0 && (
           <div className="flex flex-col gap-3">
             <h2 className="text-sm font-semibold text-foreground">Screenshots</h2>
-            <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
-              {project.screenshots.map((src, i) => (
-                // eslint-disable-next-line @next/next/no-img-element
-                <img
-                  key={i}
-                  src={src}
-                  alt={`${project.title} screenshot ${i + 1}`}
-                  className="rounded-lg border border-border object-cover w-full"
-                />
-              ))}
-            </div>
+            <Lightbox images={project.screenshots} alt={project.title} />
           </div>
         )}
       </div>

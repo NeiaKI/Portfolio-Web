@@ -5,6 +5,7 @@ import { ThemeProvider } from "next-themes";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { ScrollProgress } from "@/components/ui/scroll-progress";
 import { BackToTop } from "@/components/ui/back-to-top";
+import { ShortcutModal } from "@/components/ui/shortcut-modal";
 
 const SCROLL_STEP = 96;
 
@@ -43,6 +44,7 @@ export function Providers({ children }: { children: React.ReactNode }) {
         <VimKeys />
         <ScrollProgress />
         <BackToTop />
+        <ShortcutModal />
         {children}
       </TooltipProvider>
     </ThemeProvider>
