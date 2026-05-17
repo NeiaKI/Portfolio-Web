@@ -92,18 +92,30 @@ export default function UsesPage() {
               network, and battery.
             </li>
             <li>
-              For my terminal, I use{" "}
-              <strong>[Terminal Emulator]</strong>. For my shell, I use{" "}
+              I use two terminal emulators —{" "}
+              <A href="https://ghostty.org">Ghostty</A> as my daily driver for
+              its speed and simplicity, and{" "}
+              <A href="https://sw.kovidgoyal.net/kitty">Kitty</A> when I need
+              image protocol support. For my shell, I use{" "}
               <A href="https://www.zsh.org">zsh</A> with plugins for syntax
               highlighting and auto-complete.
             </li>
             <li>
-              For my text editor / IDE, I use{" "}
-              <strong>[Editor]</strong> for most things.
+              For code editors, I rotate between three:{" "}
+              <A href="https://code.visualstudio.com">VS Code</A> for general
+              use,{" "}
+              <A href="https://cursor.com">Cursor</A> when I want AI-assisted
+              editing, and{" "}
+              <A href="https://zed.dev">Zed</A> when I need raw speed — it's
+              noticeably faster than the others for large files.
             </li>
             <li>
-              For my browser, I use{" "}
-              <strong>[Browser]</strong>.
+              For my browser, I primarily use{" "}
+              <A href="https://zen-browser.app">Zen Browser</A> — a
+              Firefox-based browser with a cleaner UI and better tab management.
+              I also keep{" "}
+              <A href="https://github.com/helium-browser/helium">Helium</A> around
+              for lightweight browsing sessions.
             </li>
           </ul>
 
@@ -124,6 +136,22 @@ export default function UsesPage() {
             </li>
             <li>
               For file management, I use <strong>[File Manager]</strong>.
+            </li>
+          </ul>
+
+          {/* AI */}
+          <h2>AI</h2>
+          <ul>
+            <li>
+              <A href="https://claude.ai">Claude</A> by Anthropic is my primary
+              AI assistant — I use it for writing, debugging, code review, and
+              general problem-solving. The thinking models are particularly useful
+              for complex architectural decisions.
+            </li>
+            <li>
+              <A href="https://github.com/sst/opencode">OpenCode</A> is my
+              terminal-based AI coding agent. It integrates directly into the
+              terminal workflow and works well alongside Ghostty and Zed.
             </li>
           </ul>
 
