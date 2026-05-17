@@ -73,8 +73,34 @@ export default async function BlogPostPage({ params }: Props) {
   const baseUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "https://nateeki.vercel.app";
   const postUrl = `${baseUrl}/${locale}/blog/${slug}`;
 
+  const jsonLd = {
+    "@context": "https://schema.org",
+    "@type": "BlogPosting",
+    headline: post.title,
+    description: post.description,
+    datePublished: post.date,
+    author: {
+      "@type": "Person",
+      name: "Febiyanto Rizki Qurbandi",
+      url: baseUrl,
+    },
+    publisher: {
+      "@type": "Person",
+      name: "Febiyanto Rizki Qurbandi",
+      url: baseUrl,
+    },
+    url: postUrl,
+    keywords: post.tags.join(", "),
+    inLanguage: locale === "id" ? "id-ID" : "en-US",
+    timeRequired: `PT${readTime}M`,
+  };
+
   return (
     <MainLayout>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      />
       <ReadingProgress />
       <CodeCopyInit />
 

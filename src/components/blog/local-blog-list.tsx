@@ -1,9 +1,9 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
 import Link from "next/link";
 import { useTranslations } from "next-intl";
-import { Calendar, X } from "lucide-react";
+import { Calendar, Clock, Search, X } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { Skeleton } from "@/components/ui/skeleton";
 import { cn } from "@/lib/utils";
@@ -35,6 +35,7 @@ export function LocalBlogList({ locale }: LocalBlogListProps) {
   const [posts, setPosts] = useState<PostMeta[]>([]);
   const [loading, setLoading] = useState(true);
   const [activeTag, setActiveTag] = useState<string | null>(null);
+  const [query, setQuery] = useState("");
 
   useEffect(() => {
     fetch("/api/posts")
@@ -44,8 +45,21 @@ export function LocalBlogList({ locale }: LocalBlogListProps) {
       .finally(() => setLoading(false));
   }, []);
 
-  const allTags = Array.from(new Set(posts.flatMap((p) => p.tags))).sort();
-  const filtered = activeTag ? posts.filter((p) => p.tags.includes(activeTag)) : posts;
+  const allTags = useMemo(
+    () => Array.from(new Set(posts.flatMap((p) => p.tags))).sort(),
+    [posts]
+  );
+
+  const filtered = useMemo(() => {
+    return posts.filter((p) => {
+      const matchQuery =
+        !query ||
+        p.title.toLowerCase().includes(query.toLowerCase()) ||
+        p.description.toLowerCase().includes(query.toLowerCase());
+      const matchTag = !activeTag || p.tags.includes(activeTag);
+      return matchQuery && matchTag;
+    });
+  }, [posts, query, activeTag]);
 
   if (loading) {
     return (
@@ -61,23 +75,47 @@ export function LocalBlogList({ locale }: LocalBlogListProps) {
 
   return (
     <div className="flex flex-col gap-5">
+      {/* Search */}
+      <div className="relative">
+        <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+        <input
+          type="text"
+          value={query}
+          onChange={(e) => setQuery(e.target.value)}
+          placeholder="Search posts…"
+          className="w-full rounded-xl border border-border bg-card pl-9 pr-9 py-2.5 text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-1 focus:ring-primary/40 transition-colors"
+        />
+        {query && (
+          <button
+            onClick={() => setQuery("")}
+            className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground"
+            aria-label="Clear search"
+          >
+            <X className="h-4 w-4" />
+          </button>
+        )}
+      </div>
+
       {/* Tag filter */}
       {allTags.length > 0 && (
         <div className="flex flex-wrap gap-1.5 items-center">
-          {activeTag && (
-            <button
-              onClick={() => setActiveTag(null)}
-              className="flex items-center gap-1 rounded-full border border-border px-2.5 py-0.5 text-[11px] text-muted-foreground hover:text-foreground transition-colors"
-            >
-              <X className="h-2.5 w-2.5" /> Clear
-            </button>
-          )}
+          <button
+            onClick={() => setActiveTag(null)}
+            className={cn(
+              "rounded-full border px-3 py-0.5 text-[11px] font-medium transition-colors",
+              !activeTag
+                ? "border-primary/40 bg-primary/10 text-primary"
+                : "border-border text-muted-foreground hover:border-primary/30 hover:text-foreground"
+            )}
+          >
+            All
+          </button>
           {allTags.map((tag) => (
             <button
               key={tag}
               onClick={() => setActiveTag(activeTag === tag ? null : tag)}
               className={cn(
-                "rounded-full border px-2.5 py-0.5 text-[11px] font-medium transition-colors",
+                "rounded-full border px-3 py-0.5 text-[11px] font-medium transition-colors",
                 activeTag === tag
                   ? "border-primary/40 bg-primary/10 text-primary"
                   : "border-border text-muted-foreground hover:border-primary/30 hover:text-foreground"
@@ -104,13 +142,19 @@ export function LocalBlogList({ locale }: LocalBlogListProps) {
                 <h3 className="font-semibold text-foreground group-hover:text-primary transition-colors leading-snug">
                   {post.title}
                 </h3>
-                <div className="flex items-center gap-1 text-xs text-muted-foreground shrink-0">
-                  <Calendar className="h-3 w-3" />
-                  {new Date(post.date).toLocaleDateString(locale === "id" ? "id-ID" : "en-US", {
-                    year: "numeric",
-                    month: "short",
-                    day: "numeric",
-                  })}
+                <div className="flex items-center gap-3 text-xs text-muted-foreground shrink-0">
+                  <span className="flex items-center gap-1">
+                    <Clock className="h-3 w-3" />
+                    {post.readTime} min
+                  </span>
+                  <span className="flex items-center gap-1">
+                    <Calendar className="h-3 w-3" />
+                    {new Date(post.date).toLocaleDateString(locale === "id" ? "id-ID" : "en-US", {
+                      year: "numeric",
+                      month: "short",
+                      day: "numeric",
+                    })}
+                  </span>
                 </div>
               </div>
 

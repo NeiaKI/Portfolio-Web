@@ -1,93 +1,103 @@
 "use client";
 
-import { useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useTranslations } from "next-intl";
 import { useTheme } from "next-themes";
-import { Home, FolderOpen, Newspaper, Award, Menu, Moon, Sun, Search } from "lucide-react";
-import { Button } from "@/components/ui/button";
-import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
+import { Home, FolderOpen, Newspaper, Award, Coffee, Search, Moon, Sun, Languages } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { LanguageSwitcher } from "./language-switcher";
 
 const NAV_ITEMS = [
-  { href: "/", labelKey: "home" as const, icon: Home },
-  { href: "/project", labelKey: "project" as const, icon: FolderOpen },
-  { href: "/blog", labelKey: "blog" as const, icon: Newspaper },
+  { href: "/",             labelKey: "home"         as const, icon: Home },
+  { href: "/project",      labelKey: "project"      as const, icon: FolderOpen },
+  { href: "/blog",         labelKey: "blog"         as const, icon: Newspaper },
   { href: "/certificates", labelKey: "certificates" as const, icon: Award },
+  { href: "/donate",       labelKey: "donate"       as const, icon: Coffee },
 ];
 
+function triggerSearch() {
+  window.dispatchEvent(new KeyboardEvent("keydown", { key: "k", ctrlKey: true, bubbles: true }));
+}
+
 export function MobileNav() {
-  const [open, setOpen] = useState(false);
   const t = useTranslations("nav");
   const pathname = usePathname();
   const { theme, setTheme } = useTheme();
 
   const isActive = (href: string) => {
-    if (href === "/") return pathname === "/" || pathname === "/id";
+    if (href === "/") return /^\/(en|id)?$/.test(pathname);
     return pathname.includes(href);
   };
 
-  const triggerSearch = () => {
-    window.dispatchEvent(new KeyboardEvent("keydown", { key: "k", ctrlKey: true, bubbles: true }));
-  };
-
   return (
-    <header className="sticky top-0 z-50 flex items-center justify-between border-b border-border bg-background/80 px-4 py-3 backdrop-blur lg:hidden">
-      <span className="font-semibold text-foreground">nateeki</span>
+    <>
+      {/* Top bar — brand + utilities */}
+      <header className="sticky top-0 z-50 flex items-center justify-between border-b border-border bg-background/80 px-4 py-2.5 backdrop-blur-md lg:hidden">
+        <span className="font-semibold text-sm text-foreground tracking-tight">nateeki</span>
 
-      <div className="flex items-center gap-1">
-        {/* Search button */}
-        <Button variant="ghost" size="icon" className="h-8 w-8" onClick={triggerSearch} aria-label="Search">
-          <Search className="h-4 w-4" />
-        </Button>
+        <div className="flex items-center gap-0.5">
+          <button
+            onClick={triggerSearch}
+            aria-label="Search"
+            className="flex h-8 w-8 items-center justify-center rounded-lg text-muted-foreground hover:bg-muted hover:text-foreground transition-colors"
+          >
+            <Search className="h-4 w-4" />
+          </button>
 
-        <LanguageSwitcher />
+          <LanguageSwitcher />
 
-        <Button
-          variant="ghost"
-          size="icon"
-          className="h-8 w-8"
-          onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
-          aria-label="Toggle theme"
-        >
-          <Sun className="h-4 w-4 dark:hidden" />
-          <Moon className="hidden h-4 w-4 dark:block" />
-        </Button>
+          <button
+            onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
+            aria-label="Toggle theme"
+            className="flex h-8 w-8 items-center justify-center rounded-lg text-muted-foreground hover:bg-muted hover:text-foreground transition-colors"
+          >
+            <Sun className="h-4 w-4 dark:hidden" />
+            <Moon className="hidden h-4 w-4 dark:block" />
+          </button>
+        </div>
+      </header>
 
-        <Sheet open={open} onOpenChange={setOpen}>
-          <SheetTrigger>
-            <span className="inline-flex h-8 w-8 items-center justify-center rounded-lg text-muted-foreground hover:bg-muted hover:text-foreground transition-colors">
-              <Menu className="h-4 w-4" />
-            </span>
-          </SheetTrigger>
-          <SheetContent side="left" className="w-64 p-4">
-            <div className="mb-4">
-              <p className="text-sm font-semibold text-foreground">Febiyanto Rizki Qurbandi</p>
-              <p className="text-xs text-muted-foreground">@nateeki</p>
-            </div>
-            <nav className="flex flex-col gap-1">
-              {NAV_ITEMS.map(({ href, labelKey, icon: Icon }) => (
-                <Link
-                  key={href}
-                  href={href}
-                  onClick={() => setOpen(false)}
+      {/* Bottom tab bar */}
+      <nav
+        aria-label="Mobile navigation"
+        className="fixed bottom-0 left-0 right-0 z-50 border-t border-border bg-background/95 backdrop-blur-md pb-safe lg:hidden"
+      >
+        <div className="flex items-stretch">
+          {NAV_ITEMS.map(({ href, labelKey, icon: Icon }) => {
+            const active = isActive(href);
+            return (
+              <Link
+                key={href}
+                href={href}
+                aria-label={t(labelKey)}
+                aria-current={active ? "page" : undefined}
+                className={cn(
+                  "flex flex-1 flex-col items-center justify-center gap-0.5 py-2.5 text-[10px] font-medium transition-colors",
+                  active
+                    ? "text-primary"
+                    : "text-muted-foreground hover:text-foreground"
+                )}
+              >
+                <Icon
                   className={cn(
-                    "flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm transition-colors",
-                    isActive(href)
-                      ? "bg-primary/15 text-primary font-medium"
-                      : "text-muted-foreground hover:bg-accent hover:text-foreground"
+                    "h-5 w-5 transition-all",
+                    active && "scale-110"
                   )}
-                >
-                  <Icon className="h-4 w-4 shrink-0" />
-                  {t(labelKey)}
-                </Link>
-              ))}
-            </nav>
-          </SheetContent>
-        </Sheet>
-      </div>
-    </header>
+                  strokeWidth={active ? 2.2 : 1.8}
+                />
+                <span className="truncate">{t(labelKey)}</span>
+                {active && (
+                  <span className="absolute bottom-0 h-0.5 w-8 rounded-t-full bg-primary" />
+                )}
+              </Link>
+            );
+          })}
+        </div>
+      </nav>
+
+      {/* Spacer so content isn't hidden behind bottom nav */}
+      <div className="h-16 lg:hidden" aria-hidden />
+    </>
   );
 }

@@ -65,7 +65,7 @@ export function NavSidebar() {
   };
 
   return (
-    <aside className="flex h-full w-52 flex-col py-6 px-3">
+    <aside aria-label="Main navigation" className="flex h-full w-52 flex-col py-6 px-3">
       {/* Profile */}
       <div className="flex flex-col items-center gap-2 px-2 mb-3">
         <Avatar className="h-[72px] w-[72px] border-2 border-border/60">

@@ -20,7 +20,7 @@ export function MainLayout({ children }: { children: React.ReactNode }) {
         </div>
 
         {/* Main content */}
-        <main className="flex-1 min-w-0 flex flex-col">
+        <main id="main-content" className="flex-1 min-w-0 flex flex-col">
           <div className="flex-1 w-full px-4 py-6 sm:px-6 sm:py-8">
             <PageTransition>{children}</PageTransition>
           </div>

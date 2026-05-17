@@ -70,6 +70,9 @@ export function ShortcutModal() {
       onClick={() => setOpen(false)}
     >
       <div
+        role="dialog"
+        aria-modal="true"
+        aria-label="Keyboard shortcuts"
         onClick={(e) => e.stopPropagation()}
         className="w-full max-w-lg rounded-2xl border border-border bg-card shadow-2xl overflow-hidden"
       >

@@ -11,6 +11,7 @@ export interface PostMeta {
   date: string;
   tags: string[];
   published: boolean;
+  readTime: number;
 }
 
 export interface Post extends PostMeta {
@@ -26,6 +27,8 @@ function parsePost(slug: string): Post | null {
   const raw = fs.readFileSync(filePath, "utf-8");
   const { data, content } = matter(raw);
 
+  const wordCount = content.trim().split(/\s+/).length;
+
   return {
     slug,
     title: String(data.title ?? ""),
@@ -33,6 +36,7 @@ function parsePost(slug: string): Post | null {
     date: String(data.date ?? ""),
     tags: Array.isArray(data.tags) ? data.tags : [],
     published: data.published !== false,
+    readTime: Math.max(1, Math.ceil(wordCount / 200)),
     content,
   };
 }
