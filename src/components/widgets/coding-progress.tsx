@@ -89,6 +89,41 @@ export function CodingProgress() {
 
   const legendColors = resolvedTheme === "dark" ? GH_THEME.dark : GH_THEME.light;
 
+  const padData = useCallback((data: Activity[]) => {
+    if (data.length === 0) return data;
+
+    // Pad start: from first Sunday of May last year
+    const firstDate = new Date(data[0].date);
+    const mayStart = new Date();
+    mayStart.setFullYear(mayStart.getFullYear() - 1);
+    mayStart.setMonth(4);
+    mayStart.setDate(1);
+    mayStart.setDate(mayStart.getDate() - mayStart.getDay()); // back to Sunday
+    const startPad: Activity[] = [];
+    const cur = new Date(mayStart);
+    while (cur < firstDate) {
+      startPad.push({ date: cur.toISOString().split("T")[0], count: 0, level: 0 });
+      cur.setDate(cur.getDate() + 1);
+    }
+
+    // Pad end: fill to last Saturday on or after May 31
+    const lastDate = new Date(data[data.length - 1].date);
+    const endOfMonth = new Date(lastDate.getFullYear(), lastDate.getMonth() + 1, 0); // last day of current month
+    // extend to next Saturday after end of month
+    const daysToSat = (6 - endOfMonth.getDay() + 7) % 7;
+    const target = new Date(endOfMonth);
+    target.setDate(target.getDate() + daysToSat);
+    const endPad: Activity[] = [];
+    const cursor2 = new Date(lastDate);
+    cursor2.setDate(cursor2.getDate() + 1);
+    while (cursor2 <= target) {
+      endPad.push({ date: cursor2.toISOString().split("T")[0], count: 0, level: 0 });
+      cursor2.setDate(cursor2.getDate() + 1);
+    }
+
+    return [...startPad, ...data, ...endPad];
+  }, []);
+
   const renderBlock = (block: React.ReactElement, activity: Activity) => {
     const label = activity.count === 0
       ? `No contributions on ${activity.date}`
@@ -173,19 +208,20 @@ export function CodingProgress() {
         {/* GitHub contribution calendar — circular blocks */}
         {mounted ? (
           <div ref={calendarRef} className="flex flex-col gap-2">
-            <div className="overflow-x-auto">
+            <div className="overflow-x-auto [&>div]:w-full [&_svg]:w-full [&_svg]:h-auto">
               <GitHubCalendar
                 username="NeiaKI"
                 colorScheme={colorScheme}
                 theme={GH_THEME}
                 fontSize={10}
-                blockSize={11}
+                blockSize={14}
                 blockMargin={3}
-                blockRadius={6}
+                blockRadius={7}
                 showColorLegend={false}
                 showTotalCount={false}
-                transformData={captureGH}
+                transformData={(data) => captureGH(padData(data))}
                 renderBlock={renderBlock}
+                style={{ width: "100%" }}
               />
             </div>
             {/* Custom footer */}
@@ -200,12 +236,16 @@ export function CodingProgress() {
                 ))}
                 <span>More</span>
               </div>
-              {/* Hover tooltip text */}
-              {hoverLabel && (
+              {/* Right: hover label or total count */}
+              {hoverLabel ? (
                 <span className="rounded-md bg-foreground px-2.5 py-1 text-[11px] font-medium text-background whitespace-nowrap">
                   {hoverLabel}
                 </span>
-              )}
+              ) : ghStats ? (
+                <span className="text-[11px] text-muted-foreground whitespace-nowrap">
+                  {ghStats.total.toLocaleString()} contributions in the last year
+                </span>
+              ) : null}
             </div>
           </div>
         ) : (
