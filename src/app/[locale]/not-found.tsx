@@ -16,12 +16,30 @@ const TERMINAL_LINES = [
   "404",
 ];
 
-const LINKS = [
-  { href: "/",             label: "Home" },
-  { href: "/project",     label: "Projects" },
-  { href: "/blog",        label: "Blog" },
-  { href: "/contact",     label: "Contact" },
-];
+const i18n = {
+  en: {
+    title: "Page Not Found",
+    desc: "The page you're looking for isn't available — the URL might be mistyped or the page has been moved.",
+    cta: "Back to Home",
+    links: [
+      { href: "/", label: "Home" },
+      { href: "/project", label: "Projects" },
+      { href: "/blog", label: "Blog" },
+      { href: "/contact", label: "Contact" },
+    ],
+  },
+  id: {
+    title: "Halaman Tidak Ditemukan",
+    desc: "Sepertinya halaman yang kamu tuju tidak tersedia — URL mungkin salah ketik atau halaman sudah dipindahkan.",
+    cta: "Kembali ke Beranda",
+    links: [
+      { href: "/", label: "Beranda" },
+      { href: "/project", label: "Proyek" },
+      { href: "/blog", label: "Blog" },
+      { href: "/contact", label: "Kontak" },
+    ],
+  },
+};
 
 function TerminalLine({ text, delay }: { text: string; delay: number }) {
   const [visible, setVisible] = useState(false);
@@ -41,7 +59,8 @@ function TerminalLine({ text, delay }: { text: string; delay: number }) {
 
 export default function NotFound() {
   const params = useParams();
-  const locale = (params?.locale as string) ?? "en";
+  const locale = ((params?.locale as string) === "id" ? "id" : "en") as "en" | "id";
+  const t = i18n[locale];
   const [cursor, setCursor] = useState(true);
 
   useEffect(() => {
@@ -59,8 +78,8 @@ export default function NotFound() {
       </div>
 
       <div className="-mt-6 flex flex-col items-center gap-1">
-        <h1 className="text-2xl font-bold text-foreground">Page not found</h1>
-        <p className="text-sm text-muted-foreground">Halaman yang kamu cari tidak ada atau sudah dipindahkan.</p>
+        <h1 className="text-2xl font-bold text-foreground">{t.title}</h1>
+        <p className="text-sm text-muted-foreground">{t.desc}</p>
       </div>
 
       {/* Terminal */}
@@ -83,7 +102,7 @@ export default function NotFound() {
 
       {/* Nav links */}
       <div className="flex flex-wrap justify-center gap-2">
-        {LINKS.map(({ href, label }) => (
+        {t.links.map(({ href, label }) => (
           <Link
             key={href}
             href={`/${locale}${href === "/" ? "" : href}`}
@@ -100,7 +119,7 @@ export default function NotFound() {
         className="inline-flex items-center gap-2 rounded-full bg-primary px-5 py-2.5 text-sm font-medium text-primary-foreground transition-opacity hover:opacity-90"
       >
         <Home className="h-4 w-4" />
-        Back to Home
+        {t.cta}
       </Link>
     </div>
   );
