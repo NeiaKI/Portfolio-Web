@@ -232,10 +232,7 @@ function CategoryCard({ category }: { category: Category }) {
               key={skill.name}
               className="inline-flex items-center gap-1.5 rounded-full border border-border bg-background px-2.5 py-1 text-xs text-foreground hover:border-primary/40 hover:text-primary transition-colors cursor-default"
             >
-              <Icon
-                className="h-3 w-3 shrink-0"
-                style={{ color: skill.color === "currentColor" ? undefined : skill.color }}
-              />
+              <Icon className="h-3 w-3 shrink-0 text-muted-foreground" />
               {skill.name}
             </span>
           );
