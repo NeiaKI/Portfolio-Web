@@ -186,6 +186,13 @@ export default async function UsesPage({ params }: Props) {
                 <>For music, I use <A href="https://spotify.com">Spotify</A> with <A href="https://spicetify.app">Spicetify</A> for ad blocking and customization, and <A href="https://music.apple.com">Apple Music</A> for lossless audio.</>
               )}
             </li>
+            <li>
+              {id ? (
+                <>Untuk email, saya menggunakan <A href="https://proton.me/mail">ProtonMail</A>. Ada beberapa hal yang kurang saya sukai, tapi ini tetap pilihan email terbaik yang ada.</>
+              ) : (
+                <>For email, I use <A href="https://proton.me/mail">ProtonMail</A>. I have my annoyances with it, but it's the best email client out there.</>
+              )}
+            </li>
           </ul>
 
           {/* AI */}
