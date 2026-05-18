@@ -132,6 +132,8 @@ export function CodingProgress() {
   const padData = useCallback((data: Activity[]) => {
     if (data.length === 0) return data;
 
+    const todayStr = new Date().toLocaleDateString("en-CA");
+
     // Pad start: from first Sunday of May last year
     const firstDate = new Date(data[0].date);
     const mayStart = new Date();
@@ -146,22 +148,10 @@ export function CodingProgress() {
       cur.setDate(cur.getDate() + 1);
     }
 
-    // Pad end: fill to last Saturday on or after May 31
-    const lastDate = new Date(data[data.length - 1].date);
-    const endOfMonth = new Date(lastDate.getFullYear(), lastDate.getMonth() + 1, 0); // last day of current month
-    // extend to next Saturday after end of month
-    const daysToSat = (6 - endOfMonth.getDay() + 7) % 7;
-    const target = new Date(endOfMonth);
-    target.setDate(target.getDate() + daysToSat);
-    const endPad: Activity[] = [];
-    const cursor2 = new Date(lastDate);
-    cursor2.setDate(cursor2.getDate() + 1);
-    while (cursor2 <= target) {
-      endPad.push({ date: cursor2.toISOString().split("T")[0], count: 0, level: 0 });
-      cursor2.setDate(cursor2.getDate() + 1);
-    }
+    // Strip future dates — calendar ends at today
+    const filteredData = data.filter((d) => d.date <= todayStr);
 
-    return [...startPad, ...data, ...endPad];
+    return [...startPad, ...filteredData];
   }, []);
 
   const renderBlock = (block: React.ReactElement, activity: Activity) => {
