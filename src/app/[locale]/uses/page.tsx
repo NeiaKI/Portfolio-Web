@@ -181,9 +181,9 @@ export default async function UsesPage({ params }: Props) {
             </li>
             <li>
               {id ? (
-                <>Untuk musik, saya menggunakan <A href="https://spotify.com">Spotify</A>.</>
+                <>Untuk musik, saya menggunakan <A href="https://spotify.com">Spotify</A> dengan <A href="https://spicetify.app">Spicetify</A> untuk memblokir iklan dan kustomisasi tampilan, serta <A href="https://music.apple.com">Apple Music</A> untuk audio lossless.</>
               ) : (
-                <>For music, I use <A href="https://spotify.com">Spotify</A>.</>
+                <>For music, I use <A href="https://spotify.com">Spotify</A> with <A href="https://spicetify.app">Spicetify</A> for ad blocking and customization, and <A href="https://music.apple.com">Apple Music</A> for lossless audio.</>
               )}
             </li>
           </ul>
