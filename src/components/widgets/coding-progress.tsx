@@ -134,22 +134,23 @@ export function CodingProgress() {
 
     const todayStr = new Date().toLocaleDateString("en-CA");
 
-    // Pad start: from first Sunday of May last year
-    const firstDate = new Date(data[0].date);
-    const mayStart = new Date();
-    mayStart.setFullYear(mayStart.getFullYear() - 1);
-    mayStart.setMonth(4);
-    mayStart.setDate(1);
-    mayStart.setDate(mayStart.getDate() - mayStart.getDay()); // back to Sunday
+    // Start: exactly one year ago today, back to Sunday of that week
+    const startDate = new Date();
+    startDate.setFullYear(startDate.getFullYear() - 1);
+    startDate.setDate(startDate.getDate() - startDate.getDay());
+    const startStr = startDate.toLocaleDateString("en-CA");
+
+    // Pad empty days from startStr up to the first API entry
+    const firstApiDate = data[0].date;
     const startPad: Activity[] = [];
-    const cur = new Date(mayStart);
-    while (cur < firstDate) {
-      startPad.push({ date: cur.toISOString().split("T")[0], count: 0, level: 0 });
+    const cur = new Date(startStr);
+    while (cur.toLocaleDateString("en-CA") < firstApiDate) {
+      startPad.push({ date: cur.toLocaleDateString("en-CA"), count: 0, level: 0 });
       cur.setDate(cur.getDate() + 1);
     }
 
-    // Strip future dates — calendar ends at today
-    const filteredData = data.filter((d) => d.date <= todayStr);
+    // Keep only dates within [startStr, todayStr]
+    const filteredData = data.filter((d) => d.date >= startStr && d.date <= todayStr);
 
     return [...startPad, ...filteredData];
   }, []);
