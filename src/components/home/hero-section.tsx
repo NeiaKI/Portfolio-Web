@@ -125,11 +125,8 @@ export function HeroSection() {
         transition={{ duration: 0.5, delay: 0.08 }}
         className="flex flex-col gap-2"
       >
-        <h1 className="text-3xl font-bold tracking-tight sm:text-4xl lg:text-5xl">
-          <span className="text-foreground">{t("greetingPrefix") as string} </span>
-          <span className="bg-gradient-to-r from-primary via-purple-400 to-pink-400 bg-clip-text text-transparent">
-            {t("greetingName") as string}
-          </span>
+        <h1 className="text-3xl font-bold tracking-tight text-foreground sm:text-4xl lg:text-5xl">
+          {t("greeting")}
         </h1>
         <p className="text-xl text-muted-foreground min-h-[1.75rem]">
           {t("typingPrefix")}{" "}

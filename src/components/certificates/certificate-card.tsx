@@ -51,7 +51,7 @@ export function CertificateCard({ certificate }: { certificate: Certificate }) {
     <div className={`group flex items-center gap-3 rounded-xl border bg-card p-4 transition-all ${
       hasUrl
         ? "border-border hover:border-primary/30 hover:shadow-sm cursor-pointer"
-        : "border-border/50 opacity-80"
+        : "border-border/50"
     }`}>
       <IssuerLogo src={certificate.thumbnail_url} issuer={certificate.issuer} />
 
@@ -70,9 +70,11 @@ export function CertificateCard({ certificate }: { certificate: Certificate }) {
         </div>
       </div>
 
-      {hasUrl && (
-        <ExternalLink className="h-3.5 w-3.5 shrink-0 text-muted-foreground/40 transition-colors group-hover:text-primary" />
-      )}
+      <ExternalLink className={`h-3.5 w-3.5 shrink-0 transition-colors ${
+        hasUrl
+          ? "text-muted-foreground/40 group-hover:text-primary"
+          : "text-muted-foreground/20"
+      }`} />
     </div>
   );
 

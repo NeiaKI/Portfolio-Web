@@ -228,6 +228,11 @@
 :root:not(.dark) .hljs-addition { color: #40a02b !important; background: #40a02b15 !important; }
 :root:not(.dark) .hljs-deletion { color: #d20f39 !important; background: #d20f3915 !important; }
 
+@keyframes blink {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0; }
+}
+
 @keyframes spin-slow {
   from { transform: rotate(0deg); }
   to   { transform: rotate(360deg); }

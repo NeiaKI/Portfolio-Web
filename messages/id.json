@@ -37,6 +37,9 @@
   },
   "home": {
     "greeting": "Halo, Saya EKI",
+    "greetingPrefix": "Halo, Saya",
+    "greetingName": "EKI",
+    "openToWork": "Terbuka untuk Kerja",
     "typingPrefix": "Saya seorang",
     "roles": [
       "Software Engineer",

@@ -41,13 +41,6 @@ export function ProjectCard({ project, locale, featured }: ProjectCardProps) {
 
   return (
     <div className="group card-glow flex flex-col rounded-2xl border border-border/40 bg-card overflow-hidden relative">
-      {/* Featured badge */}
-      {featured && (
-        <span className="absolute top-3 left-3 z-10 rounded-full bg-primary/90 px-2 py-0.5 text-[10px] font-semibold text-primary-foreground">
-          Featured
-        </span>
-      )}
-
       {/* Thumbnail */}
       <a
         href={project.source_url ?? "#"}

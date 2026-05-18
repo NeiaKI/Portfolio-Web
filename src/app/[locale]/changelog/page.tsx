@@ -125,14 +125,15 @@ const RELEASES: Release[] = [
 
 export default async function ChangelogPage({ params }: Props) {
   const { locale } = await params;
-  void locale;
 
   return (
     <MainLayout>
       <div className="flex flex-col gap-8">
         <div className="text-center">
           <h1 className="text-2xl font-bold text-foreground">Changelog</h1>
-          <p className="mt-1 text-sm text-muted-foreground">Riwayat perubahan dan update portfolio ini</p>
+          <p className="mt-1 text-sm text-muted-foreground">
+            {locale === "id" ? "Riwayat perubahan dan update portfolio ini" : "History of changes and updates to this portfolio"}
+          </p>
         </div>
 
         <div className="relative flex flex-col gap-0">

@@ -23,7 +23,10 @@ export default async function CertificatesPage({ params }: Props) {
         <div>
           <h1 className="text-2xl font-bold text-foreground">{t("certificates")}</h1>
           <p className="text-sm text-muted-foreground">
-            {certificates.length} professional certifications and completed courses
+            {locale === "id"
+              ? `${certificates.length} sertifikasi profesional dan kursus yang telah diselesaikan`
+              : `${certificates.length} professional certifications and completed courses`
+            }
           </p>
         </div>
         <CertificateList certificates={certificates} />

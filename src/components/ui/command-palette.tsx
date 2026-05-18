@@ -4,7 +4,7 @@ import { useEffect, useState, useCallback } from "react";
 import { useRouter, usePathname } from "next/navigation";
 import { useTheme } from "next-themes";
 import { Command } from "cmdk";
-import { Home, FolderOpen, Newspaper, Award, Coffee, Search, Code2, Layers, Moon, Sun, Clock } from "lucide-react";
+import { Home, FolderOpen, Newspaper, Award, Coffee, Search, Code2, Layers, Moon, Sun, Clock, ScrollText } from "lucide-react";
 import { CERTIFICATES } from "@/data/certificates";
 import type { Project } from "@/types/database";
 import type { PostMeta } from "@/lib/blog";
@@ -16,6 +16,7 @@ const PAGES = [
   { label: "Certificates", href: "/certificates",   icon: Award,      shortcut: "4", desc: "Certifications" },
   { label: "Uses",         href: "/uses",           icon: Layers,     shortcut: "5", desc: "My setup"       },
   { label: "Donate",       href: "/donate",         icon: Coffee,     shortcut: "6", desc: "Support my work" },
+  { label: "Changelog",    href: "/changelog",      icon: ScrollText, shortcut: "",  desc: "What's new"      },
 ];
 
 function Kbd({ children }: { children: React.ReactNode }) {
@@ -142,7 +143,7 @@ export function CommandPalette() {
                 <Icon className="h-4 w-4 shrink-0 text-muted-foreground" />
                 <span className="flex-1 font-medium">{label}</span>
                 <span className="text-xs text-muted-foreground">{desc}</span>
-                <Kbd>⌘{shortcut}</Kbd>
+                {shortcut && <Kbd>⌘{shortcut}</Kbd>}
               </Command.Item>
             ))}
           </Command.Group>

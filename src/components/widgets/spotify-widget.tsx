@@ -48,6 +48,7 @@ export function SpotifyWidget() {
       fetch("/api/spotify")
         .then((r) => r.json())
         .then(setData)
+        .catch(() => {})
         .finally(() => setLoading(false));
 
     load();

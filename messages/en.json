@@ -37,6 +37,9 @@
   },
   "home": {
     "greeting": "Hi, I'm EKI",
+    "greetingPrefix": "Hi, I'm",
+    "greetingName": "EKI",
+    "openToWork": "Open to Work",
     "typingPrefix": "I'm a",
     "roles": [
       "Software Engineer",
