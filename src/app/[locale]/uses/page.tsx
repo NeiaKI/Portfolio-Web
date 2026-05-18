@@ -259,9 +259,9 @@ export default async function UsesPage({ params }: Props) {
             </li>
             <li>
               {id ? (
-                <>Wallpaper saya adalah seni digital — sebuah adegan fantasi gelap dengan rusa roh bercahaya, sesuai dengan estetika Catppuccin Mocha.</>
+                <>Wallpaper saya dari koleksi <A href="https://github.com/orangci/walls-catppuccin-mocha">walls-catppuccin-mocha</A> — saya menggunakan <strong>dominik-mayer-10.jpg</strong>, foto alam yang cocok dengan estetika Catppuccin Mocha.</>
               ) : (
-                <>My wallpaper is custom digital art — a dark fantasy scene with glowing spirit deer, fitting the Catppuccin Mocha aesthetic.</>
+                <>My wallpaper is from the <A href="https://github.com/orangci/walls-catppuccin-mocha">walls-catppuccin-mocha</A> collection — I use <strong>dominik-mayer-10.jpg</strong>, a nature photo that fits the Catppuccin Mocha aesthetic.</>
               )}
             </li>
           </ul>
