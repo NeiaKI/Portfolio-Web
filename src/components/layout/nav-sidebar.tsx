@@ -147,14 +147,16 @@ export function NavSidebar() {
             title={isDark ? "Switch to Light (⌘⇧L)" : "Switch to Dark (⌘⇧L)"}
             onClick={() => setTheme(isDark ? "light" : "dark")}
             className={cn(
-              "relative inline-flex h-5 w-9 shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors",
+              "relative inline-flex h-5 w-9 shrink-0 cursor-pointer rounded-full border-2 border-transparent",
+              mounted && "transition-colors",
               isDark ? "bg-primary" : "bg-muted-foreground/30"
             )}
           >
             <span
               suppressHydrationWarning
               className={cn(
-                "pointer-events-none inline-block h-4 w-4 rounded-full bg-background shadow-sm transition-transform",
+                "pointer-events-none inline-block h-4 w-4 rounded-full bg-background shadow-sm",
+                mounted && "transition-transform",
                 isDark ? "translate-x-4" : "translate-x-0"
               )}
             />
