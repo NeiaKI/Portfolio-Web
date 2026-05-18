@@ -1,6 +1,6 @@
 import type { MetadataRoute } from "next";
 
-const BASE = process.env.NEXT_PUBLIC_SITE_URL ?? "https://nateeki.vercel.app";
+const BASE = process.env.NEXT_PUBLIC_SITE_URL ?? "https://nateeki.dev";
 
 export default function sitemap(): MetadataRoute.Sitemap {
   const locales = ["en", "id"];

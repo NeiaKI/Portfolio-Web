@@ -11,6 +11,7 @@ import { ReadingProgress } from "@/components/blog/reading-progress";
 import { TableOfContents } from "@/components/blog/table-of-contents";
 import { extractHeadings } from "@/lib/mdx-utils";
 import { ShareButtons } from "@/components/blog/share-buttons";
+import { ViewCount } from "@/components/blog/view-count";
 import type { Metadata } from "next";
 
 type Props = { params: Promise<{ locale: string; slug: string }> };
@@ -27,7 +28,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { slug, locale } = await params;
   const post = getPostBySlug(slug);
   if (!post) return { title: "Not Found" };
-  const baseUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "https://nateeki.vercel.app";
+  const baseUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "https://nateeki.dev";
   return {
     title: post.title,
     description: post.description,
@@ -72,7 +73,7 @@ export default async function BlogPostPage({ params }: Props) {
     .filter((p) => p.slug !== slug && p.tags.some((t) => post.tags.includes(t)))
     .slice(0, 3);
 
-  const baseUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "https://nateeki.vercel.app";
+  const baseUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "https://nateeki.dev";
   const postUrl = `${baseUrl}/${locale}/blog/${slug}`;
 
   const jsonLd = {
@@ -137,6 +138,7 @@ export default async function BlogPostPage({ params }: Props) {
                 <Clock className="h-3.5 w-3.5" />
                 {readTime} {t("minRead")}
               </span>
+              <ViewCount slug={slug} />
             </div>
 
             {post.tags.length > 0 && (

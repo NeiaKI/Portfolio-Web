@@ -10,7 +10,7 @@ function escapeXml(str: string): string {
 }
 
 export function GET() {
-  const base = process.env.NEXT_PUBLIC_SITE_URL ?? "https://nateeki.vercel.app";
+  const base = process.env.NEXT_PUBLIC_SITE_URL ?? "https://nateeki.dev";
   const posts = getAllPosts();
 
   const items = posts

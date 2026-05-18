@@ -1,4 +1,4 @@
-const CACHE = 'nateeki-v1';
+const CACHE = 'nateeki-1779112509165';
 
 const PRECACHE = [
   '/favicon.ico',

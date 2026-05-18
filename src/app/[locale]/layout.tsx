@@ -12,7 +12,7 @@ type Props = {
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { locale } = await params;
   const t = await getTranslations({ locale, namespace: "home" });
-  const baseUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "https://nateeki.vercel.app";
+  const baseUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "https://nateeki.dev";
 
   return {
     metadataBase: new URL(baseUrl),
@@ -66,7 +66,7 @@ export default async function LocaleLayout({ children, params }: Props) {
   }
 
   const messages = await getMessages();
-  const baseUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "https://nateeki.vercel.app";
+  const baseUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "https://nateeki.dev";
 
   const jsonLd = {
     "@context": "https://schema.org",

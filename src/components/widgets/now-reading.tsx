@@ -1,17 +1,29 @@
 "use client";
 
+import { useEffect, useState } from "react";
 import { BookOpen } from "lucide-react";
 
-const BOOK = {
-  title: "The Psychology of Money",
-  author: "Morgan Housel",
-  cover: "https://covers.openlibrary.org/b/isbn/9780857197689-M.jpg" as string | null,
-  progress: 43,
-  url: "https://www.gramedia.com/products/the-psychology-money-edisi-revisi",
+type Book = {
+  title: string;
+  author: string;
+  cover: string | null;
+  progress: number;
+  url?: string;
 };
 
 export function NowReading() {
-  if (!BOOK.title) return null;
+  const [book, setBook] = useState<Book | null>(null);
+
+  useEffect(() => {
+    fetch("/api/now-reading")
+      .then((r) => r.json())
+      .then((d: Book | null) => { if (d?.title) setBook(d); })
+      .catch(() => {});
+  }, []);
+
+  if (!book) return null;
+
+  const BOOK = book;
 
   return (
     <div className="rounded-xl border border-border bg-card p-4 flex flex-col gap-3">
