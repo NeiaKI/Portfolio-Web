@@ -153,6 +153,13 @@ export default async function UsesPage({ params }: Props) {
                 <>For my browser, I primarily use <A href="https://zen-browser.app">Zen Browser</A> — a Firefox-based browser with a cleaner UI and better tab management. I also keep <A href="https://github.com/helium-browser/helium">Helium</A> around for lightweight browsing sessions.</>
               )}
             </li>
+            <li>
+              {id ? (
+                <>Untuk ekstensi browser, saya menggunakan <A href="https://ublockorigin.com">uBlock Origin</A> untuk memblokir iklan dan tracker, <A href="https://vimium.github.io">Vimium</A> untuk navigasi ala Vim, dan <A href="https://bitwarden.com">Bitwarden</A> untuk manajemen password. Selain itu tidak diperlukan.</>
+              ) : (
+                <>For browser extensions, I use <A href="https://ublockorigin.com">uBlock Origin</A> to block ads and trackers, <A href="https://vimium.github.io">Vimium</A> for vim-like keybindings, and <A href="https://bitwarden.com">Bitwarden</A> for password management. Everything else is superfluous.</>
+              )}
+            </li>
           </ul>
 
           {/* Applications */}
