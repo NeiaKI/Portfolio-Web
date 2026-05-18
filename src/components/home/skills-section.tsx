@@ -251,11 +251,21 @@ export function SkillsSection() {
 
   return (
     <section className="flex flex-col gap-4">
-      <div className="flex items-center justify-between">
-        <h2 className="text-lg font-semibold text-foreground">{t("skillsTitle")}</h2>
-        <span className="text-xs text-muted-foreground">
-          {UNIQUE.length} skills · {CATEGORIES.length} categories
-        </span>
+      {/* Header with toggle button */}
+      <div className="flex items-center justify-between gap-2">
+        <div className="flex items-baseline gap-2 flex-wrap">
+          <h2 className="text-lg font-semibold text-foreground">{t("skillsTitle")}</h2>
+          <span className="text-xs text-muted-foreground">
+            ({UNIQUE.length} skills across {CATEGORIES.length} categories)
+          </span>
+        </div>
+        <button
+          onClick={() => setExpanded((p) => !p)}
+          className="flex shrink-0 items-center gap-1.5 rounded-lg border border-border bg-card px-3 py-1.5 text-xs text-muted-foreground transition-colors hover:border-primary/40 hover:text-primary"
+        >
+          {expanded ? <ChevronUp className="h-3.5 w-3.5" /> : <ChevronDown className="h-3.5 w-3.5" />}
+          {expanded ? "Show less" : "Show all"}
+        </button>
       </div>
 
       {/* 3-row marquee */}
@@ -264,15 +274,6 @@ export function SkillsSection() {
         <MarqueeRow skills={row2} reverse />
         <MarqueeRow skills={row3} />
       </div>
-
-      {/* Expand toggle */}
-      <button
-        onClick={() => setExpanded((p) => !p)}
-        className="flex items-center gap-1.5 w-fit rounded-lg border border-border bg-card px-3 py-1.5 text-xs text-muted-foreground transition-colors hover:border-primary/40 hover:text-primary"
-      >
-        {expanded ? <ChevronUp className="h-3.5 w-3.5" /> : <ChevronDown className="h-3.5 w-3.5" />}
-        {expanded ? "Show less" : "Show all"}
-      </button>
 
       {/* Expandable grid */}
       <AnimatePresence>
