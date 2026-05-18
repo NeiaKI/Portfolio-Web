@@ -6,7 +6,7 @@ const BOOK = {
   title: "The Psychology of Money",
   author: "Morgan Housel",
   cover: "https://covers.openlibrary.org/b/isbn/9780857197689-M.jpg" as string | null,
-  progress: 42,
+  progress: 43,
   url: "https://www.gramedia.com/products/the-psychology-money-edisi-revisi",
 };
 
