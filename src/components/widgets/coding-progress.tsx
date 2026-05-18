@@ -266,8 +266,8 @@ export function CodingProgress() {
                 style={{ width: "100%" }}
               />
             </div>
-            {/* Custom footer */}
-            <div className="flex items-center justify-between px-0.5">
+            {/* Custom footer — fixed height so hover label doesn't cause layout shift */}
+            <div className="flex h-6 items-center justify-between px-0.5">
               {/* Less … More legend */}
               <div className="flex items-center gap-1.5 text-[11px] text-muted-foreground">
                 <span>Less</span>
@@ -278,16 +278,14 @@ export function CodingProgress() {
                 ))}
                 <span>More</span>
               </div>
-              {/* Right: hover label or total count */}
-              {hoverLabel ? (
-                <span className="rounded-md bg-foreground px-2.5 py-1 text-[11px] font-medium text-background whitespace-nowrap">
-                  {hoverLabel}
-                </span>
-              ) : ghStats ? (
-                <span className="text-[11px] text-muted-foreground whitespace-nowrap">
-                  {ghStats.total.toLocaleString()} contributions in the last year
-                </span>
-              ) : null}
+              {/* Right: hover label or total count — same height regardless */}
+              <span className={`rounded-md text-[11px] font-medium whitespace-nowrap transition-colors ${
+                hoverLabel
+                  ? "bg-foreground px-2 py-0.5 text-background"
+                  : "text-muted-foreground"
+              }`}>
+                {hoverLabel ?? (ghStats ? `${ghStats.total.toLocaleString()} contributions in the last year` : "")}
+              </span>
             </div>
           </div>
         ) : (
