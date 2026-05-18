@@ -186,11 +186,23 @@ export default async function UsesPage({ params }: Props) {
                 <>For music, I use <A href="https://spotify.com">Spotify</A> with <A href="https://spicetify.app">Spicetify</A> for ad blocking and customization, and <A href="https://music.apple.com">Apple Music</A> for lossless audio.</>
               )}
             </li>
+          </ul>
+
+          {/* Services */}
+          <h2>{id ? "Layanan" : "Services"}</h2>
+          <ul>
             <li>
               {id ? (
-                <>Untuk email, saya menggunakan <A href="https://proton.me/mail">ProtonMail</A>. Ada beberapa hal yang kurang saya sukai, tapi ini tetap pilihan email terbaik yang ada.</>
+                <>Untuk email, saya menggunakan <A href="https://proton.me/mail">ProtonMail</A>. Ini masih layanan email terbaik yang menghormati privasi untuk kebanyakan orang.</>
               ) : (
-                <>For email, I use <A href="https://proton.me/mail">ProtonMail</A>. I have my annoyances with it, but it's the best email client out there.</>
+                <>For email, I use <A href="https://proton.me/mail">ProtonMail</A>. It's still the best privacy-respecting email service out there for most people.</>
+              )}
+            </li>
+            <li>
+              {id ? (
+                <><A href="https://bitwarden.com">Bitwarden</A> dan <A href="https://github.com/dani-garcia/vaultwarden">Vaultwarden</A> adalah password manager terbaik. Melakukan semua yang kamu butuhkan, dan harga premium-nya sangat terjangkau. <A href="https://proton.me/pass">Proton Pass</A> juga bagus sebagai alternatif.</>
+              ) : (
+                <><A href="https://bitwarden.com">Bitwarden</A> and <A href="https://github.com/dani-garcia/vaultwarden">Vaultwarden</A> are the best password managers. They do everything you could need, and the premium subscription is dirt-cheap. <A href="https://proton.me/pass">Proton Pass</A> is also a solid alternative.</>
               )}
             </li>
           </ul>
