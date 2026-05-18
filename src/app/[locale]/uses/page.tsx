@@ -160,6 +160,13 @@ export default async function UsesPage({ params }: Props) {
           <ul>
             <li>
               {id ? (
+                <>Saya menggunakan <A href="https://neovim.io">Neovim</A> untuk semua keperluan menulis. Vim memang terkenal dengan kurva belajar yang curam, tapi menurut saya hasilnya sepadan.</>
+              ) : (
+                <>I use <A href="https://neovim.io">Neovim</A> for all of my writing. Vim notoriously has a steep learning curve, but I think the payoff is worth it.</>
+              )}
+            </li>
+            <li>
+              {id ? (
                 <>Untuk version control dan hosting, saya menggunakan <A href="https://github.com">GitHub</A>.</>
               ) : (
                 <>For version control and hosting, I use <A href="https://github.com">GitHub</A>.</>
@@ -167,9 +174,9 @@ export default async function UsesPage({ params }: Props) {
             </li>
             <li>
               {id ? (
-                <>Untuk catatan dan manajemen pengetahuan, saya menggunakan <A href="https://obsidian.md">Obsidian</A>. Ini adalah editor Markdown lokal dengan tampilan grafik untuk menghubungkan ide — semua data tersimpan di disk dan disinkronkan dengan setup saya sendiri.</>
+                <>Untuk catatan, saya menggunakan <A href="https://obsidian.md">Obsidian</A>. Saya belum terlalu lama menggunakannya dan belum sepenuhnya puas, tapi ini sangat bagus untuk apa yang dikerjakan.</>
               ) : (
-                <>For note-taking and knowledge management, I use <A href="https://obsidian.md">Obsidian</A>. It's a local-first Markdown editor with a graph view for linking ideas — all data stays on disk and syncs via my own setup.</>
+                <>For note-taking, I use <A href="https://obsidian.md">Obsidian</A>. I haven't been using this for very long, and I'm still not sure I'm entirely satisfied with it, but it's very good at what it does.</>
               )}
             </li>
             <li>
