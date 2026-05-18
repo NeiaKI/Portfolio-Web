@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { useTranslations } from "next-intl";
 import { motion } from "framer-motion";
 import Link from "next/link";
+import Image from "next/image";
 import { cn } from "@/lib/utils";
 
 const SOCIAL_LINKS = [
@@ -43,6 +44,15 @@ const SOCIAL_LINKS = [
       </svg>
     ),
   },
+  {
+    label: "Facebook",
+    href: "https://www.facebook.com/FebiEki",
+    svg: (
+      <svg viewBox="0 0 24 24" className="h-4 w-4" fill="currentColor">
+        <path d="M24 12.073C24 5.405 18.627 0 12 0S0 5.405 0 12.073C0 18.1 4.388 23.094 10.125 24v-8.437H7.078v-3.49h3.047V9.41c0-3.025 1.791-4.697 4.533-4.697 1.312 0 2.686.236 2.686.236v2.97h-1.513c-1.491 0-1.956.93-1.956 1.886v2.268h3.328l-.532 3.49h-2.796V24C19.612 23.094 24 18.1 24 12.073z" />
+      </svg>
+    ),
+  },
 ];
 
 export function HeroSection() {
@@ -71,6 +81,28 @@ export function HeroSection() {
 
   return (
     <section className="flex flex-col gap-5 py-6">
+      {/* Avatar — visible only on mobile (sidebar shows it on desktop) */}
+      <motion.div
+        initial={{ opacity: 0, scale: 0.8 }}
+        animate={{ opacity: 1, scale: 1 }}
+        transition={{ duration: 0.5, ease: "backOut" }}
+        className="flex lg:hidden"
+      >
+        <div className="relative h-16 w-16">
+          {/* Animated gradient ring */}
+          <div className="absolute inset-0 rounded-full animate-spin-slow bg-gradient-to-tr from-primary via-transparent to-pink-400 p-[2px]">
+            <div className="h-full w-full rounded-full bg-background" />
+          </div>
+          <Image
+            src="/images/avatar.jpg"
+            alt="Febiyanto Rizki Qurbandi"
+            fill
+            className="rounded-full object-cover p-[3px]"
+            priority
+          />
+        </div>
+      </motion.div>
+
       {/* Heading + typewriter */}
       <motion.div
         initial={{ opacity: 0, y: 20 }}

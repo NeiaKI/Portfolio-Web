@@ -4,7 +4,7 @@ export default function manifest(): MetadataRoute.Manifest {
   return {
     name: "Febiyanto Rizki Qurbandi",
     short_name: "nateeki",
-    description: "Software Engineer & 3D Artist — portfolio, blog, dan projects",
+    description: "Software Engineer — portfolio, blog, dan projects",
     start_url: "/",
     display: "standalone",
     background_color: "#1e1e2e",

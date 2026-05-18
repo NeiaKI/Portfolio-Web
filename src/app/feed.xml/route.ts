@@ -33,7 +33,7 @@ export function GET() {
   <channel>
     <title>Febiyanto Rizki Qurbandi — Blog</title>
     <link>${base}</link>
-    <description>Tulisan tentang software engineering, Linux, dan 3D art</description>
+    <description>Tulisan tentang software engineering dan Linux</description>
     <language>id</language>
     <lastBuildDate>${new Date().toUTCString()}</lastBuildDate>
     <atom:link href="${base}/feed.xml" rel="self" type="application/rss+xml"/>

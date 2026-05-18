@@ -16,9 +16,9 @@ const jetbrainsMono = JetBrains_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Eki — Software Engineer & 3D Artist",
+  title: "Eki — Software Engineer",
   description:
-    "Personal portfolio of Eki — Software Engineer, 3D Artist, and Linux Enthusiast.",
+    "Personal portfolio of Eki — Software Engineer and Linux Enthusiast.",
   openGraph: {
     type: "website",
     locale: "en_US",
@@ -42,6 +42,11 @@ export default function RootLayout({
         <link rel="alternate" type="application/rss+xml" title="Febiyanto Rizki Qurbandi — Blog" href="/feed.xml" />
       </head>
       <body className="min-h-full" suppressHydrationWarning>
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `if('serviceWorker'in navigator)navigator.serviceWorker.register('/sw.js')`,
+          }}
+        />
         <a
           href="#main-content"
           className="fixed left-2 top-2 z-[9999] -translate-y-16 rounded-lg bg-primary px-4 py-2 text-sm font-semibold text-primary-foreground shadow-lg transition-transform focus:translate-y-0"

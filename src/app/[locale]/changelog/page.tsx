@@ -41,9 +41,24 @@ const TYPE_LABEL: Record<ChangeType, string> = {
 
 const RELEASES: Release[] = [
   {
-    version: "v2.4",
+    version: "v2.5",
     date: "May 2026",
     label: "Latest",
+    changes: [
+      { type: "feat",    text: "PWA service worker — offline support untuk halaman & aset yang sudah dikunjungi" },
+      { type: "feat",    text: "404 page bilingual — EN/ID otomatis berdasarkan locale URL" },
+      { type: "feat",    text: "Related posts di akhir setiap blog post berdasarkan tag" },
+      { type: "feat",    text: "Uses page locale-aware metadata (EN/ID)" },
+      { type: "feat",    text: "Facebook link di hero social links" },
+      { type: "feat",    text: "Mobile avatar dengan animated gradient ring di hero section" },
+      { type: "feat",    text: "Command palette: blog search, theme toggle, Uses page shortcut" },
+      { type: "improve", text: "Light mode — contrast dikurangi agar lebih nyaman di mata" },
+      { type: "improve", text: "Certificate icons Frontend Masters & Dicoding Indonesia" },
+    ],
+  },
+  {
+    version: "v2.4",
+    date: "Apr 2026",
     changes: [
       { type: "feat",    text: "Clock widget (Jakarta GMT+7) di widget sidebar" },
       { type: "feat",    text: "Blog MDX dengan syntax highlighting Catppuccin" },

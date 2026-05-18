@@ -50,23 +50,23 @@
 
 /* Catppuccin Latte — Light Mode */
 :root {
-  --background: oklch(0.868 0.013 268);
-  --foreground: oklch(0.300 0.035 268);
-  --card: oklch(0.910 0.010 268);
-  --card-foreground: oklch(0.300 0.035 268);
-  --popover: oklch(0.935 0.007 268);
-  --popover-foreground: oklch(0.300 0.035 268);
+  --background: oklch(0.940 0.008 268);
+  --foreground: oklch(0.360 0.030 268);
+  --card: oklch(0.965 0.005 268);
+  --card-foreground: oklch(0.360 0.030 268);
+  --popover: oklch(0.975 0.004 268);
+  --popover-foreground: oklch(0.360 0.030 268);
   --primary: oklch(0.580 0.148 271);
   --primary-foreground: oklch(0.980 0.003 268);
-  --secondary: oklch(0.800 0.015 265);
-  --secondary-foreground: oklch(0.300 0.035 268);
-  --muted: oklch(0.800 0.015 265);
-  --muted-foreground: oklch(0.470 0.028 268);
-  --accent: oklch(0.760 0.017 265);
-  --accent-foreground: oklch(0.300 0.035 268);
+  --secondary: oklch(0.875 0.010 265);
+  --secondary-foreground: oklch(0.360 0.030 268);
+  --muted: oklch(0.875 0.010 265);
+  --muted-foreground: oklch(0.530 0.022 268);
+  --accent: oklch(0.855 0.011 265);
+  --accent-foreground: oklch(0.360 0.030 268);
   --destructive: oklch(0.459 0.200 17);
-  --border: oklch(0.738 0.018 265);
-  --input: oklch(0.800 0.015 265);
+  --border: oklch(0.840 0.011 265);
+  --input: oklch(0.875 0.010 265);
   --ring: oklch(0.580 0.148 271);
   --chart-1: oklch(0.580 0.148 271);
   --chart-2: oklch(0.560 0.140 301);
@@ -74,13 +74,13 @@
   --chart-4: oklch(0.620 0.130 79);
   --chart-5: oklch(0.620 0.160 38);
   --radius: 0.625rem;
-  --sidebar: oklch(0.843 0.014 268);
-  --sidebar-foreground: oklch(0.300 0.035 268);
+  --sidebar: oklch(0.920 0.008 268);
+  --sidebar-foreground: oklch(0.360 0.030 268);
   --sidebar-primary: oklch(0.580 0.148 271);
   --sidebar-primary-foreground: oklch(0.980 0.003 268);
-  --sidebar-accent: oklch(0.800 0.015 265);
-  --sidebar-accent-foreground: oklch(0.300 0.035 268);
-  --sidebar-border: oklch(0.738 0.018 265);
+  --sidebar-accent: oklch(0.875 0.010 265);
+  --sidebar-accent-foreground: oklch(0.360 0.030 268);
+  --sidebar-border: oklch(0.840 0.011 265);
   --sidebar-ring: oklch(0.580 0.148 271);
 }
 
@@ -227,6 +227,15 @@
 :root:not(.dark) .hljs-link { color: #209fb5 !important; text-decoration: underline; }
 :root:not(.dark) .hljs-addition { color: #40a02b !important; background: #40a02b15 !important; }
 :root:not(.dark) .hljs-deletion { color: #d20f39 !important; background: #d20f3915 !important; }
+
+@keyframes spin-slow {
+  from { transform: rotate(0deg); }
+  to   { transform: rotate(360deg); }
+}
+
+.animate-spin-slow {
+  animation: spin-slow 4s linear infinite;
+}
 
 @keyframes marquee {
   from { transform: translateX(0); }

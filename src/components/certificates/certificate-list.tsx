@@ -14,14 +14,14 @@ export function CertificateList({ certificates }: { certificates: Certificate[] 
 
   return (
     <div className="flex flex-col gap-6">
-      <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
+      <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 mt-5">
         {slice.map((cert) => (
           <CertificateCard key={cert.id} certificate={cert} />
         ))}
       </div>
 
       {total > 1 && (
-        <div className="flex items-center justify-center gap-3">
+        <div className="flex items-center justify-center gap-3 mt-8">
           <button
             onClick={() => setPage((p) => Math.max(1, p - 1))}
             disabled={page === 1}

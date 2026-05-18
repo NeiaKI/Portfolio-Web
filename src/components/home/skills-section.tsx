@@ -27,10 +27,6 @@ const SKILL_CATEGORIES = [
     skills: ["Docker", "Git", "GitHub Actions", "Vercel", "Nginx", "Bash", "Linux", "NixOS"],
   },
   {
-    name: "3D & Creative",
-    skills: ["Blender", "GLTF", "Three.js", "Geometry Nodes", "Shader Graph", "UV Mapping"],
-  },
-  {
     name: "System & Desktop",
     skills: ["Arch Linux", "Hyprland", "Waybar", "NixOS", "Nix", "Alacritty"],
   },

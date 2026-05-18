@@ -40,12 +40,12 @@
     "typingPrefix": "I'm a",
     "roles": [
       "Software Engineer",
-      "3D Artist",
       "Linux Enthusiast",
-      "Open Source Contributor"
+      "Open Source Contributor",
+      "Web Developer"
     ],
     "aboutTitle": "About",
-    "aboutDesc": "A passionate software engineer and 3D artist based in Indonesia. I love building things on the web, crafting 3D assets, and tinkering with Linux.",
+    "aboutDesc": "A passionate software engineer based in Indonesia. I love building things on the web, contributing to open source, and tinkering with Linux.",
     "viewCV": "View CV",
     "downloadCV": "Download CV",
     "skillsTitle": "Skills & Technologies",

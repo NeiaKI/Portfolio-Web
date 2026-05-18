@@ -40,12 +40,12 @@
     "typingPrefix": "Saya seorang",
     "roles": [
       "Software Engineer",
-      "3D Artist",
       "Linux Enthusiast",
-      "Open Source Contributor"
+      "Open Source Contributor",
+      "Web Developer"
     ],
     "aboutTitle": "Tentang",
-    "aboutDesc": "Software engineer dan 3D artist yang bersemangat, berbasis di Indonesia. Saya suka membangun hal-hal di web, membuat aset 3D, dan bereksperimen dengan Linux.",
+    "aboutDesc": "Software engineer yang bersemangat, berbasis di Indonesia. Saya suka membangun hal-hal di web, berkontribusi ke open source, dan bereksperimen dengan Linux.",
     "viewCV": "Lihat CV",
     "downloadCV": "Unduh CV",
     "skillsTitle": "Skill & Teknologi",

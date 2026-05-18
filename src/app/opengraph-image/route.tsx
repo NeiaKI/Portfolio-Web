@@ -71,12 +71,12 @@ export async function GET() {
 
         {/* Role */}
         <div style={{ fontSize: 24, color: "#89b4fa", marginBottom: 32 }}>
-          Software Engineer &amp; 3D Artist
+          Software Engineer
         </div>
 
         {/* Tags */}
         <div style={{ display: "flex", gap: 12 }}>
-          {["Next.js", "TypeScript", "Go", "Blender"].map((tag) => (
+          {["Next.js", "TypeScript", "Go", "Linux"].map((tag) => (
             <div
               key={tag}
               style={{
