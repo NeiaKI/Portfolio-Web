@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Music2 } from "lucide-react";
 import { cn } from "@/lib/utils";
 
@@ -42,24 +42,47 @@ function EqBars() {
 export function SpotifyWidget() {
   const [data, setData] = useState<SpotifyData | null>(null);
   const [loading, setLoading] = useState(true);
+  const [liveProgress, setLiveProgress] = useState<number | null>(null);
+  const tickRef = useRef<ReturnType<typeof setInterval> | null>(null);
 
   useEffect(() => {
     const load = () =>
       fetch("/api/spotify")
         .then((r) => r.json())
-        .then(setData)
+        .then((d: SpotifyData) => {
+          setData(d);
+          setLiveProgress(d.isPlaying && d.progress != null ? d.progress : null);
+        })
         .catch(() => {})
         .finally(() => setLoading(false));
 
     load();
-    const interval = setInterval(load, 30_000);
-    return () => clearInterval(interval);
+    const poll = setInterval(load, 30_000);
+    return () => clearInterval(poll);
   }, []);
 
+  // Tick liveProgress every second while playing
+  useEffect(() => {
+    if (tickRef.current) clearInterval(tickRef.current);
+    if (data?.isPlaying && data.duration) {
+      tickRef.current = setInterval(() => {
+        setLiveProgress((p) => {
+          if (p == null || p >= data.duration!) return p;
+          return Math.min(p + 1000, data.duration!);
+        });
+      }, 1000);
+    }
+    return () => { if (tickRef.current) clearInterval(tickRef.current); };
+  }, [data]);
+
   const progressPct =
-    data?.isPlaying && data.duration
-      ? Math.round((data.progress! / data.duration) * 100)
+    data?.isPlaying && data.duration && liveProgress != null
+      ? Math.round((liveProgress / data.duration) * 100)
       : null;
+
+  const elapsed = liveProgress != null ? Math.floor(liveProgress / 1000) : null;
+  const total = data?.duration != null ? Math.floor(data.duration / 1000) : null;
+  const fmt = (s: number) => `${Math.floor(s / 60)}:${String(s % 60).padStart(2, "0")}`;
 
   const content = (
     <div
@@ -108,13 +131,19 @@ export function SpotifyWidget() {
           </span>
         </div>
 
-        {/* Progress bar for live track */}
-        {progressPct !== null && (
-          <div className="mt-1 h-0.5 w-full rounded-full bg-muted overflow-hidden">
-            <div
-              className="h-full rounded-full bg-green-500 transition-all duration-1000"
-              style={{ width: `${progressPct}%` }}
-            />
+        {/* Progress bar + timestamps for live track */}
+        {progressPct !== null && elapsed != null && total != null && (
+          <div className="mt-1 flex flex-col gap-0.5">
+            <div className="h-0.5 w-full rounded-full bg-muted overflow-hidden">
+              <div
+                className="h-full rounded-full bg-green-500 transition-all duration-1000"
+                style={{ width: `${progressPct}%` }}
+              />
+            </div>
+            <div className="flex justify-between text-[9px] text-muted-foreground/60 tabular-nums">
+              <span>{fmt(elapsed)}</span>
+              <span>{fmt(total)}</span>
+            </div>
           </div>
         )}
       </div>
