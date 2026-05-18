@@ -245,9 +245,9 @@ export default async function UsesPage({ params }: Props) {
             </li>
             <li>
               {id ? (
-                <>Untuk font terminal, saya menggunakan <A href="https://www.nerdfonts.com">Nerd Fonts</A> untuk dukungan ikon di terminal.</>
+                <>Untuk font terminal, saya menggunakan <A href="https://www.jetbrains.com/lp/mono/">JetBrains Mono</A> dengan patch <A href="https://www.nerdfonts.com">Nerd Fonts</A> untuk dukungan ikon di terminal.</>
               ) : (
-                <>For my terminal font, I use <A href="https://www.nerdfonts.com">Nerd Fonts</A> for icon support in the terminal.</>
+                <>For my terminal font, I use <A href="https://www.jetbrains.com/lp/mono/">JetBrains Mono</A> with <A href="https://www.nerdfonts.com">Nerd Font</A> icons.</>
               )}
             </li>
             <li>
