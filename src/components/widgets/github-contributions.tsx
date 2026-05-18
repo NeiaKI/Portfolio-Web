@@ -1,6 +1,5 @@
 "use client";
 
-import { cloneElement } from "react";
 import { GitHubCalendar } from "react-github-calendar";
 import { useTheme } from "next-themes";
 
@@ -41,10 +40,8 @@ export function GitHubContributions() {
           fontSize={10}
           blockSize={10}
           blockMargin={3}
-          renderBlock={(block, activity) =>
-            activity.date > today
-              ? cloneElement(block, { style: { opacity: 0, pointerEvents: "none" } })
-              : block
+          transformData={(contributions) =>
+            contributions.filter((d) => d.date <= today)
           }
         />
       </div>
