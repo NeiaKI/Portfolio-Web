@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { useTheme } from "next-themes";
 import { Clock } from "lucide-react";
 
 interface LangData {
@@ -8,7 +9,8 @@ interface LangData {
   languages: { name: string; percent: number }[];
 }
 
-const LANG_COLORS: Record<string, string> = {
+// Dark-mode brand colors
+const LANG_COLORS_DARK: Record<string, string> = {
   TypeScript:  "#3178C6",
   JavaScript:  "#F7DF1E",
   Python:      "#3776AB",
@@ -29,6 +31,13 @@ const LANG_COLORS: Record<string, string> = {
   SQL:         "#e38c00",
 };
 
+// Light-mode overrides for colors that disappear on a light background
+const LANG_COLORS_LIGHT: Record<string, string> = {
+  ...LANG_COLORS_DARK,
+  JavaScript:  "#b8960a", // yellow → dark gold
+  JSON:        "#5a5a5a", // gray → darker gray
+};
+
 function bar(color: string, percent: number, animated: boolean) {
   return (
     <div className="flex-1 h-1.5 rounded-full bg-muted overflow-hidden">
@@ -44,6 +53,8 @@ function bar(color: string, percent: number, animated: boolean) {
 }
 
 export function WakaTimeLanguages() {
+  const { resolvedTheme } = useTheme();
+  const LANG_COLORS = resolvedTheme === "light" ? LANG_COLORS_LIGHT : LANG_COLORS_DARK;
   const [data, setData] = useState<LangData | null>(null);
   const [loading, setLoading] = useState(true);
   const [animated, setAnimated] = useState(false);
