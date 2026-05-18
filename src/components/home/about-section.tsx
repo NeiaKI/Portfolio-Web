@@ -21,44 +21,34 @@ export function AboutSection() {
       </p>
 
       <div className="flex flex-wrap gap-3 pt-1">
-        {/* View CV — white shining glow border */}
-        <div
-          className="relative rounded-full p-px transition-all duration-300 hover:scale-[1.03]"
-          style={{
-            background: "linear-gradient(135deg, rgba(255,255,255,0.6), rgba(255,255,255,0.15), rgba(255,255,255,0.5))",
-            boxShadow: "0 0 14px rgba(255,255,255,0.25), 0 0 4px rgba(255,255,255,0.15)",
-          }}
+        {/* View CV — shimmer sweep */}
+        <a
+          href="https://drive.google.com/drive/folders/1amnC0d-sebWFIDlh2nQJlECSC_LRA7Rv?usp=sharing"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="relative inline-flex items-center gap-2 overflow-hidden rounded-full border border-border bg-card px-5 py-2 text-sm font-medium text-foreground transition-transform hover:scale-[1.02]"
         >
-          <a
-            href="https://drive.google.com/drive/folders/1amnC0d-sebWFIDlh2nQJlECSC_LRA7Rv?usp=sharing"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="inline-flex items-center gap-2 rounded-full bg-card px-5 py-2 text-sm font-medium text-foreground"
-          >
-            <Sparkles className="h-4 w-4 text-yellow-300" />
-            {t("viewCV")}
-            <ExternalLink className="h-3 w-3 text-muted-foreground" />
-          </a>
-        </div>
+          <span
+            aria-hidden="true"
+            className="animate-shiny-sweep pointer-events-none absolute inset-0 bg-gradient-to-r from-transparent via-white/15 via-50% to-transparent"
+          />
+          <Sparkles className="relative h-4 w-4 text-yellow-300" />
+          <span className="relative">{t("viewCV")}</span>
+          <ExternalLink className="relative h-3 w-3 text-muted-foreground" />
+        </a>
 
-        {/* View Portfolio in PDF — purple glow border */}
-        <div
-          className="relative rounded-full p-px transition-all duration-300 hover:scale-[1.03]"
-          style={{
-            background: "linear-gradient(135deg, #cba6f7, #b4befe, #cba6f7)",
-            boxShadow: "0 0 16px rgba(203,166,247,0.45), 0 0 4px rgba(203,166,247,0.2)",
-          }}
+        {/* View Portfolio in PDF — animated gradient text */}
+        <a
+          href="https://drive.google.com/drive/folders/1amnC0d-sebWFIDlh2nQJlECSC_LRA7Rv?usp=sharing"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="group relative inline-flex items-center gap-1.5 rounded-full border border-border bg-background px-5 py-2 text-sm font-medium transition-transform hover:scale-[1.02] [--bg-size:300%] shadow-[inset_0_-8px_10px_#8fdfff1f] hover:shadow-[inset_0_-5px_10px_#8fdfff3f]"
         >
-          <a
-            href="https://drive.google.com/drive/folders/1amnC0d-sebWFIDlh2nQJlECSC_LRA7Rv?usp=sharing"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="inline-flex items-center gap-2 rounded-full bg-card px-5 py-2 text-sm font-medium text-primary"
-          >
+          <span className="animate-gradient bg-gradient-to-r from-[#ffaa40] via-[#9c40ff] to-[#ffaa40] bg-[length:var(--bg-size)_100%] bg-clip-text text-transparent">
             {t("viewPortfolioPDF")}
-            <FileText className="h-3.5 w-3.5" />
-          </a>
-        </div>
+          </span>
+          <FileText className="h-3.5 w-3.5 text-white/70 transition-transform duration-300 group-hover:translate-x-0.5" />
+        </a>
       </div>
     </motion.section>
   );
