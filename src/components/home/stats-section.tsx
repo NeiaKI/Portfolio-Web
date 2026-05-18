@@ -68,7 +68,7 @@ export function StatsSection() {
   ];
 
   return (
-    <div ref={ref} className="grid grid-cols-4 gap-2 rounded-xl border border-border bg-card p-4">
+    <div ref={ref} className="grid grid-cols-2 gap-2 rounded-xl border border-border bg-card p-4 sm:grid-cols-4">
       {STATS.map((s, i) => (
         <StatItem key={i} {...s} trigger={visible} />
       ))}

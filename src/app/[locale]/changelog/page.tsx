@@ -41,9 +41,22 @@ const TYPE_LABEL: Record<ChangeType, string> = {
 
 const RELEASES: Release[] = [
   {
-    version: "v2.5",
+    version: "v2.6",
     date: "May 2026",
     label: "Latest",
+    changes: [
+      { type: "feat",    text: "Terminal-style loading screen on first visit (session-based)" },
+      { type: "feat",    text: "Experience section redesign — vertical timeline, pulsing dot, duration badge, collapsible highlights" },
+      { type: "feat",    text: "Skills section redesign — 3-row marquee dengan brand icons + expandable category grid" },
+      { type: "feat",    text: "WakaTime tracking di bash, zsh, dan Obsidian" },
+      { type: "improve", text: "Lazy load SkillsSection — react-icons bundle di-defer untuk performa LCP lebih baik" },
+      { type: "improve", text: "Icon dekoratif di skills section diberi aria-hidden untuk accessibility" },
+      { type: "improve", text: "Icon warna brand diubah ke monokromatik agar tidak terlalu ramai" },
+    ],
+  },
+  {
+    version: "v2.5",
+    date: "May 2026",
     changes: [
       { type: "feat",    text: "PWA service worker — offline support untuk halaman & aset yang sudah dikunjungi" },
       { type: "feat",    text: "404 page bilingual — EN/ID otomatis berdasarkan locale URL" },

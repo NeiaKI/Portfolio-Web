@@ -14,6 +14,23 @@ function SectionSkeleton({ rows = 4 }: { rows?: number }) {
   );
 }
 
+const SkillsSection = dynamic(
+  () => import("@/components/home/skills-section").then((m) => m.SkillsSection),
+  {
+    ssr: false,
+    loading: () => (
+      <div className="flex flex-col gap-4 animate-pulse">
+        <div className="h-6 w-52 rounded-lg bg-muted" />
+        <div className="flex flex-col gap-2">
+          <div className="h-9 rounded-full bg-muted" />
+          <div className="h-9 rounded-full bg-muted" />
+          <div className="h-9 rounded-full bg-muted" />
+        </div>
+      </div>
+    ),
+  }
+);
+
 const CodingProgress = dynamic(
   () => import("@/components/widgets/coding-progress").then((m) => m.CodingProgress),
   { ssr: false, loading: () => <SectionSkeleton rows={6} /> }
@@ -28,6 +45,10 @@ const MonkeyTypeWidget = dynamic(
   () => import("@/components/widgets/monkeytype-widget").then((m) => m.MonkeyTypeWidget),
   { ssr: false, loading: () => <SectionSkeleton rows={5} /> }
 );
+
+export function LazySkillsSection() {
+  return <ErrorBoundary><SkillsSection /></ErrorBoundary>;
+}
 
 export function LazyCodingProgress() {
   return <ErrorBoundary><CodingProgress /></ErrorBoundary>;

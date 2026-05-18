@@ -192,7 +192,7 @@ function SkillPill({ skill }: { skill: Skill }) {
   const Icon = skill.icon;
   return (
     <span className="inline-flex shrink-0 items-center gap-1.5 rounded-full border border-border bg-card px-3 py-1.5 text-xs font-medium text-foreground hover:border-primary/40 hover:text-primary transition-colors cursor-default select-none">
-      <Icon className="h-3.5 w-3.5 shrink-0 text-muted-foreground" />
+      <Icon className="h-3.5 w-3.5 shrink-0 text-muted-foreground" aria-hidden="true" />
       {skill.name}
     </span>
   );
@@ -229,7 +229,7 @@ function CategoryCard({ category }: { category: Category }) {
               key={skill.name}
               className="inline-flex items-center gap-1.5 rounded-full border border-border bg-background px-2.5 py-1 text-xs text-foreground hover:border-primary/40 hover:text-primary transition-colors cursor-default"
             >
-              <Icon className="h-3 w-3 shrink-0 text-muted-foreground" />
+              <Icon className="h-3 w-3 shrink-0 text-muted-foreground" aria-hidden="true" />
               {skill.name}
             </span>
           );
