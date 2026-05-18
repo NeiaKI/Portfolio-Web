@@ -1,7 +1,6 @@
 "use client";
 
 import { useTranslations } from "next-intl";
-import { motion } from "framer-motion";
 import { GraduationCap } from "lucide-react";
 
 const EDUCATION = [
@@ -32,12 +31,7 @@ export function EducationSection() {
   const t = useTranslations("home");
 
   return (
-    <motion.section
-      initial={{ opacity: 0, y: 20 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.5, delay: 0.4 }}
-      className="flex flex-col gap-4"
-    >
+    <section className="flex flex-col gap-4">
       <h2 className="text-lg font-semibold text-foreground">{t("educationTitle")}</h2>
       <div className="flex flex-col gap-3">
         {EDUCATION.map((edu, i) => (
@@ -65,6 +59,6 @@ export function EducationSection() {
           </div>
         ))}
       </div>
-    </motion.section>
+    </section>
   );
 }

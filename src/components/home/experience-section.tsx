@@ -165,12 +165,7 @@ export function ExperienceSection() {
   const t = useTranslations("home");
 
   return (
-    <motion.section
-      initial={{ opacity: 0, y: 20 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.5, delay: 0.3 }}
-      className="flex flex-col gap-4"
-    >
+    <section className="flex flex-col gap-4">
       <h2 className="text-lg font-semibold text-foreground">{t("experienceTitle")}</h2>
 
       {/* Timeline */}
@@ -184,6 +179,6 @@ export function ExperienceSection() {
           ))}
         </div>
       </div>
-    </motion.section>
+    </section>
   );
 }

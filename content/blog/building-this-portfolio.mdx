@@ -14,31 +14,113 @@ When I decided to rebuild my portfolio, I had one goal: ship something that feel
 - **Tailwind CSS v4** — CSS-first config, OKLCH color system
 - **Catppuccin** — Mocha (dark) and Latte (light) themes
 - **next-intl v4** — Bilingual support (EN + ID)
-- **Supabase** — Database for projects and analytics
+- **Framer Motion** — Page transitions and section animations
+- **react-icons** — 80+ brand icons for the skills section
 
 ## Why Catppuccin?
 
 I've been a Catppuccin user on my desktop (Arch + Hyprland) for over a year. Having the same palette across my terminal, editor, and now website feels cohesive. The OKLCH color model maps perfectly to Tailwind v4's new color system.
 
 ```css
+/* Dark mode — Catppuccin Mocha */
+.dark {
+  --background: oklch(0.175 0.030 268);
+  --primary: oklch(0.745 0.126 244);  /* Blue */
+  --card: oklch(0.245 0.023 268);
+}
+
+/* Light mode — Catppuccin Latte */
 :root {
-  --background: oklch(0.235 0.015 268);
-  --primary: oklch(0.737 0.176 229);
+  --background: oklch(0.940 0.008 268);
+  --primary: oklch(0.580 0.148 271);  /* Lavender */
 }
 ```
 
-## Lessons Learned
+The OKLCH model makes it easy to create perceptually uniform palettes — adjust lightness and chroma without the hue shifting unpredictably like HSL does.
 
-**Tailwind v4 is a breaking change.** The old `tailwind.config.js` approach is gone. Everything lives in CSS now. It took me a day to migrate but the result is cleaner.
+## Architecture Decisions
 
-**React Server Components change how you think.** Most of my data fetching happens at the page level — no `useEffect`, no loading states for the initial render. Widgets that need client interactivity (`useTheme`, charts) are isolated into `"use client"` components.
+### Server vs Client Components
 
-**`next-intl` v4 has a new routing API.** The `createLocalizedPathnamesNavigation` API I was used to is deprecated. The new approach is simpler but the docs lag behind.
+Most data fetching happens at the page level in Server Components — no `useEffect`, no loading spinners for the initial render. Widgets that need client interactivity (`useTheme`, real-time updates) are isolated:
+
+```tsx
+// Server Component — data fetched at build/request time
+export default async function ProjectPage() {
+  const projects = await getGithubProjects(); // server-side
+  return <ProjectList projects={projects} />;
+}
+```
+
+```tsx
+// Client Component — needs theme, state, intervals
+"use client";
+export function SpotifyWidget() {
+  const [data, setData] = useState(null);
+  useEffect(() => { /* poll every 30s */ }, []);
+}
+```
+
+### Lazy Loading for Performance
+
+The skills section imports ~80 brand icons from `react-icons` — about 1.9MB. Putting this in the SSR bundle would tank LCP. The fix is a `dynamic()` import with `ssr: false`:
+
+```tsx
+// lazy-widgets.tsx — must be "use client" for ssr: false
+"use client";
+const SkillsSection = dynamic(
+  () => import("@/components/home/skills-section").then(m => m.SkillsSection),
+  { ssr: false, loading: () => <Skeleton /> }
+);
+```
+
+After lazy loading, LCP went from ~10s to fast. The key insight: `ssr: false` is only allowed inside Client Components. Many guides miss this.
+
+### Bilingual with next-intl v4
+
+The new `proxy.ts` routing pattern replaces the old middleware approach:
+
+```ts
+// proxy.ts (NOT middleware.ts)
+export { routing } from "@/i18n/routing";
+```
+
+The URL structure is `/en/...` and `/id/...`. All translation strings live in `messages/en.json` and `messages/id.json`. Server Components use `getTranslations()`, Client Components use the `useTranslations()` hook.
+
+### Page Transitions
+
+Framer Motion's `AnimatePresence` drives page transitions with a stagger effect:
+
+```tsx
+const container = {
+  hidden: {},
+  show: { transition: { staggerChildren: 0.07 } },
+  exit: { transition: { staggerChildren: 0.04, staggerDirection: -1 } },
+};
+```
+
+Each `<FadeSection>` on the page is a `motion.div` that fades + slides up with blur on first visit. To avoid re-triggering animations when navigating back to a page, I track visited paths in a module-level Set:
+
+```ts
+const visited = new Set<string>();
+// On first visit → stagger in. On return → show immediately.
+const initial = visited.has(pathname) ? "show" : "hidden";
+```
+
+## What I Learned
+
+**Tailwind v4 is a breaking change.** The old `tailwind.config.js` is gone. Everything lives in CSS now with `@theme`. It took a day to migrate but the result is much cleaner — no more JS config files for design tokens.
+
+**`next-intl` v4 changed its routing API.** The `createLocalizedPathnamesNavigation` I was used to is deprecated. The new approach using `routing.ts` is simpler but the docs lag behind the npm package version.
+
+**`disableTransitionOnChange` in next-themes matters.** Without it set to `true`, switching themes causes some elements (those with `transition-colors`) to animate while others snap — an inconsistent visual. One boolean fixes it.
+
+**React Server Components genuinely reduce bundle size.** Moving data fetching to the server and only hydrating interactive islands kept the JavaScript bundle lean.
 
 ## What's Next
 
-- Real Spotify "Now Playing" integration (needs Premium API access)
-- Blog post series on Arch Linux dotfiles
-- Visitor analytics without sacrificing privacy
+- Real-time visitor counter (Supabase + Edge Functions)
+- Blog post series on building a Go microservice
+- WakaTime language breakdown widget in sidebar
 
-The source is on [GitHub](https://github.com/nateeki). Feel free to fork and adapt.
+The source is on [GitHub](https://github.com/NeiaKI/Portfolio-Web). Feel free to fork and adapt.

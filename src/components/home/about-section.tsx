@@ -1,19 +1,13 @@
 "use client";
 
 import { useTranslations } from "next-intl";
-import { motion } from "framer-motion";
 import { Sparkles, ExternalLink, FileText } from "lucide-react";
 
 export function AboutSection() {
   const t = useTranslations("home");
 
   return (
-    <motion.section
-      initial={{ opacity: 0, y: 20 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.5, delay: 0.1 }}
-      className="flex flex-col gap-3"
-    >
+    <section className="flex flex-col gap-3">
       <h2 className="text-xl font-bold text-foreground">{t("aboutTitle")}</h2>
 
       <p className="text-sm text-muted-foreground leading-relaxed">
@@ -50,6 +44,6 @@ export function AboutSection() {
           <FileText className="h-3.5 w-3.5 text-white/70 transition-transform duration-300 group-hover:translate-x-0.5" />
         </a>
       </div>
-    </motion.section>
+    </section>
   );
 }

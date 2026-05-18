@@ -19,12 +19,23 @@ const item: Variants = {
   exit:   { opacity: 0, y: -8, filter: "blur(2px)", transition: { duration: 0.18, ease: "easeIn" as const } },
 };
 
+// Module-level Set persists for the browser session — no stagger on return visits
+const visited = new Set<string>();
+
 export function PageTransition({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
+  const isFirstVisit = !visited.has(pathname);
+  if (isFirstVisit) visited.add(pathname);
 
   return (
     <AnimatePresence mode="wait" initial={false}>
-      <motion.div key={pathname} variants={container} initial="hidden" animate="show" exit="exit">
+      <motion.div
+        key={pathname}
+        variants={container}
+        initial={isFirstVisit ? "hidden" : "show"}
+        animate="show"
+        exit="exit"
+      >
         {children}
       </motion.div>
     </AnimatePresence>

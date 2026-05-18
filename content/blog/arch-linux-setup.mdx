@@ -12,6 +12,10 @@ I've been running Arch Linux as my primary OS for over two years now. This post 
 
 Rolling release means I get software updates immediately. The AUR has almost everything. And the process of setting it up taught me more about how Linux actually works than any other distribution.
 
+I tried Ubuntu for a year, then Pop!_OS. Both fine distros. But I always hit a ceiling where I wanted to change something and couldn't without fighting the system. Arch just gets out of the way.
+
+The downside: you will break things. Kernel updates, display server changes, Wayland quirks — it happens. But after enough breakage you develop a mental map of the system that makes debugging fast.
+
 ## Compositor: Hyprland
 
 Hyprland is a Wayland compositor that feels like the spiritual successor to i3/sway — tiling, keyboard-driven, but with smooth animations. The config is declarative and lives in `~/.config/hypr/hyprland.conf`.
@@ -21,18 +25,46 @@ Hyprland is a Wayland compositor that feels like the spiritual successor to i3/s
 general {
   col.active_border = rgba(89b4faee) rgba(cba6f7ee) 45deg
   col.inactive_border = rgba(45475aaa)
+  gaps_in = 4
+  gaps_out = 8
+  border_size = 2
+}
+
+animations {
+  enabled = true
+  bezier = myBezier, 0.05, 0.9, 0.1, 1.05
+  animation = windows, 1, 7, myBezier
+  animation = fade, 1, 7, default
+  animation = workspaces, 1, 6, default
 }
 ```
+
+The `bezier` curve gives windows a satisfying spring feel when they open. I spent way too long tuning this.
 
 ## Terminal Stack
 
 | Tool | What |
 |------|------|
 | `kitty` | GPU-accelerated terminal |
-| `fish` | Shell (with Starship prompt) |
+| `zsh` + Starship | Shell with fast prompt |
 | `neovim` | Editor (LazyVim config) |
 | `tmux` | Session management |
 | `yazi` | File manager |
+| `fzf` | Fuzzy finder — hooked into Ctrl+R and file search |
+
+Kitty over Alacritty because it supports ligatures and image rendering in the terminal — useful when using `yazi` as a file manager.
+
+## Neovim Configuration
+
+I started with LazyVim as a base and customized from there. Key plugins:
+
+- `catppuccin/nvim` — colorscheme
+- `nvim-telescope/telescope.nvim` — fuzzy file search
+- `nvim-lualine/lualine.nvim` — statusline
+- `folke/noice.nvim` — replaces the command line UI
+- `stevearc/oil.nvim` — edit the filesystem like a buffer
+
+The config lives at `~/.config/nvim/`. I've added WakaTime tracking so I can see exactly how much time I spend in Neovim vs VS Code.
 
 ## Theming Everything with Catppuccin
 
@@ -40,14 +72,41 @@ The goal was a unified palette across all tools. Catppuccin supports almost ever
 
 - `kitty` → Catppuccin Mocha
 - `neovim` → `catppuccin/nvim`
+- `hyprland` → custom Mocha borders/colors
+- `waybar` → custom CSS with Mocha palette
 - `rofi` / `fuzzel` → custom Mocha config
 - `gtk` → `catppuccin-gtk` theme
-- `cursors` → Bibata cursors with Mocha tint
+- `cursors` → Bibata cursors
+
+The Mocha palette: `#1e1e2e` base, `#cba6f7` mauve, `#89b4fa` blue, `#a6e3a1` green. I even use it on this website.
+
+## Waybar
+
+Waybar is my status bar. Custom modules I've added:
+
+```json
+"custom/wakatime": {
+    "exec": "~/.config/waybar/scripts/wakatime.sh",
+    "interval": 300,
+    "format": " {}",
+    "tooltip": false
+}
+```
+
+This pulls my WakaTime stats and shows today's coding time directly in the bar.
 
 ## Performance
 
-On my machine (Ryzen 5 + 16GB RAM), boot to desktop takes about **8 seconds**. Idle RAM usage is under 600MB. No GNOME, no KDE, no bloat.
+On my machine (Ryzen 5 5600 + 16GB RAM + RTX 3060), boot to desktop takes about **8 seconds**. Idle RAM usage is under 600MB. No GNOME, no KDE, no Electron background services.
+
+For comparison, my previous Ubuntu setup with GNOME was using 1.4GB RAM at idle.
+
+## What I'd Do Differently
+
+1. **Start with EndeavourOS** if you want Arch without the manual setup. I'd still go bare Arch for the learning experience, but EndeavourOS saves time.
+2. **Set up Timeshift before you customize** — having a rollback point saved me when a `pacman -Syu` broke my Wayland session.
+3. **Don't over-rice immediately.** I spent my first month tweaking colors instead of actually using the system. Get the workflow right first.
 
 ## Dotfiles
 
-All my config lives in a bare git repo synced to GitHub. If you want to steal something, the README explains the setup.
+All my config lives in a bare git repo synced to GitHub. If you want to steal something, the README explains the setup method (it's the `--bare` git repo trick — no symlinks needed).
