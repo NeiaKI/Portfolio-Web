@@ -48,7 +48,13 @@ export function NavSidebar() {
 
   useEffect(() => { setMounted(true); }, []);
 
-  const isDark = mounted ? theme === "dark" : true;
+  // Read from DOM immediately so the value is correct before `mounted` — prevents
+  // animation when transitions are enabled on the same render that isDark flips.
+  const isDark = mounted
+    ? theme === "dark"
+    : typeof window !== "undefined"
+      ? document.documentElement.classList.contains("dark")
+      : true;
 
   useEffect(() => {
     const handler = (e: KeyboardEvent) => {
