@@ -103,47 +103,63 @@ export function HeroSection() {
         </div>
       </motion.div>
 
+      {/* Status badge */}
+      <motion.div
+        initial={{ opacity: 0, y: -8 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.4, delay: 0.0 }}
+      >
+        <span className="inline-flex items-center gap-2 rounded-full border border-green-500/30 bg-green-500/10 px-3 py-1 text-xs font-medium text-green-400">
+          <span className="relative flex h-2 w-2">
+            <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-green-400 opacity-75" />
+            <span className="relative inline-flex h-2 w-2 rounded-full bg-green-500" />
+          </span>
+          {t("openToWork") as string}
+        </span>
+      </motion.div>
+
       {/* Heading + typewriter */}
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.5, delay: 0.05 }}
+        transition={{ duration: 0.5, delay: 0.08 }}
         className="flex flex-col gap-2"
       >
-        <h1 className="text-3xl font-bold tracking-tight text-foreground sm:text-4xl lg:text-5xl">
-          {t("greeting")}
+        <h1 className="text-3xl font-bold tracking-tight sm:text-4xl lg:text-5xl">
+          <span className="text-foreground">{t("greetingPrefix") as string} </span>
+          <span className="bg-gradient-to-r from-primary via-purple-400 to-pink-400 bg-clip-text text-transparent">
+            {t("greetingName") as string}
+          </span>
         </h1>
         <p className="text-xl text-muted-foreground min-h-[1.75rem]">
           {t("typingPrefix")}{" "}
           <span className="font-semibold text-foreground">
             {displayed}
-            <span className="animate-pulse">|</span>
+            <span className="animate-[blink_1s_step-end_infinite]">|</span>
           </span>
         </p>
       </motion.div>
 
-      {/* Description with bold keywords */}
+      {/* Description */}
       <motion.p
         initial={{ opacity: 0, y: 10 }}
         animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.5, delay: 0.1 }}
+        transition={{ duration: 0.5, delay: 0.15 }}
         className="text-sm text-muted-foreground leading-relaxed"
       >
-        Passionate about <strong className="text-foreground font-semibold">web, mobile, cloud, and DevOps development</strong>. I love creating innovative
-        solutions using modern technologies like <strong className="text-foreground font-semibold">React, Next.js, TypeScript</strong>, and more. Currently focused
-        on building high-performance applications and learning CI/CD pipelines.
+        {t("heroDesc")}
       </motion.p>
 
       {/* Action buttons */}
       <motion.div
         initial={{ opacity: 0, y: 10 }}
         animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.5, delay: 0.2 }}
+        transition={{ duration: 0.5, delay: 0.22 }}
         className="flex flex-wrap gap-3"
       >
         <Link
           href="/project"
-          className="inline-flex items-center rounded-full border border-border px-5 py-2 text-sm font-medium text-foreground transition-colors hover:bg-muted"
+          className="inline-flex items-center rounded-full bg-primary px-5 py-2 text-sm font-medium text-primary-foreground transition-opacity hover:opacity-90"
         >
           {t("viewProjects")}
         </Link>
@@ -155,27 +171,30 @@ export function HeroSection() {
         </a>
       </motion.div>
 
-      {/* Social links */}
+      {/* Social links — staggered */}
       <motion.div
         initial={{ opacity: 0, y: 10 }}
         animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.5, delay: 0.3 }}
-        className="flex items-center gap-3"
+        transition={{ duration: 0.4, delay: 0.3 }}
+        className="flex items-center gap-3 flex-wrap"
       >
         <span className="text-sm text-muted-foreground">{t("findMeOn")}</span>
-        {SOCIAL_LINKS.map(({ svg, href, label }) => (
-          <a
+        {SOCIAL_LINKS.map(({ svg, href, label }, i) => (
+          <motion.a
             key={label}
             href={href}
             target="_blank"
             rel="noopener noreferrer"
             aria-label={label}
+            initial={{ opacity: 0, scale: 0.5 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 0.3, delay: 0.35 + i * 0.06 }}
             className={cn(
-              "flex h-9 w-9 items-center justify-center rounded-full border border-border bg-card text-muted-foreground transition-colors hover:border-primary/40 hover:text-foreground"
+              "flex h-9 w-9 items-center justify-center rounded-full border border-border bg-card text-muted-foreground transition-all hover:border-primary/40 hover:text-foreground hover:scale-110"
             )}
           >
             {svg}
-          </a>
+          </motion.a>
         ))}
       </motion.div>
     </section>
