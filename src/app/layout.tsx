@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
+import Script from "next/script";
 import { Geist, JetBrains_Mono } from "next/font/google";
 import { Providers } from "@/components/providers";
+import { LoadingScreen } from "@/components/ui/loading-screen";
 import "./globals.css";
 
 const geistSans = Geist({
@@ -42,7 +44,9 @@ export default function RootLayout({
         <link rel="alternate" type="application/rss+xml" title="Febiyanto Rizki Qurbandi — Blog" href="/feed.xml" />
       </head>
       <body className="min-h-full" suppressHydrationWarning>
-        <script
+        <Script
+          id="sw-register"
+          strategy="afterInteractive"
           dangerouslySetInnerHTML={{
             __html: `if('serviceWorker'in navigator)navigator.serviceWorker.register('/sw.js')`,
           }}
@@ -53,6 +57,7 @@ export default function RootLayout({
         >
           Skip to content
         </a>
+        <LoadingScreen />
         <Providers>{children}</Providers>
       </body>
     </html>
