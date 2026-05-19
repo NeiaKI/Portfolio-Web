@@ -8,9 +8,9 @@ const SIZE = { width: 1200, height: 630 };
 
 export function GET(req: NextRequest) {
   const { searchParams } = req.nextUrl;
-  const title = searchParams.get("title") ?? "Febiyanto Rizki Qurbandi";
-  const desc = searchParams.get("desc") ?? "Software Engineer · Linux Enthusiast";
-  const tag = searchParams.get("tag") ?? "";
+  const title = (searchParams.get("title") ?? "Febiyanto Rizki Qurbandi").slice(0, 100);
+  const desc  = (searchParams.get("desc")  ?? "Software Engineer · Linux Enthusiast").slice(0, 150);
+  const tag   = (searchParams.get("tag")   ?? "").slice(0, 30);
 
   return new ImageResponse(
     (

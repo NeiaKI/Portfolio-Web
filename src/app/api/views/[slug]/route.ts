@@ -1,6 +1,9 @@
 import { NextRequest, NextResponse } from "next/server";
+import { rateLimit } from "@/lib/rate-limit";
 
 export const dynamic = "force-dynamic";
+
+const SLUG_RE = /^[a-z0-9-]{1,100}$/;
 
 const isConfigured =
   !!process.env.NEXT_PUBLIC_SUPABASE_URL &&
@@ -9,6 +12,7 @@ const isConfigured =
 
 export async function GET(_req: NextRequest, { params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
+  if (!SLUG_RE.test(slug)) return NextResponse.json({ views: 0, configured: false });
   if (!isConfigured) return NextResponse.json({ views: 0, configured: false });
 
   try {
@@ -26,8 +30,16 @@ export async function GET(_req: NextRequest, { params }: { params: Promise<{ slu
   }
 }
 
-export async function POST(_req: NextRequest, { params }: { params: Promise<{ slug: string }> }) {
+export async function POST(req: NextRequest, { params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
+  if (!SLUG_RE.test(slug)) return NextResponse.json({ views: 0, configured: false });
+
+  // Rate limit: 1 increment per IP per 10 menit — mencegah view inflation
+  const ip = req.headers.get("x-forwarded-for")?.split(",")[0].trim() ?? "unknown";
+  if (!rateLimit(`views:${ip}:${slug}`, 1, 10 * 60 * 1000)) {
+    return NextResponse.json({ views: 0, configured: false });
+  }
+
   if (!isConfigured) return NextResponse.json({ views: 0, configured: false });
 
   try {

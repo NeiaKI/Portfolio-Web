@@ -15,6 +15,17 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: "Missing fields" }, { status: 400 });
   }
 
+  // Length limits — mencegah oversized payload diteruskan ke Web3Forms / email
+  if (name.trim().length > 100 || email.trim().length > 254 || message.trim().length > 5000) {
+    return NextResponse.json({ error: "Input exceeds maximum length" }, { status: 400 });
+  }
+
+  // Basic email format validation
+  const emailRe = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  if (!emailRe.test(email.trim())) {
+    return NextResponse.json({ error: "Invalid email address" }, { status: 400 });
+  }
+
   const accessKey = process.env.WEB3FORMS_ACCESS_KEY;
   if (!accessKey) {
     return NextResponse.json({ error: "Contact form not configured" }, { status: 503 });
