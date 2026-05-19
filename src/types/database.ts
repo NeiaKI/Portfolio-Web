@@ -50,9 +50,32 @@ export interface Database {
         Insert: Omit<Database["public"]["Tables"]["profile"]["Row"], "id" | "updated_at">;
         Update: Partial<Database["public"]["Tables"]["profile"]["Insert"]>;
       };
+      post_views: {
+        Row: {
+          slug: string;
+          views: number;
+          updated_at: string;
+        };
+        Insert: { slug: string; views?: number; updated_at?: string };
+        Update: Partial<Database["public"]["Tables"]["post_views"]["Insert"]>;
+      };
+      api_cache: {
+        Row: {
+          key: string;
+          data: Json;
+          expires_at: string;
+        };
+        Insert: { key: string; data: Json; expires_at: string };
+        Update: Partial<Database["public"]["Tables"]["api_cache"]["Insert"]>;
+      };
     };
     Views: Record<string, never>;
-    Functions: Record<string, never>;
+    Functions: {
+      increment_post_views: {
+        Args: { post_slug: string };
+        Returns: number;
+      };
+    };
     Enums: Record<string, never>;
   };
 }
@@ -60,3 +83,4 @@ export interface Database {
 export type Project = Database["public"]["Tables"]["projects"]["Row"];
 export type Certificate = Database["public"]["Tables"]["certificates"]["Row"];
 export type Profile = Database["public"]["Tables"]["profile"]["Row"];
+export type PostView = Database["public"]["Tables"]["post_views"]["Row"];
