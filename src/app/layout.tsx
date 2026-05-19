@@ -42,6 +42,10 @@ export default function RootLayout({
     >
       <head>
         <link rel="alternate" type="application/rss+xml" title="Febiyanto Rizki Qurbandi — Blog" href="/feed.xml" />
+        {/* Sembunyikan konten sebelum loading screen muncul — mencegah flash of content.
+            html.will-load hides everything; LoadingScreen wrapper overrides dengan visibility:visible */}
+        <style dangerouslySetInnerHTML={{ __html: `html.will-load{visibility:hidden}` }} />
+        <script dangerouslySetInnerHTML={{ __html: `try{if(!sessionStorage.getItem('__booted'))document.documentElement.classList.add('will-load')}catch(e){}` }} />
       </head>
       <body className="min-h-full" suppressHydrationWarning>
         <Script

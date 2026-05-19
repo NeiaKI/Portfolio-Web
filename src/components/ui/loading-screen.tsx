@@ -47,11 +47,21 @@ export function LoadingScreen() {
   const [done, setDone]         = useState(false);
 
   useEffect(() => {
-    // Only show once per session
     if (typeof window === "undefined") return;
-    if (sessionStorage.getItem("__booted")) return;
+
+    // Jika sudah pernah load session ini — hapus will-load class (safety) dan skip
+    if (sessionStorage.getItem("__booted")) {
+      document.documentElement.classList.remove("will-load");
+      return;
+    }
+
     sessionStorage.setItem("__booted", "1");
     setVisible(true);
+
+    // Safety: pastikan halaman tidak tersembunyi selamanya jika ada error
+    const safety = setTimeout(() => {
+      document.documentElement.classList.remove("will-load");
+    }, 5000);
 
     // Progress bar
     const start = Date.now();
@@ -62,12 +72,24 @@ export function LoadingScreen() {
       if (pct >= 100) clearInterval(tick);
     }, 30);
 
-    // Exit
-    const exitTimer = setTimeout(() => setDone(true), DURATION);
-    return () => { clearInterval(tick); clearTimeout(exitTimer); };
+    // Reveal konten + mulai exit animation
+    const exitTimer = setTimeout(() => {
+      document.documentElement.classList.remove("will-load");
+      setDone(true);
+    }, DURATION);
+
+    return () => {
+      clearTimeout(safety);
+      clearInterval(tick);
+      clearTimeout(exitTimer);
+      document.documentElement.classList.remove("will-load");
+    };
   }, []);
 
+  // Wrapper ini selalu ada di DOM dengan visibility:visible
+  // sehingga loading screen tetap tampil meski html.will-load menyembunyikan semua elemen lain
   return (
+    <div style={{ visibility: "visible" }}>
     <AnimatePresence>
       {visible && !done && (
         <motion.div
@@ -122,5 +144,6 @@ export function LoadingScreen() {
         </motion.div>
       )}
     </AnimatePresence>
+    </div>
   );
 }
