@@ -190,6 +190,13 @@ export default async function UsesPage({ params }: Props) {
             </li>
             <li>
               {id ? (
+                <>Untuk app launcher, saya menggunakan <A href="https://github.com/abenz1267/walker">Walker</A>. Sebelumnya memakai Rofi, tapi ada beberapa masalah di Wayland. Walker lebih modern, berjalan native di Wayland, dan mudah dikustomisasi. Saya juga menggunakan <A href="https://github.com/philj56/tofi">Tofi</A> khusus sebagai power menu karena kesederhanaannya.</>
+              ) : (
+                <>For my application launcher, I use <A href="https://github.com/abenz1267/walker">Walker</A>. I previously used Rofi, but had some issues with it on Wayland. Walker is more modern, runs natively on Wayland, and is easy to customize. I also use <A href="https://github.com/philj56/tofi">Tofi</A> specifically as a power menu for its simplicity.</>
+              )}
+            </li>
+            <li>
+              {id ? (
                 <>Untuk manajemen file di terminal, saya menggunakan <A href="https://yazi-rs.github.io">Yazi</A> — file manager terminal cepat yang ditulis dengan Rust dengan dukungan preview gambar via Kitty image protocol.</>
               ) : (
                 <>For file management in the terminal, I use <A href="https://yazi-rs.github.io">Yazi</A> — a fast terminal file manager written in Rust with image preview support via the Kitty image protocol.</>
