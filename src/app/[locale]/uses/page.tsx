@@ -228,6 +228,13 @@ export default async function UsesPage({ params }: Props) {
                 <><A href="https://bitwarden.com">Bitwarden</A> and <A href="https://github.com/dani-garcia/vaultwarden">Vaultwarden</A> are the best password managers. They do everything you could need, and the premium subscription is dirt-cheap. <A href="https://proton.me/pass">Proton Pass</A> is also a solid alternative.</>
               )}
             </li>
+            <li>
+              {id ? (
+                <>Untuk VPN, saya menggunakan <A href="https://mullvad.net">Mullvad VPN</A> dan <A href="https://protonvpn.com">Proton VPN</A>. Keduanya fokus pada privasi dan tidak menyimpan log aktivitas pengguna.</>
+              ) : (
+                <>For VPN, I use <A href="https://mullvad.net">Mullvad VPN</A> and <A href="https://protonvpn.com">Proton VPN</A>. Both are privacy-focused and keep no activity logs.</>
+              )}
+            </li>
           </ul>
 
           {/* AI */}
