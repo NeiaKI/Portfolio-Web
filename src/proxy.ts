@@ -61,7 +61,7 @@ function buildCSP(nonce: string): string {
   return directives.join("; ");
 }
 
-export function middleware(request: NextRequest) {
+export function proxy(request: NextRequest) {
   const nonce = Buffer.from(crypto.randomUUID()).toString("base64");
   const csp = buildCSP(nonce);
 
