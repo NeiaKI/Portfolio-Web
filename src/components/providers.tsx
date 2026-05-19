@@ -31,14 +31,14 @@ function VimKeys() {
   return null;
 }
 
-export function Providers({ children }: { children: React.ReactNode }) {
+export function Providers({ children, nonce }: { children: React.ReactNode; nonce?: string }) {
   return (
     <ThemeProvider
       attribute="class"
       defaultTheme="dark"
       enableSystem={false}
       disableTransitionOnChange={true}
-      scriptProps={{ suppressHydrationWarning: true }}
+      scriptProps={{ suppressHydrationWarning: true, nonce }}
     >
       <TooltipProvider delay={500}>
         <VimKeys />

@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Script from "next/script";
+import { headers } from "next/headers";
 import { Geist, JetBrains_Mono } from "next/font/google";
 import { Providers } from "@/components/providers";
 import { LoadingScreen } from "@/components/ui/loading-screen";
@@ -29,11 +30,15 @@ export const metadata: Metadata = {
   },
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  // Nonce di-generate oleh middleware per-request dan dikirim via x-nonce header.
+  // Next.js otomatis menambahkan nonce ini ke framework scripts (hydration, __NEXT_DATA__).
+  const nonce = (await headers()).get("x-nonce") ?? undefined;
+
   return (
     <html
       lang="en"
@@ -42,14 +47,23 @@ export default function RootLayout({
     >
       <head>
         <link rel="alternate" type="application/rss+xml" title="Febiyanto Rizki Qurbandi — Blog" href="/feed.xml" />
-        {/* Sembunyikan konten sebelum loading screen muncul — mencegah flash of content.
-            html.will-load hides everything; LoadingScreen wrapper overrides dengan visibility:visible */}
-        <style dangerouslySetInnerHTML={{ __html: `html.will-load{visibility:hidden}` }} />
-        <script dangerouslySetInnerHTML={{ __html: `try{if(!sessionStorage.getItem('__booted'))document.documentElement.classList.add('will-load')}catch(e){}` }} />
+        {/* CSS rule untuk sembunyikan konten sebelum loading screen muncul */}
+        <style
+          nonce={nonce}
+          dangerouslySetInnerHTML={{ __html: `html.will-load{visibility:hidden}` }}
+        />
+        {/* Jalankan sebelum body render: tambah class will-load jika belum pernah boot */}
+        <script
+          nonce={nonce}
+          dangerouslySetInnerHTML={{
+            __html: `try{if(!sessionStorage.getItem('__booted'))document.documentElement.classList.add('will-load')}catch(e){}`,
+          }}
+        />
       </head>
       <body className="min-h-full" suppressHydrationWarning>
         <Script
           id="sw-register"
+          nonce={nonce}
           strategy="afterInteractive"
           dangerouslySetInnerHTML={{
             __html: `if('serviceWorker'in navigator)navigator.serviceWorker.register('/sw.js')`,
@@ -62,7 +76,7 @@ export default function RootLayout({
           Skip to content
         </a>
         <LoadingScreen />
-        <Providers>{children}</Providers>
+        <Providers nonce={nonce}>{children}</Providers>
       </body>
     </html>
   );
