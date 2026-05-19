@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { Cloud, Droplets, MapPin, Thermometer } from "lucide-react";
+import { Skeleton } from "@/components/ui/skeleton";
 
 interface WeatherData {
   temp_c: number;
@@ -36,7 +37,14 @@ export function WeatherWidget() {
       </div>
 
       {loading ? (
-        <p className="text-xs text-muted-foreground">Loading...</p>
+        <div className="flex flex-col gap-2">
+          <Skeleton className="h-9 w-20" />
+          <Skeleton className="h-3 w-32" />
+          <div className="flex gap-4 mt-1">
+            <Skeleton className="h-3 w-20" />
+            <Skeleton className="h-3 w-12" />
+          </div>
+        </div>
       ) : weather ? (
         <div className="flex flex-col gap-1">
           <p className="text-3xl font-bold text-foreground">{weather.temp_c}°C</p>
