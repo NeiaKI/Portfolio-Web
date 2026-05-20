@@ -63,7 +63,7 @@ export function EducationSection() {
               <span className="text-xs text-primary">{edu.institution}</span>
               <div className="flex items-center gap-2">
                 <span className="text-[11px] text-muted-foreground">
-                  {formatDate(edu.startDate)} — {edu.endDate ? formatDate(edu.endDate) : "Present"}
+                  {formatDate(edu.startDate)} — {edu.endDate ? formatDate(edu.endDate) : t("presentLabel")}
                 </span>
                 {"gpa" in edu && edu.gpa && (
                   <span className="text-[10px] font-medium text-primary/80 bg-primary/10 rounded px-1.5 py-0.5">
