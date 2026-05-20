@@ -1,6 +1,7 @@
 "use client";
 
-import { useEffect, useState, useCallback, useRef, cloneElement, type ReactElement } from "react";
+import { useEffect, useState, useCallback, useRef, cloneElement } from "react";
+import { useTranslations } from "next-intl";
 import { GitHubCalendar, type Activity } from "react-github-calendar";
 import { useTheme } from "@/lib/theme";
 import { Code2 } from "lucide-react";
@@ -67,6 +68,7 @@ function ProgressRow({ name, percent, animStarted }: { name: string; percent: nu
 }
 
 export function CodingProgress() {
+  const t = useTranslations("home");
   const { resolvedTheme } = useTheme();
   const [mounted, setMounted] = useState(false);
   const [waka, setWaka] = useState<WakaStats | null>(null);
@@ -124,23 +126,16 @@ export function CodingProgress() {
   }, []);
 
   const colorScheme = resolvedTheme === "dark" ? "dark" : "light";
-
   const [hoverLabel, setHoverLabel] = useState<string | null>(null);
-
   const legendColors = resolvedTheme === "dark" ? GH_THEME.dark : GH_THEME.light;
 
   const padData = useCallback((data: Activity[]) => {
     if (data.length === 0) return data;
-
     const todayStr = new Date().toLocaleDateString("en-CA");
-
-    // Start: exactly one year ago today, back to Sunday of that week
     const startDate = new Date();
     startDate.setFullYear(startDate.getFullYear() - 1);
     startDate.setDate(startDate.getDate() - startDate.getDay());
     const startStr = startDate.toLocaleDateString("en-CA");
-
-    // Pad empty days from startStr up to the first API entry
     const firstApiDate = data[0].date;
     const startPad: Activity[] = [];
     const cur = new Date(startStr);
@@ -148,56 +143,54 @@ export function CodingProgress() {
       startPad.push({ date: cur.toLocaleDateString("en-CA"), count: 0, level: 0 });
       cur.setDate(cur.getDate() + 1);
     }
-
-    // Keep only dates within [startStr, todayStr]
     const filteredData = data.filter((d) => d.date >= startStr && d.date <= todayStr);
-
     return [...startPad, ...filteredData];
   }, []);
 
-  const renderBlock = (block: React.ReactElement, activity: Activity) => {
+  const renderBlock = useCallback((block: React.ReactElement, activity: Activity) => {
     const label = activity.count === 0
-      ? `No contributions on ${activity.date}`
-      : `${activity.count} contribution${activity.count !== 1 ? "s" : ""} on ${activity.date}`;
+      ? t("ghNoContributions", { date: activity.date })
+      : t("ghContributionsOn", {
+          count: activity.count,
+          plural: `contribution${activity.count !== 1 ? "s" : ""}`,
+        });
     return cloneElement(block as React.ReactElement<React.HTMLAttributes<SVGRectElement>>, {
       onMouseEnter: () => setHoverLabel(label),
       onMouseLeave: () => setHoverLabel(null),
       style: { cursor: "default" },
     });
-  };
+  }, [t]);
 
   return (
     <section ref={sectionRef} className="flex flex-col gap-4">
       <div className="flex items-center gap-2">
         <Code2 className="h-4 w-4 text-primary" />
-        <h2 className="text-xl font-bold text-foreground">Coding Progress</h2>
+        <h2 className="text-xl font-bold text-foreground">{t("codingProgressTitle")}</h2>
       </div>
 
       <div className="rounded-xl border border-border bg-card p-3 sm:p-5 flex flex-col gap-4">
-        {/* WakaTime stat grid */}
         {waka ? (
           <>
             <div className="grid grid-cols-1 gap-2.5 sm:grid-cols-2">
-              <StatCard label="Start Date">{waka.start}</StatCard>
-              <StatCard label="End Date">{waka.end}</StatCard>
-              <StatCard label="Daily Coding Average">{waka.daily_avg}</StatCard>
-              <StatCard label="This Week Coding Time">{waka.this_week}</StatCard>
-              <StatCard label="Best Day Coding Time">
+              <StatCard label={t("wakaStart")}>{waka.start}</StatCard>
+              <StatCard label={t("wakaEnd")}>{waka.end}</StatCard>
+              <StatCard label={t("wakaDailyAvg")}>{waka.daily_avg}</StatCard>
+              <StatCard label={t("wakaThisWeek")}>{waka.this_week}</StatCard>
+              <StatCard label={t("wakaBestDay")}>
                 {waka.best_day.date} ({waka.best_day.time})
               </StatCard>
-              <StatCard label="All Time Since Today">{waka.all_time}</StatCard>
+              <StatCard label={t("wakaAllTime")}>{waka.all_time}</StatCard>
             </div>
 
-            {/* Languages + Categories */}
             <div className="grid grid-cols-1 gap-2.5 sm:grid-cols-2">
               <div className="rounded-lg border border-border/60 bg-background/50 p-3 flex flex-col gap-2">
-                <p className="text-[11px] font-semibold text-foreground">Languages</p>
+                <p className="text-[11px] font-semibold text-foreground">{t("wakaLanguages")}</p>
                 {waka.languages.map((l) => (
                   <ProgressRow key={l.name} name={l.name} percent={l.percent} animStarted={animStarted} />
                 ))}
               </div>
               <div className="rounded-lg border border-border/60 bg-background/50 p-3 flex flex-col gap-2">
-                <p className="text-[11px] font-semibold text-foreground">Categories</p>
+                <p className="text-[11px] font-semibold text-foreground">{t("wakaCategories")}</p>
                 {waka.categories.map((c) => (
                   <ProgressRow key={c.name} name={c.name} percent={c.percent} animStarted={animStarted} />
                 ))}
@@ -212,23 +205,20 @@ export function CodingProgress() {
           </div>
         )}
 
-        {/* GitHub commit stats */}
         {ghStats && (
           <div className="grid grid-cols-2 gap-2 sm:grid-cols-4">
             {[
-              { label: "Total",     value: ghTotal.toLocaleString(),    suffix: undefined },
-              { label: "This Week", value: String(ghThisWeek),          suffix: undefined },
-              { label: "Best Day",  value: String(ghBestDay),           suffix: undefined },
-              { label: "Average",   value: String(ghAvg),               suffix: "/ day"   },
-            ].map(({ label, value, suffix }) => (
-              <div key={label} className="rounded-lg border border-border bg-background p-2.5 sm:p-3 shadow-sm">
-                <p className="text-[11px] text-muted-foreground mb-1">{label}</p>
+              { labelKey: "ghTotal",    value: ghTotal.toLocaleString(), suffix: undefined },
+              { labelKey: "ghThisWeek", value: String(ghThisWeek),       suffix: undefined },
+              { labelKey: "ghBestDay",  value: String(ghBestDay),        suffix: undefined },
+              { labelKey: "ghAverage",  value: String(ghAvg),            suffix: t("ghPerDay") },
+            ].map(({ labelKey, value, suffix }) => (
+              <div key={labelKey} className="rounded-lg border border-border bg-background p-2.5 sm:p-3 shadow-sm">
+                <p className="text-[11px] text-muted-foreground mb-1">{t(labelKey as Parameters<typeof t>[0])}</p>
                 <p className="text-lg sm:text-xl font-bold text-foreground tabular-nums">
                   {value}
                   {suffix && (
-                    <span className="text-[10px] text-muted-foreground font-normal ml-1">
-                      {suffix}
-                    </span>
+                    <span className="text-[10px] text-muted-foreground font-normal ml-1">{suffix}</span>
                   )}
                 </p>
               </div>
@@ -236,7 +226,6 @@ export function CodingProgress() {
           </div>
         )}
 
-        {/* GitHub contribution calendar — circular blocks */}
         {mounted ? (
           <div ref={calendarRef} className="flex flex-col gap-2">
             <div className="overflow-x-auto [&>div]:w-full [&_svg]:w-full [&_svg]:h-auto">
@@ -258,25 +247,22 @@ export function CodingProgress() {
                 style={{ width: "100%" }}
               />
             </div>
-            {/* Custom footer — fixed height so hover label doesn't cause layout shift */}
             <div className="flex h-6 items-center justify-between px-0.5">
-              {/* Less … More legend */}
               <div className="flex items-center gap-1.5 text-[11px] text-muted-foreground">
-                <span>Less</span>
+                <span>{t("ghLess")}</span>
                 {legendColors.map((color, i) => (
                   <svg key={i} width="11" height="11">
                     <rect width="11" height="11" rx="6" fill={color} />
                   </svg>
                 ))}
-                <span>More</span>
+                <span>{t("ghMore")}</span>
               </div>
-              {/* Right: hover label or total count — same height regardless */}
               <span className={`rounded-md text-[11px] font-medium whitespace-nowrap transition-colors ${
                 hoverLabel
                   ? "bg-foreground px-2 py-0.5 text-background"
                   : "text-muted-foreground"
               }`}>
-                {hoverLabel ?? (ghStats ? `${ghStats.total.toLocaleString()} contributions in the last year` : "")}
+                {hoverLabel ?? (ghStats ? t("ghContributionsYear", { count: ghStats.total.toLocaleString() }) : "")}
               </span>
             </div>
           </div>

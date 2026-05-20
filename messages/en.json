@@ -18,7 +18,28 @@
     "theming": "Theming",
     "donate": "Donate",
     "contact": "Contact",
-    "uses": "Uses"
+    "uses": "Uses",
+    "navigation": "Navigation",
+    "actions": "Actions",
+    "recentPosts": "Recent Posts",
+    "toggleTheme": "Toggle Theme",
+    "switchToLight": "Switch to Light",
+    "switchToDark": "Switch to Dark",
+    "searchPlaceholder": "Search pages, projects, certificates…",
+    "noResults": "No results found.",
+    "marketWeek": "Market 7-day",
+    "cmdNavigate": "navigate",
+    "cmdOpen": "open",
+    "cmdJump": "jump",
+    "cmdScroll": "scroll",
+    "cmdTheme": "theme",
+    "homeDesc": "Main page",
+    "projectDesc": "All projects",
+    "blogDesc": "Articles",
+    "certificatesDesc": "Certifications",
+    "usesDesc": "My setup",
+    "donateDesc": "Support my work",
+    "changelogDesc": "What's new"
   },
   "sidebar": {
     "online": "Online",
@@ -61,7 +82,33 @@
     "viewProjects": "View Projects",
     "findMeOn": "Find me on",
     "viewPortfolioPDF": "View Portfolio in PDF",
-    "viewBlog": "Blog"
+    "viewBlog": "Blog",
+    "durationYear": "yr",
+    "durationYears": "yrs",
+    "durationMonth": "mo",
+    "durationMonths": "mos",
+    "durationLessThan1Mo": "< 1 mo",
+    "showHighlights": "Show highlights",
+    "hideHighlights": "Hide highlights",
+    "codingProgressTitle": "Coding Progress",
+    "wakaStart": "Start Date",
+    "wakaEnd": "End Date",
+    "wakaDailyAvg": "Daily Coding Average",
+    "wakaThisWeek": "This Week Coding Time",
+    "wakaBestDay": "Best Day Coding Time",
+    "wakaAllTime": "All Time Since Today",
+    "wakaLanguages": "Languages",
+    "wakaCategories": "Categories",
+    "ghTotal": "Total",
+    "ghThisWeek": "This Week",
+    "ghBestDay": "Best Day",
+    "ghAverage": "Average",
+    "ghPerDay": "/ day",
+    "ghLess": "Less",
+    "ghMore": "More",
+    "ghContributionsYear": "{count} contributions in the last year",
+    "ghNoContributions": "No contributions on {date}",
+    "ghContributionsOn": "{count} {plural} on {date}"
   },
   "project": {
     "title": "Projects",
@@ -86,7 +133,8 @@
   },
   "tools": {
     "title": "Tools",
-    "subtitle": "Useful utilities"
+    "subtitle": "Useful utilities",
+    "description": "Market conditions over the last 7 days — crypto, US stocks, and Indonesian stocks."
   },
   "roadmap": {
     "title": "Roadmap",
@@ -101,15 +149,17 @@
     "retry": "Try again",
     "backToHome": "Back to Home",
     "seeAll": "See all",
-    "learnMore": "Learn more"
+    "learnMore": "Learn more",
+    "notFoundTitle": "Page Not Found",
+    "notFoundDesc": "The page you're looking for isn't available — the URL might be mistyped or the page has been moved."
   },
   "donate": {
     "title": "Support My Work",
     "subtitle": "If you enjoy my work, consider buying me a coffee!",
     "donate": "Donate",
-    "saweria": "Saweria",
+    "saweria": "Trakteer",
     "kofi": "Ko-fi",
-    "saweriaDesc": "For Indonesian supporters — IDR via QRIS, GoPay, OVO, bank transfer",
+    "saweriaDesc": "For Indonesian supporters — IDR via QRIS, GoPay, OVO, and bank transfer",
     "kofiDesc": "For international supporters — USD via credit card or PayPal",
     "whyTitle": "What your support helps with",
     "reason1": "Hosting & domain costs",
@@ -143,5 +193,15 @@
     "connectSub": "Find me on these platforms",
     "preferEmailSub": "Use the form or reach out at",
     "formSub": "I'll get back to you as soon as possible"
+  },
+  "footer": {
+    "pages": "Pages",
+    "connect": "Connect",
+    "tagline": "Software Engineer & 3D Artist",
+    "location": "Tangerang Selatan, Indonesia",
+    "builtWith": "Built with Next.js & Catppuccin",
+    "privacy": "Privacy Policy",
+    "terms": "Terms of Service",
+    "allRights": "All rights reserved."
   }
 }

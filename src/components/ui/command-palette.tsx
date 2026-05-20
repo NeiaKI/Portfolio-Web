@@ -2,21 +2,25 @@
 
 import { useEffect, useState, useCallback } from "react";
 import { useRouter, usePathname } from "next/navigation";
+import { useTranslations } from "next-intl";
 import { useTheme } from "@/lib/theme";
 import { Command } from "cmdk";
 import { Home, FolderOpen, Newspaper, Award, Coffee, Search, Code2, Layers, Moon, Sun, Clock, ScrollText, LineChart } from "lucide-react";
 import { CERTIFICATES } from "@/data/certificates";
 import type { Project } from "@/types/database";
 import type { PostMeta } from "@/lib/blog";
+import type { LucideIcon } from "lucide-react";
 
-const PAGES = [
-  { label: "Home",         href: "/",             icon: Home,       shortcut: "1", desc: "Main page"       },
-  { label: "Projects",     href: "/project",       icon: FolderOpen, shortcut: "2", desc: "All projects"   },
-  { label: "Blog",         href: "/blog",           icon: Newspaper,  shortcut: "3", desc: "Articles"      },
-  { label: "Certificates", href: "/certificates",   icon: Award,      shortcut: "4", desc: "Certifications" },
-  { label: "Uses",         href: "/uses",           icon: Layers,     shortcut: "5", desc: "My setup"       },
-  { label: "Donate",       href: "/donate",         icon: Coffee,     shortcut: "6", desc: "Support my work" },
-  { label: "Changelog",    href: "/changelog",      icon: ScrollText, shortcut: "",  desc: "What's new"      },
+type PageDef = { labelKey: string; href: string; icon: LucideIcon; shortcut: string; descKey: string };
+
+const PAGES: PageDef[] = [
+  { labelKey: "home",         href: "/",            icon: Home,       shortcut: "1", descKey: "homeDesc"        },
+  { labelKey: "project",      href: "/project",      icon: FolderOpen, shortcut: "2", descKey: "projectDesc"    },
+  { labelKey: "blog",         href: "/blog",          icon: Newspaper,  shortcut: "3", descKey: "blogDesc"       },
+  { labelKey: "certificates", href: "/certificates",  icon: Award,      shortcut: "4", descKey: "certificatesDesc" },
+  { labelKey: "uses",         href: "/uses",          icon: Layers,     shortcut: "5", descKey: "usesDesc"       },
+  { labelKey: "donate",       href: "/donate",        icon: Coffee,     shortcut: "6", descKey: "donateDesc"     },
+  { labelKey: "changelog",    href: "/changelog",     icon: ScrollText, shortcut: "",  descKey: "changelogDesc"  },
 ];
 
 function Kbd({ children }: { children: React.ReactNode }) {
@@ -34,6 +38,7 @@ export function CommandPalette() {
   const router = useRouter();
   const pathname = usePathname();
   const { theme, setTheme } = useTheme();
+  const t = useTranslations("nav");
 
   useEffect(() => {
     fetch("/api/github", { cache: "no-store" })
@@ -120,7 +125,7 @@ export function CommandPalette() {
           <Search className="h-4 w-4 shrink-0 text-muted-foreground" />
           <Command.Input
             autoFocus
-            placeholder="Search pages, projects, certificates…"
+            placeholder={t("searchPlaceholder")}
             className="flex-1 bg-transparent text-sm text-foreground outline-none placeholder:text-muted-foreground"
           />
           <Kbd>ESC</Kbd>
@@ -128,48 +133,47 @@ export function CommandPalette() {
 
         <Command.List className="max-h-[60vh] overflow-y-auto overscroll-contain p-2">
           <Command.Empty className="py-10 text-center text-sm text-muted-foreground">
-            No results found.
+            {t("noResults")}
           </Command.Empty>
 
           {/* Navigation */}
-          <Command.Group heading="Navigation">
-            {PAGES.map(({ label, href, icon: Icon, shortcut, desc }) => (
+          <Command.Group heading={t("navigation")}>
+            {PAGES.map(({ labelKey, href, icon: Icon, shortcut, descKey }) => (
               <Command.Item
                 key={href}
-                value={`nav-${label}`}
+                value={`nav-${labelKey}`}
                 onSelect={() => go(href)}
                 className="flex cursor-pointer items-center gap-3 rounded-lg px-3 py-2.5 text-sm text-foreground data-[selected=true]:bg-primary/10 data-[selected=true]:text-primary"
               >
                 <Icon className="h-4 w-4 shrink-0 text-muted-foreground" />
-                <span className="flex-1 font-medium">{label}</span>
-                <span className="text-xs text-muted-foreground">{desc}</span>
+                <span className="flex-1 font-medium">{t(labelKey as Parameters<typeof t>[0])}</span>
+                <span className="text-xs text-muted-foreground">{t(descKey as Parameters<typeof t>[0])}</span>
                 {shortcut && <Kbd>⌘{shortcut}</Kbd>}
               </Command.Item>
             ))}
-            {/* Tools — searchable, tanpa keyboard shortcut */}
             <Command.Item
-              value="nav-Tools market crypto stocks saham"
+              value="nav-tools market crypto stocks saham"
               onSelect={() => go("/tools")}
               className="flex cursor-pointer items-center gap-3 rounded-lg px-3 py-2.5 text-sm text-foreground data-[selected=true]:bg-primary/10 data-[selected=true]:text-primary"
             >
               <LineChart className="h-4 w-4 shrink-0 text-muted-foreground" />
-              <span className="flex-1 font-medium">Tools</span>
-              <span className="text-xs text-muted-foreground">Market 7-day</span>
+              <span className="flex-1 font-medium">{t("tools")}</span>
+              <span className="text-xs text-muted-foreground">{t("marketWeek")}</span>
             </Command.Item>
           </Command.Group>
 
           <Command.Separator className="my-1 h-px bg-border" />
 
           {/* Actions */}
-          <Command.Group heading="Actions">
+          <Command.Group heading={t("actions")}>
             <Command.Item
               value="toggle theme dark light"
               onSelect={() => { setTheme(theme === "dark" ? "light" : "dark"); setOpen(false); }}
               className="flex cursor-pointer items-center gap-3 rounded-lg px-3 py-2.5 text-sm text-foreground data-[selected=true]:bg-primary/10 data-[selected=true]:text-primary"
             >
               {theme === "dark" ? <Sun className="h-4 w-4 shrink-0 text-muted-foreground" /> : <Moon className="h-4 w-4 shrink-0 text-muted-foreground" />}
-              <span className="flex-1 font-medium">Toggle Theme</span>
-              <span className="text-xs text-muted-foreground">{theme === "dark" ? "Switch to Light" : "Switch to Dark"}</span>
+              <span className="flex-1 font-medium">{t("toggleTheme")}</span>
+              <span className="text-xs text-muted-foreground">{theme === "dark" ? t("switchToLight") : t("switchToDark")}</span>
               <Kbd>⌘⇧L</Kbd>
             </Command.Item>
           </Command.Group>
@@ -177,7 +181,7 @@ export function CommandPalette() {
           <Command.Separator className="my-1 h-px bg-border" />
 
           {/* Projects */}
-          <Command.Group heading="Projects">
+          <Command.Group heading={t("project")}>
             {projects.map((p) => (
               <Command.Item
                 key={p.id}
@@ -197,7 +201,7 @@ export function CommandPalette() {
           {posts.length > 0 && (
             <>
               <Command.Separator className="my-1 h-px bg-border" />
-              <Command.Group heading="Recent Posts">
+              <Command.Group heading={t("recentPosts")}>
                 {posts.map((p) => (
                   <Command.Item
                     key={p.slug}
@@ -219,7 +223,7 @@ export function CommandPalette() {
           <Command.Separator className="my-1 h-px bg-border" />
 
           {/* Certificates */}
-          <Command.Group heading="Certificates">
+          <Command.Group heading={t("certificates")}>
             {CERTIFICATES.slice(0, 8).map((c) => (
               <Command.Item
                 key={c.id}
@@ -238,15 +242,15 @@ export function CommandPalette() {
         {/* Footer */}
         <div className="flex items-center justify-between border-t border-border px-4 py-2.5 text-[11px] text-muted-foreground">
           <span className="flex items-center gap-1">
-            <Kbd>↑↓</Kbd> navigate
+            <Kbd>↑↓</Kbd> {t("cmdNavigate")}
             <span className="mx-1">·</span>
-            <Kbd>↵</Kbd> open
+            <Kbd>↵</Kbd> {t("cmdOpen")}
             <span className="mx-1">·</span>
-            <Kbd>⌘1–6</Kbd> jump
+            <Kbd>⌘1–6</Kbd> {t("cmdJump")}
             <span className="mx-1">·</span>
-            <Kbd>j</Kbd><Kbd>k</Kbd> scroll
+            <Kbd>j</Kbd><Kbd>k</Kbd> {t("cmdScroll")}
             <span className="mx-1">·</span>
-            <Kbd>⌘⇧L</Kbd> theme
+            <Kbd>⌘⇧L</Kbd> {t("cmdTheme")}
           </span>
           <Kbd>⌘K</Kbd>
         </div>

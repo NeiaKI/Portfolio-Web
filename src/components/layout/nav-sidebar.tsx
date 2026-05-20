@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from "react";
 import Link from "next/link";
+import { Link as I18nLink } from "@/i18n/navigation";
 import { usePathname } from "next/navigation";
 import { useTranslations } from "next-intl";
 import { useTheme } from "@/lib/theme";
@@ -43,6 +44,7 @@ const NAV_GROUPS: NavGroup[] = [
 
 export function NavSidebar() {
   const t = useTranslations("nav");
+  const tFooter = useTranslations("footer");
   const pathname = usePathname();
   const { theme, setTheme } = useTheme();
   const [mounted, setMounted] = useState(false);
@@ -192,6 +194,23 @@ export function NavSidebar() {
             <span className="text-sm text-muted-foreground">{t("language")}</span>
           </div>
           <LanguageSwitcher />
+        </div>
+      </div>
+
+      {/* Copyright / Legal */}
+      <div className="mt-2 border-t border-border/20 pt-2 px-3 flex flex-col gap-1">
+        <p className="text-[9px] leading-tight text-muted-foreground/40">
+          © {new Date().getFullYear()} Febiyanto Rizki Qurbandi.<br />
+          {tFooter("allRights")}
+        </p>
+        <div className="flex items-center gap-1.5 text-[9px] text-muted-foreground/40">
+          <I18nLink href="/terms" className="hover:text-muted-foreground transition-colors">
+            {tFooter("terms")}
+          </I18nLink>
+          <span className="opacity-50">·</span>
+          <I18nLink href="/privacy" className="hover:text-muted-foreground transition-colors">
+            {tFooter("privacy")}
+          </I18nLink>
         </div>
       </div>
     </aside>

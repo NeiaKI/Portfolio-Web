@@ -62,21 +62,24 @@ function formatDate(date: string, locale = "en-US") {
   });
 }
 
-function getDuration(start: string, end: string | null): string {
+function getDuration(
+  start: string,
+  end: string | null,
+  yr: string, yrs: string,
+  mo: string, mos: string,
+  lessThan: string,
+): string {
   const startDate = new Date(start + "-01");
   const endDate = end ? new Date(end + "-01") : new Date();
-
   const totalMonths =
     (endDate.getFullYear() - startDate.getFullYear()) * 12 +
     (endDate.getMonth() - startDate.getMonth());
-
   const years = Math.floor(totalMonths / 12);
   const months = totalMonths % 12;
-
   const parts: string[] = [];
-  if (years > 0) parts.push(`${years} yr${years > 1 ? "s" : ""}`);
-  if (months > 0) parts.push(`${months} mo${months > 1 ? "s" : ""}`);
-  return parts.join(" ") || "< 1 mo";
+  if (years > 0) parts.push(`${years} ${years > 1 ? yrs : yr}`);
+  if (months > 0) parts.push(`${months} ${months > 1 ? mos : mo}`);
+  return parts.join(" ") || lessThan;
 }
 
 function ExperienceItem({ exp, index }: { exp: Experience; index: number }) {
@@ -128,7 +131,12 @@ function ExperienceItem({ exp, index }: { exp: Experience; index: number }) {
         {/* Duration badge */}
         <div className="flex items-center gap-1 w-fit rounded-full border border-border bg-muted/50 px-2.5 py-0.5 text-[11px] text-muted-foreground">
           <Clock className="h-3 w-3 shrink-0" />
-          {getDuration(exp.startDate, exp.endDate)}
+          {getDuration(
+            exp.startDate, exp.endDate,
+            t("durationYear"), t("durationYears"),
+            t("durationMonth"), t("durationMonths"),
+            t("durationLessThan1Mo"),
+          )}
         </div>
 
         {/* Highlights toggle */}
@@ -137,7 +145,7 @@ function ExperienceItem({ exp, index }: { exp: Experience; index: number }) {
           className="flex items-center gap-1 w-fit text-[11px] text-muted-foreground hover:text-foreground transition-colors mt-0.5"
         >
           {open ? <ChevronUp className="h-3 w-3" /> : <ChevronDown className="h-3 w-3" />}
-          {open ? "Hide" : "Show"} highlights ({exp.highlights.length})
+          {open ? t("hideHighlights") : t("showHighlights")} ({exp.highlights.length})
         </button>
 
         {open && (

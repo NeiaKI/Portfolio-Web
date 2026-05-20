@@ -7,12 +7,12 @@ import { EvmDonate } from "@/components/donate/evm-donate";
 import { PlatformCard } from "@/components/donate/platform-card";
 import type { Metadata } from "next";
 
-const SAWERIA_USERNAME = process.env.NEXT_PUBLIC_SAWERIA_USERNAME ?? "";
-const KOFI_USERNAME    = process.env.NEXT_PUBLIC_KOFI_USERNAME    ?? "";
-const ETH_ADDRESS      = process.env.NEXT_PUBLIC_ETH_ADDRESS      ?? "";
+const TRAKTEER_USERNAME = process.env.NEXT_PUBLIC_TRAKTEER_USERNAME ?? "";
+const KOFI_USERNAME     = process.env.NEXT_PUBLIC_KOFI_USERNAME     ?? "";
+const ETH_ADDRESS       = process.env.NEXT_PUBLIC_ETH_ADDRESS       ?? "";
 
-const SAWERIA_URL = SAWERIA_USERNAME ? `https://saweria.co/${SAWERIA_USERNAME}` : null;
-const KOFI_URL    = KOFI_USERNAME    ? `https://ko-fi.com/${KOFI_USERNAME}`     : null;
+const TRAKTEER_URL = TRAKTEER_USERNAME ? `https://trakteer.id/${TRAKTEER_USERNAME}` : null;
+const KOFI_URL     = KOFI_USERNAME     ? `https://ko-fi.com/${KOFI_USERNAME}`       : null;
 
 export async function generateMetadata({ params }: { params: Promise<{ locale: string }> }): Promise<Metadata> {
   const { locale } = await params;
@@ -21,17 +21,17 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
 }
 
 
-const PLATFORMS = (saweria: string | null, kofi: string | null) => [
+const PLATFORMS = (trakteer: string | null, kofi: string | null) => [
   {
-    key: "saweria",
-    name: "Saweria",
+    key: "trakteer",
+    name: "Trakteer",
     descKey: "saweriaDesc" as const,
-    url: saweria,
-    logo: "/icons/saweria.svg",
-    color: "bg-card border-border hover:border-orange-500/30",
-    btnColor: "bg-orange-500/90 hover:bg-orange-500 text-white",
-    placeholder: "saweria.co",
-    envKey: "NEXT_PUBLIC_SAWERIA_USERNAME",
+    url: trakteer,
+    logo: "/icons/trakteer.svg",
+    color: "bg-card border-border hover:border-red-500/30",
+    btnColor: "bg-red-600/90 hover:bg-red-600 text-white",
+    placeholder: "trakteer.id",
+    envKey: "NEXT_PUBLIC_TRAKTEER_USERNAME",
   },
   {
     key: "kofi",
@@ -49,7 +49,7 @@ const PLATFORMS = (saweria: string | null, kofi: string | null) => [
 export default async function DonatePage({ params }: { params: Promise<{ locale: string }> }) {
   const { locale } = await params;
   const t = await getTranslations({ locale, namespace: "donate" });
-  const platforms = PLATFORMS(SAWERIA_URL, KOFI_URL);
+  const platforms = PLATFORMS(TRAKTEER_URL, KOFI_URL);
 
   return (
     <MainLayout>

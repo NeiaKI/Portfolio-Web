@@ -18,7 +18,28 @@
     "theming": "Tampilan",
     "donate": "Donasi",
     "contact": "Kontak",
-    "uses": "Uses"
+    "uses": "Uses",
+    "navigation": "Navigasi",
+    "actions": "Aksi",
+    "recentPosts": "Postingan Terbaru",
+    "toggleTheme": "Ganti Tema",
+    "switchToLight": "Ganti ke Terang",
+    "switchToDark": "Ganti ke Gelap",
+    "searchPlaceholder": "Cari halaman, proyek, sertifikat…",
+    "noResults": "Tidak ada hasil.",
+    "marketWeek": "Market 7 hari",
+    "cmdNavigate": "navigasi",
+    "cmdOpen": "buka",
+    "cmdJump": "lompat",
+    "cmdScroll": "gulir",
+    "cmdTheme": "tema",
+    "homeDesc": "Halaman utama",
+    "projectDesc": "Semua proyek",
+    "blogDesc": "Artikel",
+    "certificatesDesc": "Sertifikasi",
+    "usesDesc": "Setup saya",
+    "donateDesc": "Dukung saya",
+    "changelogDesc": "Yang baru"
   },
   "sidebar": {
     "online": "Online",
@@ -61,7 +82,33 @@
     "viewProjects": "Lihat Proyek",
     "findMeOn": "Temukan saya di",
     "viewPortfolioPDF": "Lihat Portfolio PDF",
-    "viewBlog": "Blog"
+    "viewBlog": "Blog",
+    "durationYear": "thn",
+    "durationYears": "thn",
+    "durationMonth": "bln",
+    "durationMonths": "bln",
+    "durationLessThan1Mo": "< 1 bln",
+    "showHighlights": "Tampilkan highlights",
+    "hideHighlights": "Sembunyikan highlights",
+    "codingProgressTitle": "Progress Coding",
+    "wakaStart": "Tanggal Mulai",
+    "wakaEnd": "Tanggal Selesai",
+    "wakaDailyAvg": "Rata-rata Coding Harian",
+    "wakaThisWeek": "Waktu Coding Minggu Ini",
+    "wakaBestDay": "Waktu Coding Hari Terbaik",
+    "wakaAllTime": "Total Sejak Awal",
+    "wakaLanguages": "Bahasa",
+    "wakaCategories": "Kategori",
+    "ghTotal": "Total",
+    "ghThisWeek": "Minggu Ini",
+    "ghBestDay": "Hari Terbaik",
+    "ghAverage": "Rata-rata",
+    "ghPerDay": "/ hari",
+    "ghLess": "Sedikit",
+    "ghMore": "Banyak",
+    "ghContributionsYear": "{count} kontribusi dalam setahun terakhir",
+    "ghNoContributions": "Tidak ada kontribusi pada {date}",
+    "ghContributionsOn": "{count} {plural} pada {date}"
   },
   "project": {
     "title": "Proyek",
@@ -86,7 +133,8 @@
   },
   "tools": {
     "title": "Tools",
-    "subtitle": "Utilitas berguna"
+    "subtitle": "Utilitas berguna",
+    "description": "Kondisi market 7 hari terakhir — crypto, saham AS, dan saham Indonesia."
   },
   "roadmap": {
     "title": "Roadmap",
@@ -101,13 +149,15 @@
     "retry": "Coba lagi",
     "backToHome": "Kembali ke Beranda",
     "seeAll": "Lihat semua",
-    "learnMore": "Pelajari lebih lanjut"
+    "learnMore": "Pelajari lebih lanjut",
+    "notFoundTitle": "Halaman Tidak Ditemukan",
+    "notFoundDesc": "Sepertinya halaman yang kamu tuju tidak tersedia — URL mungkin salah ketik atau halaman sudah dipindahkan."
   },
   "donate": {
     "title": "Dukung Karya Saya",
     "subtitle": "Jika kamu menikmati karya saya, pertimbangkan untuk mentraktir saya kopi!",
     "donate": "Donasi",
-    "saweria": "Saweria",
+    "saweria": "Trakteer",
     "kofi": "Ko-fi",
     "saweriaDesc": "Untuk supporter Indonesia — IDR via QRIS, GoPay, OVO, transfer bank",
     "kofiDesc": "Untuk supporter internasional — USD via kartu kredit atau PayPal",
@@ -143,5 +193,15 @@
     "connectSub": "Temukan saya di platform-platform ini",
     "preferEmailSub": "Gunakan form atau hubungi langsung di",
     "formSub": "Saya akan membalasmu secepat mungkin"
+  },
+  "footer": {
+    "pages": "Halaman",
+    "connect": "Terhubung",
+    "tagline": "Software Engineer & 3D Artist",
+    "location": "Tangerang Selatan, Indonesia",
+    "builtWith": "Dibuat dengan Next.js & Catppuccin",
+    "privacy": "Kebijakan Privasi",
+    "terms": "Ketentuan Layanan",
+    "allRights": "Hak cipta dilindungi."
   }
 }
