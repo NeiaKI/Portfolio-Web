@@ -38,6 +38,8 @@ export function NowReading() {
           <img
             src={BOOK.cover}
             alt={BOOK.title}
+            loading="lazy"
+            decoding="async"
             className="h-16 w-11 rounded object-cover border border-border shrink-0"
           />
         ) : (

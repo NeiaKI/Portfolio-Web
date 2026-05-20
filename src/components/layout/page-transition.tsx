@@ -1,6 +1,6 @@
 "use client";
 
-import { motion, AnimatePresence, type Variants } from "framer-motion";
+import { m, AnimatePresence, type Variants } from "framer-motion";
 import { usePathname } from "next/navigation";
 
 const container: Variants = {
@@ -8,15 +8,16 @@ const container: Variants = {
   show: {
     transition: { staggerChildren: 0.07, delayChildren: 0.05 },
   },
+  // Exit instan — tidak ada stagger agar halaman baru langsung muncul tanpa jeda
   exit: {
-    transition: { staggerChildren: 0.04, staggerDirection: -1 },
+    transition: { staggerChildren: 0 },
   },
 };
 
 const item: Variants = {
   hidden: { opacity: 0, y: 16, filter: "blur(4px)" },
   show:   { opacity: 1, y: 0,  filter: "blur(0px)", transition: { duration: 0.35, ease: [0.25, 0.1, 0.25, 1] as [number, number, number, number] } },
-  exit:   { opacity: 0, y: -8, filter: "blur(2px)", transition: { duration: 0.18, ease: "easeIn" as const } },
+  exit:   { opacity: 0, transition: { duration: 0.1, ease: "easeIn" as const } },
 };
 
 // Module-level Set persists for the browser session — no stagger on return visits
@@ -29,7 +30,7 @@ export function PageTransition({ children }: { children: React.ReactNode }) {
 
   return (
     <AnimatePresence mode="wait" initial={false}>
-      <motion.div
+      <m.div
         key={pathname}
         variants={container}
         initial={isFirstVisit ? "hidden" : "show"}
@@ -37,15 +38,15 @@ export function PageTransition({ children }: { children: React.ReactNode }) {
         exit="exit"
       >
         {children}
-      </motion.div>
+      </m.div>
     </AnimatePresence>
   );
 }
 
 export function FadeSection({ children, className }: { children: React.ReactNode; className?: string }) {
   return (
-    <motion.div variants={item} className={className}>
+    <m.div variants={item} className={className}>
       {children}
-    </motion.div>
+    </m.div>
   );
 }

@@ -95,7 +95,7 @@ export function SpotifyWidget() {
       <div className="relative h-12 w-12 shrink-0 rounded-lg overflow-hidden bg-muted">
         {data?.albumArt ? (
           // eslint-disable-next-line @next/next/no-img-element
-          <img src={data.albumArt} alt={data.album} className="h-full w-full object-cover" />
+          <img src={data.albumArt} alt={data.album} className="h-full w-full object-cover" loading="lazy" decoding="async" />
         ) : (
           <div className="flex h-full w-full items-center justify-center">
             <Music2 className="h-5 w-5 text-muted-foreground/40" />

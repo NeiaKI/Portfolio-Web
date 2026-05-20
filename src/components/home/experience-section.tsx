@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { useTranslations } from "next-intl";
-import { motion } from "framer-motion";
+import { m } from "framer-motion";
 import { MapPin, Calendar, Clock, ChevronDown, ChevronUp } from "lucide-react";
 
 interface Experience {
@@ -85,7 +85,7 @@ function ExperienceItem({ exp, index }: { exp: Experience; index: number }) {
   const isCurrent = !exp.endDate;
 
   return (
-    <motion.div
+    <m.div
       initial={{ opacity: 0, x: -10 }}
       animate={{ opacity: 1, x: 0 }}
       transition={{ duration: 0.4, delay: index * 0.08 }}
@@ -141,7 +141,7 @@ function ExperienceItem({ exp, index }: { exp: Experience; index: number }) {
         </button>
 
         {open && (
-          <motion.ul
+          <m.ul
             initial={{ opacity: 0, height: 0 }}
             animate={{ opacity: 1, height: "auto" }}
             exit={{ opacity: 0, height: 0 }}
@@ -154,10 +154,10 @@ function ExperienceItem({ exp, index }: { exp: Experience; index: number }) {
                 {h}
               </li>
             ))}
-          </motion.ul>
+          </m.ul>
         )}
       </div>
-    </motion.div>
+    </m.div>
   );
 }
 

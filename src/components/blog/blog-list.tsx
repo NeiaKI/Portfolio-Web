@@ -41,6 +41,8 @@ function ArticleCard({ article }: { article: Article }) {
           <img
             src={article.cover_image}
             alt={article.title}
+            loading="lazy"
+            decoding="async"
             className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105"
           />
         ) : (

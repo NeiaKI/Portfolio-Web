@@ -13,6 +13,9 @@ const securityHeaders = [
 ];
 
 const nextConfig: NextConfig = {
+  experimental: {
+    optimizePackageImports: ["lucide-react", "react-icons", "recharts"],
+  },
   async headers() {
     return [{ source: "/(.*)", headers: securityHeaders }];
   },

@@ -29,6 +29,8 @@ export function PlatformCard({ name, logo, placeholder, desc, url, donateLabel, 
             <img
               src={logo}
               alt={name}
+              loading="lazy"
+              decoding="async"
               className="h-full w-full object-contain"
               onError={() => setImgFailed(true)}
             />

@@ -2,6 +2,7 @@
 
 import { useEffect } from "react";
 import { ThemeProvider } from "@/lib/theme";
+import { MotionProvider } from "@/components/motion-provider";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { ScrollProgress } from "@/components/ui/scroll-progress";
 import { BackToTop } from "@/components/ui/back-to-top";
@@ -34,13 +35,15 @@ function VimKeys() {
 export function Providers({ children }: { children: React.ReactNode }) {
   return (
     <ThemeProvider defaultTheme="dark">
-      <TooltipProvider delay={500}>
-        <VimKeys />
-        <ScrollProgress />
-        <BackToTop />
-        <ShortcutModal />
-        {children}
-      </TooltipProvider>
+      <MotionProvider>
+        <TooltipProvider delay={500}>
+          <VimKeys />
+          <ScrollProgress />
+          <BackToTop />
+          <ShortcutModal />
+          {children}
+        </TooltipProvider>
+      </MotionProvider>
     </ThemeProvider>
   );
 }

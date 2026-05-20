@@ -22,6 +22,8 @@ function IssuerLogo({ src, issuer }: { src: string | null; issuer: string }) {
         <img
           src={src}
           alt={issuer}
+          loading="lazy"
+          decoding="async"
           className="h-full w-full object-contain"
           onError={() => setFailed(true)}
         />

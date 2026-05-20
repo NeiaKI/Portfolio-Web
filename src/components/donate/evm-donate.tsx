@@ -32,6 +32,8 @@ export function EvmDonate({ address, title, desc, copyLabel, copiedLabel, note }
           <img
             src="/icons/ethereum.svg"
             alt="Ethereum"
+            loading="lazy"
+            decoding="async"
             className="h-full w-full object-contain"
             style={{ filter: "invert(41%) sepia(71%) saturate(516%) hue-rotate(199deg) brightness(96%) contrast(96%)" }}
           />

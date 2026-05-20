@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { useTranslations } from "next-intl";
-import { motion, AnimatePresence } from "framer-motion";
+import { m, AnimatePresence } from "framer-motion";
 import { ChevronDown, ChevronUp, Code2 } from "lucide-react";
 import {
   SiReact, SiNextdotjs, SiTypescript, SiJavascript, SiVuedotjs,
@@ -272,7 +272,7 @@ export function SkillsSection() {
       {/* Expandable grid */}
       <AnimatePresence>
         {expanded && (
-          <motion.div
+          <m.div
             initial={{ opacity: 0, height: 0 }}
             animate={{ opacity: 1, height: "auto" }}
             exit={{ opacity: 0, height: 0 }}
@@ -282,7 +282,7 @@ export function SkillsSection() {
             {CATEGORIES.map((cat) => (
               <CategoryCard key={cat.name} category={cat} />
             ))}
-          </motion.div>
+          </m.div>
         )}
       </AnimatePresence>
     </section>

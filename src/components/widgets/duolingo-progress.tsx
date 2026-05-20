@@ -83,7 +83,7 @@ export function DuolingoProgress() {
     <section ref={sectionRef} className="flex flex-col gap-4">
       <div className="flex items-center gap-2">
         {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img src="https://cdn.simpleicons.org/duolingo/58cc02" className="h-5 w-5" alt="Duolingo" />
+        <img src="https://cdn.simpleicons.org/duolingo/58cc02" className="h-5 w-5" alt="Duolingo" loading="lazy" decoding="async" />
         <h2 className="text-xl font-bold text-foreground">Duolingo Progress</h2>
       </div>
 

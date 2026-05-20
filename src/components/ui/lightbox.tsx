@@ -36,6 +36,8 @@ export function Lightbox({ images, alt }: LightboxProps) {
             <img
               src={src}
               alt={`${alt} screenshot ${i + 1}`}
+              loading="lazy"
+              decoding="async"
               className="w-full object-cover transition-transform duration-300 group-hover:scale-105"
             />
             <div className="absolute inset-0 bg-foreground/0 group-hover:bg-foreground/10 transition-colors flex items-center justify-center">
@@ -76,6 +78,7 @@ export function Lightbox({ images, alt }: LightboxProps) {
             <img
               src={images[idx]}
               alt={`${alt} screenshot ${idx + 1}`}
+              decoding="async"
               className="max-h-[85vh] w-auto rounded-xl border border-border shadow-2xl object-contain"
             />
             {images.length > 1 && (

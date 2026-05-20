@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { useTranslations } from "next-intl";
-import { motion } from "framer-motion";
+import { m } from "framer-motion";
 import Link from "next/link";
 import Image from "next/image";
 import { cn } from "@/lib/utils";
@@ -35,7 +35,7 @@ export function HeroSection() {
   return (
     <section className="flex flex-col gap-5 py-6">
       {/* Avatar — visible only on mobile (sidebar shows it on desktop) */}
-      <motion.div
+      <m.div
         initial={{ opacity: 0, scale: 0.8 }}
         animate={{ opacity: 1, scale: 1 }}
         transition={{ duration: 0.5, ease: "backOut" }}
@@ -50,14 +50,15 @@ export function HeroSection() {
             src="/images/avatar.jpg"
             alt="Febiyanto Rizki Qurbandi"
             fill
+            sizes="64px"
             className="rounded-full object-cover p-[3px]"
             priority
           />
         </div>
-      </motion.div>
+      </m.div>
 
       {/* Status badge */}
-      <motion.div
+      <m.div
         initial={{ opacity: 0, y: -8 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.4, delay: 0.0 }}
@@ -69,10 +70,10 @@ export function HeroSection() {
           </span>
           {t("openToWork") as string}
         </span>
-      </motion.div>
+      </m.div>
 
       {/* Heading + typewriter */}
-      <motion.div
+      <m.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5, delay: 0.08 }}
@@ -88,20 +89,20 @@ export function HeroSection() {
             <span className="animate-[blink_1s_step-end_infinite]">|</span>
           </span>
         </p>
-      </motion.div>
+      </m.div>
 
       {/* Description */}
-      <motion.p
+      <m.p
         initial={{ opacity: 0, y: 10 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5, delay: 0.15 }}
         className="text-sm text-muted-foreground leading-relaxed"
       >
         {t("heroDesc")}
-      </motion.p>
+      </m.p>
 
       {/* Action buttons */}
-      <motion.div
+      <m.div
         initial={{ opacity: 0, y: 10 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5, delay: 0.22 }}
@@ -119,10 +120,10 @@ export function HeroSection() {
         >
           {t("viewBlog")}
         </a>
-      </motion.div>
+      </m.div>
 
       {/* Social links — staggered */}
-      <motion.div
+      <m.div
         initial={{ opacity: 0, y: 10 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.4, delay: 0.3 }}
@@ -130,7 +131,7 @@ export function HeroSection() {
       >
         <span className="text-sm text-muted-foreground">{t("findMeOn")}</span>
         {SOCIAL_LINKS.map(({ path, href, label }, i) => (
-          <motion.a
+          <m.a
             key={label}
             href={href}
             target="_blank"
@@ -146,9 +147,9 @@ export function HeroSection() {
             <svg viewBox="0 0 24 24" className="h-4 w-4" fill="currentColor" aria-hidden>
               <path d={path} />
             </svg>
-          </motion.a>
+          </m.a>
         ))}
-      </motion.div>
+      </m.div>
     </section>
   );
 }
