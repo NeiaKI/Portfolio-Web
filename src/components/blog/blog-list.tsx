@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { useTranslations } from "next-intl";
+import Image from "next/image";
 import { ArrowUpRight, Clock, Calendar } from "lucide-react";
 import { Skeleton } from "@/components/ui/skeleton";
 
@@ -37,13 +38,12 @@ function ArticleCard({ article }: { article: Article }) {
       {/* Thumbnail */}
       <div className="relative h-48 w-full overflow-hidden bg-muted/40 shrink-0">
         {article.cover_image ? (
-          // eslint-disable-next-line @next/next/no-img-element
-          <img
+          <Image
             src={article.cover_image}
             alt={article.title}
-            loading="lazy"
-            decoding="async"
-            className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105"
+            fill
+            sizes="(max-width: 640px) 100vw, 50vw"
+            className="object-cover transition-transform duration-300 group-hover:scale-105"
           />
         ) : (
           <div className="flex h-full items-center justify-center">

@@ -145,9 +145,9 @@ export function CertificateCard({ certificate }: { certificate: Certificate }) {
   return (
     <Dialog.Root>
       <Dialog.Trigger asChild>
-        <div role="button" tabIndex={0} aria-label={`View details: ${certificate.title}`}>
+        <button type="button" className="w-full text-left" aria-label={`View details: ${certificate.title}`}>
           {inner}
-        </div>
+        </button>
       </Dialog.Trigger>
       <CertificateDetail certificate={certificate} />
     </Dialog.Root>

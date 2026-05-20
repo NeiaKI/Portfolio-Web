@@ -1,6 +1,6 @@
 "use client";
 
-import { Component, type ReactNode } from "react";
+import { Component, type ErrorInfo, type ReactNode } from "react";
 
 interface Props {
   children: ReactNode;
@@ -16,6 +16,11 @@ export class ErrorBoundary extends Component<Props, State> {
 
   static getDerivedStateFromError(): State {
     return { hasError: true };
+  }
+
+  // Titik tunggal untuk logging — wire ke layanan monitoring di sini saat deploy.
+  componentDidCatch(error: Error, info: ErrorInfo) {
+    console.error("[ErrorBoundary]", error, info.componentStack);
   }
 
   render() {
