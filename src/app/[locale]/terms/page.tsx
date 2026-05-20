@@ -32,8 +32,8 @@ export default async function TermsPage({ params }: Props) {
 
         <Section title={id ? "2. Hak Kekayaan Intelektual" : "2. Intellectual Property"}>
           {id
-            ? "Seluruh konten — teks, kode, desain, aset 3D, dan tulisan blog — adalah milik Febiyanto Rizki Qurbandi kecuali disebutkan lain. Kamu boleh melihat dan membaca untuk keperluan pribadi, tetapi tidak boleh menyalin atau mendistribusikan ulang tanpa izin."
-            : "All content — text, code, design, 3D assets, and blog posts — belongs to Febiyanto Rizki Qurbandi unless stated otherwise. You may view and read for personal use, but may not copy or redistribute without permission."}
+            ? "Seluruh konten — teks, kode, desain, dan tulisan blog — adalah milik Febiyanto Rizki Qurbandi kecuali disebutkan lain. Kamu boleh melihat dan membaca untuk keperluan pribadi, tetapi tidak boleh menyalin atau mendistribusikan ulang tanpa izin."
+            : "All content — text, code, design, and blog posts — belongs to Febiyanto Rizki Qurbandi unless stated otherwise. You may view and read for personal use, but may not copy or redistribute without permission."}
         </Section>
 
         <Section title={id ? "3. Disclaimer Data Pasar" : "3. Market Data Disclaimer"}>
