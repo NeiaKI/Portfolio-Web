@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { Bitcoin, TrendingUp, TrendingDown, Flame, LineChart, Building2, DollarSign, Gem, Globe, Landmark } from "lucide-react";
+import { Bitcoin, TrendingUp, TrendingDown, Flame, LineChart, Building2, DollarSign, Gem, Globe, Landmark, Gauge, ArrowUpRight, ArrowDownRight } from "lucide-react";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Sparkline } from "./sparkline";
 
@@ -49,7 +49,11 @@ type Quote = { symbol: string; name: string; price: number; change7d: number; ch
 
 type Commodity = Quote & { emoji?: string | null };
 
-type CryptoResp = { top: Crypto[]; trending: Trending[] };
+type Mover = { id: string; symbol: string; name: string; image: string; price: number; change24h: number; rank: number | null };
+type GlobalData = { totalMcap: number; vol24h: number; btcDom: number; ethDom: number; mcapChange24h: number; activeCoins: number };
+type FearGreed = { value: number; classification: string };
+
+type CryptoResp = { top: Crypto[]; trending: Trending[]; gainers: Mover[]; losers: Mover[]; global: GlobalData | null; fearGreed: FearGreed | null };
 type UsResp = { indices: Quote[]; stocks: Quote[] };
 type IdResp = { indices: Quote[]; stocks: Quote[] };
 type ForexResp = { pairs: Quote[] };
@@ -99,15 +103,15 @@ function Change({ value }: { value: number }) {
   );
 }
 
-function Section({ icon: Icon, title, subtitle, children }: { icon: typeof Bitcoin; title: string; subtitle?: string; children: React.ReactNode }) {
+function Section({ icon: Icon, title, subtitle, fill, children }: { icon: typeof Bitcoin; title: string; subtitle?: string; fill?: boolean; children: React.ReactNode }) {
   return (
-    <div className="h-fit rounded-xl border border-border bg-card">
+    <div className={`rounded-xl border border-border bg-card ${fill ? "flex h-full flex-col" : "h-fit"}`}>
       <div className="flex items-center gap-2 border-b border-border/60 px-4 py-3">
         <Icon className="h-4 w-4 text-primary" />
         <h2 className="text-sm font-semibold text-foreground">{title}</h2>
         {subtitle && <span className="ml-auto text-[11px] text-muted-foreground">{subtitle}</span>}
       </div>
-      <div className="divide-y divide-border/40">{children}</div>
+      <div className={`divide-y divide-border/40 ${fill ? "flex flex-1 flex-col" : ""}`}>{children}</div>
     </div>
   );
 }
@@ -188,6 +192,128 @@ function RowSkeleton() {
   );
 }
 
+function GlobalOverview({ g, locale }: { g: GlobalData; locale: string }) {
+  const id = locale === "id";
+  const othersDom = Math.max(0, 100 - g.btcDom - g.ethDom);
+  const stats: { label: string; value: string; change?: number }[] = [
+    { label: "Total Market Cap", value: fmtMcap(g.totalMcap) ?? "—", change: g.mcapChange24h },
+    { label: id ? "Volume 24j" : "24h Volume", value: fmtMcap(g.vol24h) ?? "—" },
+    { label: "BTC Dominance", value: `${g.btcDom.toFixed(1)}%` },
+    { label: "ETH Dominance", value: `${g.ethDom.toFixed(1)}%` },
+    { label: id ? "Dominasi Lainnya" : "Others Dominance", value: `${othersDom.toFixed(1)}%` },
+    { label: id ? "Koin Aktif" : "Active Coins", value: g.activeCoins.toLocaleString("en-US") },
+  ];
+  return (
+    <div className="grid h-full auto-rows-fr grid-cols-2 gap-px overflow-hidden bg-border/40 sm:grid-cols-3">
+      {stats.map((s) => (
+        <div key={s.label} className="flex flex-col justify-center gap-0.5 bg-card px-4 py-3">
+          <span className="text-[11px] text-muted-foreground">{s.label}</span>
+          <span className="text-sm font-semibold tabular-nums text-foreground">{s.value}</span>
+          {s.change != null && <Change value={s.change} />}
+        </div>
+      ))}
+    </div>
+  );
+}
+
+const FNG_COLOR = (v: number) =>
+  v <= 24 ? "text-red-500" : v <= 44 ? "text-orange-500" : v <= 55 ? "text-yellow-500" : v <= 75 ? "text-lime-500" : "text-green-500";
+const FNG_HEX = (v: number) =>
+  v <= 24 ? "#ef4444" : v <= 44 ? "#f97316" : v <= 55 ? "#eab308" : v <= 75 ? "#84cc16" : "#22c55e";
+
+function FearGreedGauge({ f }: { f: FearGreed; locale: string }) {
+  const cx = 100;
+  const cy = 104;
+  const r = 78;
+  const v = Math.max(0, Math.min(100, f.value));
+  const angle = ((180 - v * 1.8) * Math.PI) / 180; // 0→kiri(180°), 100→kanan(0°)
+  const cos = Math.cos(angle);
+  const sin = Math.sin(angle);
+  const needleLen = r - 6;
+  const nx = cx + needleLen * cos;
+  const ny = cy - needleLen * sin;
+  const bx = cx + (r + 14) * cos;
+  const by = cy - (r + 14) * sin;
+  const hex = FNG_HEX(v);
+
+  return (
+    <div className="flex h-full flex-col items-center justify-center gap-1 px-4 py-4">
+      <p className="self-start text-sm font-bold text-foreground">
+        Now: <span className={FNG_COLOR(v)}>{f.classification}</span>
+      </p>
+      <svg viewBox="0 0 200 128" className="w-full max-w-[260px]" role="img" aria-label={`Fear and Greed ${v}`}>
+        <defs>
+          <linearGradient id="fng-grad" x1="0" y1="0" x2="1" y2="0">
+            <stop offset="0%" stopColor="#ef4444" />
+            <stop offset="30%" stopColor="#f97316" />
+            <stop offset="50%" stopColor="#eab308" />
+            <stop offset="70%" stopColor="#84cc16" />
+            <stop offset="100%" stopColor="#22c55e" />
+          </linearGradient>
+        </defs>
+        {/* Busur gradient */}
+        <path
+          d={`M ${cx - r} ${cy} A ${r} ${r} 0 0 1 ${cx + r} ${cy}`}
+          fill="none"
+          stroke="url(#fng-grad)"
+          strokeWidth="15"
+          strokeLinecap="round"
+        />
+        {/* Jarum */}
+        <line x1={cx} y1={cy} x2={nx} y2={ny} stroke="currentColor" strokeWidth="3" strokeLinecap="round" className="text-muted-foreground" />
+        {/* Hub */}
+        <circle cx={cx} cy={cy} r="7" className="fill-muted-foreground" />
+        <circle cx={cx} cy={cy} r="3" className="fill-background" />
+        {/* Badge angka */}
+        <circle cx={bx} cy={by} r="14" fill={hex} />
+        <text x={bx} y={by} textAnchor="middle" dominantBaseline="central" className="fill-white text-[14px] font-bold">
+          {v}
+        </text>
+      </svg>
+    </div>
+  );
+}
+
+type TabKey = "crypto" | "stocks" | "currency";
+
+function TabCard({
+  active,
+  onClick,
+  icon: Icon,
+  title,
+  desc,
+}: {
+  active: boolean;
+  onClick: () => void;
+  icon: typeof Bitcoin;
+  title: string;
+  desc: string;
+}) {
+  return (
+    <button
+      type="button"
+      onClick={onClick}
+      className={`flex items-center gap-3 rounded-xl border px-4 py-3 text-left transition-colors ${
+        active
+          ? "border-primary bg-primary/5"
+          : "border-border bg-card hover:bg-accent/50"
+      }`}
+    >
+      <div
+        className={`flex h-9 w-9 shrink-0 items-center justify-center rounded-lg ${
+          active ? "bg-primary/15 text-primary" : "bg-muted text-muted-foreground"
+        }`}
+      >
+        <Icon className="h-4 w-4" />
+      </div>
+      <div className="min-w-0">
+        <p className={`text-sm font-semibold ${active ? "text-foreground" : "text-foreground"}`}>{title}</p>
+        <p className="truncate text-[11px] text-muted-foreground">{desc}</p>
+      </div>
+    </button>
+  );
+}
+
 const REFRESH_MS = 60_000; // auto-refresh tiap 60 detik agar page yang kebuka tetap sync
 
 export function MarketDashboard({ locale }: { locale: string }) {
@@ -200,6 +326,7 @@ export function MarketDashboard({ locale }: { locale: string }) {
   const [rates, setRates] = useState<RatesResp | null>(null);
   const [loading, setLoading] = useState(true);
   const [updatedAt, setUpdatedAt] = useState<Date | null>(null);
+  const [tab, setTab] = useState<TabKey>("crypto");
 
   useEffect(() => {
     let active = true;
@@ -244,6 +371,38 @@ export function MarketDashboard({ locale }: { locale: string }) {
             : ""}
       </div>
 
+      {/* Sub-tabs */}
+      <div className="grid grid-cols-1 gap-3 sm:grid-cols-3">
+        <TabCard active={tab === "crypto"} onClick={() => setTab("crypto")} icon={Bitcoin}
+          title="Crypto" desc={t("Coins, trending, movers", "Koin, trending, movers")} />
+        <TabCard active={tab === "stocks"} onClick={() => setTab("stocks")} icon={LineChart}
+          title={t("Stocks", "Saham")} desc={t("US, Indonesia, global", "AS, Indonesia, global")} />
+        <TabCard active={tab === "currency"} onClick={() => setTab("currency")} icon={DollarSign}
+          title={t("Currency & Other", "Mata Uang & Lainnya")} desc={t("Forex, commodities, bonds", "Forex, komoditas, obligasi")} />
+      </div>
+
+      {tab === "crypto" && (
+      <div className="flex flex-col gap-5">
+      <div className="grid grid-cols-1 gap-5 lg:grid-cols-2">
+      {/* Global Market Overview */}
+      <Section icon={Globe} title={t("Crypto Market Overview", "Ringkasan Pasar Crypto")} fill>
+        {loading ? (
+          <div className="px-4 py-6"><Skeleton className="h-20 w-full" /></div>
+        ) : crypto?.global ? (
+          <GlobalOverview g={crypto.global} locale={locale} />
+        ) : unavailable}
+      </Section>
+
+      {/* Fear & Greed Index */}
+      <Section icon={Gauge} title={t("Fear & Greed Index", "Indeks Fear & Greed")} subtitle={t("market sentiment", "sentimen pasar")} fill>
+        {loading ? (
+          <div className="px-4 py-6"><Skeleton className="h-24 w-full" /></div>
+        ) : crypto?.fearGreed ? (
+          <FearGreedGauge f={crypto.fearGreed} locale={locale} />
+        ) : unavailable}
+      </Section>
+      </div>
+
       <div className="grid grid-cols-1 items-start gap-5 lg:grid-cols-2">
       {/* Crypto Top 10 */}
       <Section icon={Bitcoin} title="Crypto — Top 10" subtitle={sevenDay}>
@@ -278,6 +437,33 @@ export function MarketDashboard({ locale }: { locale: string }) {
             : unavailable}
       </Section>
 
+      {/* Top Gainers 24h */}
+      <Section icon={ArrowUpRight} title={t("Top Gainers", "Top Gainers")} subtitle={t("24h change", "perubahan 24 jam")}>
+        {loading
+          ? Array.from({ length: 5 }).map((_, i) => <RowSkeleton key={i} />)
+          : crypto?.gainers?.length
+            ? crypto.gainers.map((c, i) => (
+                <Row key={c.id} rank={i + 1} subRank={c.rank} img={c.image} symbol={c.symbol} name={c.name} price={fmtUSD(c.price)} change7d={c.change24h} />
+              ))
+            : unavailable}
+      </Section>
+
+      {/* Top Losers 24h */}
+      <Section icon={ArrowDownRight} title={t("Top Losers", "Top Losers")} subtitle={t("24h change", "perubahan 24 jam")}>
+        {loading
+          ? Array.from({ length: 5 }).map((_, i) => <RowSkeleton key={i} />)
+          : crypto?.losers?.length
+            ? crypto.losers.map((c, i) => (
+                <Row key={c.id} rank={i + 1} subRank={c.rank} img={c.image} symbol={c.symbol} name={c.name} price={fmtUSD(c.price)} change7d={c.change24h} />
+              ))
+            : unavailable}
+      </Section>
+      </div>
+      </div>
+      )}
+
+      {tab === "stocks" && (
+      <div className="grid grid-cols-1 items-start gap-5 lg:grid-cols-2">
       {/* US Market */}
       <Section icon={LineChart} title={t("US Market", "Pasar AS")} subtitle={sevenDay}>
         {loading ? (
@@ -314,6 +500,28 @@ export function MarketDashboard({ locale }: { locale: string }) {
         )}
       </Section>
 
+      {/* Global Indices (Asia + Europe) */}
+      <Section icon={Globe} title={t("Global Indices", "Indeks Global")} subtitle={sevenDay}>
+        {loading ? (
+          Array.from({ length: 6 }).map((_, i) => <RowSkeleton key={i} />)
+        ) : global?.asia?.length || global?.europe?.length ? (
+          <>
+            {global?.asia?.map((q) => (
+              <Row key={q.symbol} img={q.logo} symbol={q.symbol.replace("^", "")} name={q.name} price={fmtNum(q.price)} change7d={q.change7d} spark={q.spark} />
+            ))}
+            {global?.europe?.map((q) => (
+              <Row key={q.symbol} img={q.logo} symbol={q.symbol.replace("^", "")} name={q.name} price={fmtNum(q.price)} change7d={q.change7d} spark={q.spark} />
+            ))}
+          </>
+        ) : (
+          unavailable
+        )}
+      </Section>
+      </div>
+      )}
+
+      {tab === "currency" && (
+      <div className="grid grid-cols-1 items-start gap-5 lg:grid-cols-2">
       {/* Forex — 24h change */}
       <Section icon={DollarSign} title={t("Forex", "Forex (Kurs)")} subtitle={t("24h change", "perubahan 24 jam")}>
         {loading
@@ -344,24 +552,6 @@ export function MarketDashboard({ locale }: { locale: string }) {
             : unavailable}
       </Section>
 
-      {/* Global Indices (Asia + Europe) */}
-      <Section icon={Globe} title={t("Global Indices", "Indeks Global")} subtitle={sevenDay}>
-        {loading ? (
-          Array.from({ length: 6 }).map((_, i) => <RowSkeleton key={i} />)
-        ) : global?.asia?.length || global?.europe?.length ? (
-          <>
-            {global?.asia?.map((q) => (
-              <Row key={q.symbol} img={q.logo} symbol={q.symbol.replace("^", "")} name={q.name} price={fmtNum(q.price)} change7d={q.change7d} spark={q.spark} />
-            ))}
-            {global?.europe?.map((q) => (
-              <Row key={q.symbol} img={q.logo} symbol={q.symbol.replace("^", "")} name={q.name} price={fmtNum(q.price)} change7d={q.change7d} spark={q.spark} />
-            ))}
-          </>
-        ) : (
-          unavailable
-        )}
-      </Section>
-
       {/* Rates — US Treasury yields + VIX */}
       <Section icon={Landmark} title={t("US Treasury & VIX", "Obligasi AS & VIX")} subtitle={sevenDay}>
         {loading ? (
@@ -380,6 +570,7 @@ export function MarketDashboard({ locale }: { locale: string }) {
         )}
       </Section>
       </div>
+      )}
     </div>
   );
 }
