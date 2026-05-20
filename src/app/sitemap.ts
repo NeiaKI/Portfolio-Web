@@ -6,7 +6,7 @@ const BASE = process.env.NEXT_PUBLIC_SITE_URL ?? "https://nateeki.dev";
 const LOCALES = ["en", "id"];
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
-  const staticRoutes = ["/", "/project", "/blog", "/certificates", "/contact", "/donate", "/uses", "/changelog"];
+  const staticRoutes = ["/", "/project", "/blog", "/certificates", "/tools", "/contact", "/donate", "/uses", "/changelog", "/privacy", "/terms"];
 
   const entries: MetadataRoute.Sitemap = [];
 
