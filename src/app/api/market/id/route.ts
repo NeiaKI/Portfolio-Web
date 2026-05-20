@@ -3,12 +3,10 @@ import { fetchQuotes, flag } from "@/lib/market";
 
 export const revalidate = 120; // 2 menit
 
-// Indeks pasar Indonesia (selain IHSG: LQ45, IDX30, Jakarta Islamic Index).
+// Indeks pasar Indonesia: IHSG (composite) + LQ45 (45 saham blue-chip).
 const ID_INDICES = [
   { symbol: "^JKSE", name: "IHSG (Composite)" },
   { symbol: "^JKLQ45", name: "LQ45 (45 saham likuid)" },
-  { symbol: "IDX30.JK", name: "IDX30" },
-  { symbol: "^JKII", name: "Jakarta Islamic Index" },
 ];
 
 // Top 10 saham Indonesia by market cap (kira-kira). domain dipakai untuk logo perusahaan.

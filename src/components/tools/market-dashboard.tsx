@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { Bitcoin, TrendingUp, TrendingDown, Flame, LineChart, Building2, DollarSign, Gem, Globe, Landmark, Barrel } from "lucide-react";
+import { Bitcoin, TrendingUp, TrendingDown, Flame, LineChart, Building2, DollarSign, Gem, Globe, Landmark } from "lucide-react";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Sparkline } from "./sparkline";
 
@@ -19,12 +19,26 @@ function IngotIcon({ className }: { className?: string }) {
   );
 }
 
+// Drum minyak 3D — lid elips + lubang bung + ring band, gaya solid glyph.
+// fillRule evenodd: garis band/rim & lubang jadi punch-out (tembus ke background).
+function OilDrumIcon({ className }: { className?: string }) {
+  return (
+    <svg viewBox="0 0 24 24" className={className} fill="currentColor" aria-hidden="true">
+      <path
+        fillRule="evenodd"
+        clipRule="evenodd"
+        d="M12 2C7.6 2 5 3.4 5 5v14c0 1.6 2.6 3 7 3s7-1.4 7-3V5c0-1.6-2.6-3-7-3Zm-3 2.2a1 1 0 1 0 2 0 1 1 0 0 0-2 0ZM5.6 7.6h12.8v0.9H5.6v-0.9Zm0 4.1h12.8v0.9H5.6v-0.9Zm0 4.1h12.8v0.9H5.6v-0.9Z"
+      />
+    </svg>
+  );
+}
+
 // Komoditas tak punya logo — pakai ikon berwarna (lebih rapi dari emoji).
 const COMMODITY_ICON: Record<string, React.ReactNode> = {
   "GC=F": <IngotIcon className="h-3.5 w-3.5 text-amber-500" />,
   "SI=F": <IngotIcon className="h-3.5 w-3.5 text-slate-400" />,
-  "CL=F": <Barrel className="h-3.5 w-3.5 text-zinc-500" />,
-  "BZ=F": <Barrel className="h-3.5 w-3.5 text-zinc-600 dark:text-zinc-400" />,
+  "CL=F": <OilDrumIcon className="h-3.5 w-3.5 text-zinc-500" />,
+  "BZ=F": <OilDrumIcon className="h-3.5 w-3.5 text-zinc-600 dark:text-zinc-400" />,
   "NG=F": <Flame className="h-3.5 w-3.5 text-orange-500" />,
 };
 
