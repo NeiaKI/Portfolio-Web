@@ -35,7 +35,7 @@ export async function POST(req: NextRequest, { params }: { params: Promise<{ slu
   if (!SLUG_RE.test(slug)) return NextResponse.json({ views: 0, configured: false });
 
   // Rate limit: 1 increment per IP per 10 menit — mencegah view inflation
-  const ip = req.headers.get("x-forwarded-for")?.split(",")[0].trim() ?? "unknown";
+  const ip = getClientIp(req);
   if (!rateLimit(`views:${ip}:${slug}`, 1, 10 * 60 * 1000)) {
     return NextResponse.json({ views: 0, configured: false });
   }
