@@ -4,6 +4,7 @@ import {
   createContext,
   useCallback,
   useContext,
+  useEffect,
   useState,
 } from "react";
 
@@ -34,9 +35,8 @@ function readStoredTheme(defaultTheme: Theme): Theme {
   }
 }
 
-function applyTheme(theme: Theme, animate = false) {
+function applyTheme(theme: Theme) {
   const root = document.documentElement;
-  if (animate) root.classList.add("theme-transitioning");
   if (theme === "dark") {
     root.classList.add("dark");
     root.classList.remove("light");
@@ -49,7 +49,6 @@ function applyTheme(theme: Theme, animate = false) {
   try {
     localStorage.setItem("theme", theme);
   } catch {}
-  if (animate) setTimeout(() => root.classList.remove("theme-transitioning"), 300);
 }
 
 export function ThemeProvider({
@@ -63,9 +62,13 @@ export function ThemeProvider({
     readStoredTheme(defaultTheme)
   );
 
+  // Sync DOM + localStorage on mount so React state, DOM class, and
+  // colorScheme are all consistent regardless of SSR/hydration order.
+  useEffect(() => { applyTheme(theme); }, []); // eslint-disable-line react-hooks/exhaustive-deps
+
   const setTheme = useCallback(
     (next: Theme) => {
-      applyTheme(next, true);
+      applyTheme(next);
       setThemeState(next);
     },
     []
