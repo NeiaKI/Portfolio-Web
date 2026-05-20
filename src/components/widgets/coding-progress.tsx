@@ -242,6 +242,7 @@ export function CodingProgress() {
             <div className="overflow-x-auto [&>div]:w-full [&_svg]:w-full [&_svg]:h-auto">
               <GitHubCalendar
                 username="NeiaKI"
+                year="last"
                 colorScheme={colorScheme}
                 theme={GH_THEME}
                 fontSize={10}
