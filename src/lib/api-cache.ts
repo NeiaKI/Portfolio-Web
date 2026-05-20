@@ -20,11 +20,13 @@ export async function getCached<T>(key: string): Promise<T | null> {
   if (mem && mem.expiresAt > now) return mem.data as T;
   if (mem) memoryCache.delete(key);
 
-  if (!isSupabaseConfigured()) return null;
+  // api_cache bukan public-readable (lihat migration 004) — baca via admin
+  // (service_role). Tanpa service_role, cache hanya in-memory.
+  if (!isAdminConfigured()) return null;
 
   try {
-    const { createClient } = await import("@/lib/supabase/server");
-    const supabase = await createClient();
+    const { createAdminClient } = await import("@/lib/supabase/admin");
+    const supabase = createAdminClient();
     const { data } = await supabase
       .from("api_cache")
       .select("data, expires_at")
