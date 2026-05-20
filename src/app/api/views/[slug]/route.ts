@@ -46,9 +46,13 @@ export async function POST(req: NextRequest, { params }: { params: Promise<{ slu
     const { createClient } = await import("@/lib/supabase/server");
     const supabase = await createClient();
 
-    // Upsert — insert or increment
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const { data } = await (supabase as any).rpc("increment_post_views", { post_slug: slug });
+    // supabase/ssr's createServerClient doesn't forward Functions generics to rpc()
+    type RpcResult = { data: number | null; error: { message: string } | null };
+    const { data, error } = await (supabase.rpc as unknown as (fn: string, args: Record<string, unknown>) => Promise<RpcResult>)(
+      "increment_post_views",
+      { post_slug: slug },
+    );
+    if (error) throw new Error(error.message);
     return NextResponse.json({ views: data ?? 0, configured: true });
   } catch {
     return NextResponse.json({ views: 0, configured: false });

@@ -46,19 +46,23 @@ async function fetchSpotify(clientId: string, clientSecret: string, refreshToken
   if (nowRes.status === 200) {
     const text = await nowRes.text();
     if (text) {
-      const data = JSON.parse(text);
+      let data: Record<string, unknown>;
+      try { data = JSON.parse(text); } catch { data = {}; }
       if (data?.is_playing && data?.item) {
-        const track = data.item;
+        const track = data.item as Record<string, unknown>;
+        const artists = Array.isArray(track.artists)
+          ? (track.artists as { name: string }[]).map((a) => a.name).join(", ")
+          : "Unknown";
         return {
           isPlaying: true,
           configured: true,
-          title: track.name,
-          artist: track.artists.map((a: { name: string }) => a.name).join(", "),
-          album: track.album.name,
-          albumArt: track.album.images[0]?.url ?? null,
-          songUrl: track.external_urls.spotify,
-          progress: data.progress_ms,
-          duration: track.duration_ms,
+          title: track.name as string,
+          artist: artists,
+          album: (track.album as Record<string, unknown>)?.name as string ?? "",
+          albumArt: ((track.album as Record<string, unknown>)?.images as { url: string }[])?.[0]?.url ?? null,
+          songUrl: (track.external_urls as Record<string, string>)?.spotify ?? "",
+          progress: data.progress_ms as number,
+          duration: track.duration_ms as number,
         };
       }
     }
@@ -74,18 +78,23 @@ async function fetchSpotify(clientId: string, clientSecret: string, refreshToken
   const recentText = await recentRes.text();
   if (!recentText) return { isPlaying: false, configured: true };
 
-  const recent = JSON.parse(recentText);
-  const track = recent?.items?.[0]?.track;
+  let recent: Record<string, unknown>;
+  try { recent = JSON.parse(recentText); } catch { return { isPlaying: false, configured: true }; }
+  const track = (recent?.items as { track: Record<string, unknown> }[])?.[0]?.track;
   if (!track) return { isPlaying: false, configured: true };
+
+  const artists = Array.isArray(track.artists)
+    ? (track.artists as { name: string }[]).map((a) => a.name).join(", ")
+    : "Unknown";
 
   return {
     isPlaying: false,
     configured: true,
-    title: track.name,
-    artist: track.artists.map((a: { name: string }) => a.name).join(", "),
-    album: track.album.name,
-    albumArt: track.album.images[0]?.url ?? null,
-    songUrl: track.external_urls.spotify,
+    title: track.name as string,
+    artist: artists,
+    album: (track.album as Record<string, unknown>)?.name as string ?? "",
+    albumArt: ((track.album as Record<string, unknown>)?.images as { url: string }[])?.[0]?.url ?? null,
+    songUrl: (track.external_urls as Record<string, string>)?.spotify ?? "",
   };
 }
 
