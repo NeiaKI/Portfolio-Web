@@ -10,6 +10,7 @@ import { CodeCopyInit } from "@/components/blog/code-copy";
 import { ReadingProgress } from "@/components/blog/reading-progress";
 import { TableOfContents } from "@/components/blog/table-of-contents";
 import { extractHeadings } from "@/lib/mdx-utils";
+import { safeJsonLd } from "@/lib/utils";
 import { ShareButtons } from "@/components/blog/share-buttons";
 import { ViewCount } from "@/components/blog/view-count";
 import type { Metadata } from "next";
@@ -102,7 +103,7 @@ export default async function BlogPostPage({ params }: Props) {
     <MainLayout>
       <script
         type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+        dangerouslySetInnerHTML={{ __html: safeJsonLd(jsonLd) }}
       />
       <ReadingProgress />
       <CodeCopyInit />

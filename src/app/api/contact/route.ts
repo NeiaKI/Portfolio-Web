@@ -1,8 +1,8 @@
 import { NextRequest, NextResponse } from "next/server";
-import { rateLimit } from "@/lib/rate-limit";
+import { rateLimit, getClientIp } from "@/lib/rate-limit";
 
 export async function POST(req: NextRequest) {
-  const ip = req.headers.get("x-forwarded-for")?.split(",")[0].trim() ?? "unknown";
+  const ip = getClientIp(req);
   if (!rateLimit(`contact:${ip}`, 3, 15 * 60 * 1000)) {
     return NextResponse.json({ error: "Too many requests. Please wait before trying again." }, { status: 429 });
   }
