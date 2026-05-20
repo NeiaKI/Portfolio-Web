@@ -51,7 +51,7 @@ export default async function RootLayout({
         <script
           nonce={nonce}
           dangerouslySetInnerHTML={{
-            __html: `try{var t=localStorage.getItem('theme');if(t==='light'){document.documentElement.classList.remove('dark')}else{document.documentElement.classList.add('dark')}if(sessionStorage.getItem('__booted')){document.documentElement.classList.add('was-booted')}}catch(e){}`,
+            __html: `try{var t=localStorage.getItem('theme');if(t==='light'){document.documentElement.classList.remove('dark');document.documentElement.style.colorScheme='light'}else{document.documentElement.classList.add('dark');document.documentElement.style.colorScheme='dark'}if(sessionStorage.getItem('__booted')){document.documentElement.classList.add('was-booted')}}catch(e){}`,
           }}
         />
       </head>

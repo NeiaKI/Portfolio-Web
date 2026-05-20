@@ -34,18 +34,22 @@ function readStoredTheme(defaultTheme: Theme): Theme {
   }
 }
 
-function applyTheme(theme: Theme) {
+function applyTheme(theme: Theme, animate = false) {
   const root = document.documentElement;
+  if (animate) root.classList.add("theme-transitioning");
   if (theme === "dark") {
     root.classList.add("dark");
     root.classList.remove("light");
+    root.style.colorScheme = "dark";
   } else {
     root.classList.remove("dark");
     root.classList.add("light");
+    root.style.colorScheme = "light";
   }
   try {
     localStorage.setItem("theme", theme);
   } catch {}
+  if (animate) setTimeout(() => root.classList.remove("theme-transitioning"), 300);
 }
 
 export function ThemeProvider({
@@ -61,7 +65,7 @@ export function ThemeProvider({
 
   const setTheme = useCallback(
     (next: Theme) => {
-      applyTheme(next);
+      applyTheme(next, true);
       setThemeState(next);
     },
     []

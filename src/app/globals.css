@@ -50,6 +50,7 @@
 
 /* Catppuccin Latte — Light Mode */
 :root {
+  color-scheme: light;
   --background: oklch(0.940 0.008 268);
   --foreground: oklch(0.360 0.030 268);
   --card: oklch(0.965 0.005 268);
@@ -86,6 +87,7 @@
 
 /* Catppuccin Mocha — Dark Mode */
 .dark {
+  color-scheme: dark;
   --background: oklch(0.175 0.030 268);
   --foreground: oklch(0.857 0.034 270);
   --card: oklch(0.245 0.023 268);
@@ -129,6 +131,19 @@
   html {
     @apply font-sans;
   }
+}
+
+/* Smooth theme transition — only active during the switch, not on page load */
+.theme-transitioning,
+.theme-transitioning *,
+.theme-transitioning *::before,
+.theme-transitioning *::after {
+  transition:
+    background-color 0.15s ease,
+    color 0.15s ease,
+    border-color 0.15s ease,
+    fill 0.15s ease,
+    stroke 0.15s ease !important;
 }
 
 /* Dot background pattern like azure.nateee.com */
