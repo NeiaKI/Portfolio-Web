@@ -70,10 +70,25 @@ export async function fetchQuote(symbol: string, fallbackName: string, preferPro
   }
 }
 
+// Map dengan batas konkurensi — hindari burst puluhan request Yahoo sekaligus
+// (mengurangi risiko rate-limit saat cache miss / cold start).
+async function mapLimit<T, R>(items: T[], limit: number, fn: (item: T) => Promise<R>): Promise<R[]> {
+  const results: R[] = new Array(items.length);
+  let cursor = 0;
+  const workers = Array.from({ length: Math.min(limit, items.length) }, async () => {
+    while (cursor < items.length) {
+      const idx = cursor++;
+      results[idx] = await fn(items[idx]);
+    }
+  });
+  await Promise.all(workers);
+  return results;
+}
+
 export async function fetchQuotes(
   entries: { symbol: string; name: string }[],
   preferProvidedName = false
 ): Promise<Quote[]> {
-  const results = await Promise.all(entries.map((e) => fetchQuote(e.symbol, e.name, preferProvidedName)));
+  const results = await mapLimit(entries, 5, (e) => fetchQuote(e.symbol, e.name, preferProvidedName));
   return results.filter((q): q is Quote => q !== null);
 }

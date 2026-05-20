@@ -116,6 +116,29 @@ function Section({ icon: Icon, title, subtitle, fill, children }: { icon: typeof
   );
 }
 
+// Ikon baris dengan fallback: kalau gambar gagal load → badge inisial simbol.
+function RowIcon({ img, iconEl, symbol, name }: { img?: string | null; iconEl?: React.ReactNode; symbol: string; name: string }) {
+  const [err, setErr] = useState(false);
+  if (iconEl) return <div className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-muted">{iconEl}</div>;
+  if (img && !err) {
+    return (
+      // eslint-disable-next-line @next/next/no-img-element
+      <img
+        src={img}
+        alt={name}
+        onError={() => setErr(true)}
+        className="h-6 w-6 shrink-0 rounded-full bg-muted object-contain"
+        loading="lazy"
+      />
+    );
+  }
+  return (
+    <div className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-muted text-[9px] font-bold text-muted-foreground">
+      {symbol.slice(0, 3)}
+    </div>
+  );
+}
+
 function Row({
   rank,
   subRank,
@@ -153,16 +176,7 @@ function Row({
           {subRank != null && <span className="text-[9px] text-muted-foreground/45">#{subRank}</span>}
         </span>
       )}
-      {iconEl ? (
-        <div className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-muted">{iconEl}</div>
-      ) : img ? (
-        // eslint-disable-next-line @next/next/no-img-element
-        <img src={img} alt={name} className="h-6 w-6 shrink-0 rounded-full bg-muted object-contain" loading="lazy" />
-      ) : (
-        <div className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-muted text-[9px] font-bold text-muted-foreground">
-          {symbol.slice(0, 3)}
-        </div>
-      )}
+      <RowIcon img={img} iconEl={iconEl} symbol={symbol} name={name} />
       <div className="min-w-0 flex-1">
         <p className="truncate text-sm font-medium text-foreground">{name}</p>
         <p className="text-[11px] uppercase text-muted-foreground">
@@ -328,6 +342,18 @@ export function MarketDashboard({ locale }: { locale: string }) {
   const [updatedAt, setUpdatedAt] = useState<Date | null>(null);
   const [tab, setTab] = useState<TabKey>("crypto");
 
+  // Sinkron tab dengan URL (?tab=) agar bisa di-bookmark / share.
+  useEffect(() => {
+    const p = new URLSearchParams(window.location.search).get("tab");
+    if (p === "stocks" || p === "currency") setTab(p);
+  }, []);
+  const selectTab = (k: TabKey) => {
+    setTab(k);
+    const url = new URL(window.location.href);
+    url.searchParams.set("tab", k);
+    window.history.replaceState(null, "", url);
+  };
+
   useEffect(() => {
     let active = true;
     const getJson = (url: string) => fetch(url).then((r) => r.json()).catch(() => null);
@@ -349,8 +375,15 @@ export function MarketDashboard({ locale }: { locale: string }) {
     };
 
     load();
-    const interval = setInterval(load, REFRESH_MS);
-    return () => { active = false; clearInterval(interval); };
+    // Skip refresh saat tab di background; refetch begitu tab terlihat lagi.
+    const interval = setInterval(() => { if (!document.hidden) load(); }, REFRESH_MS);
+    const onVisible = () => { if (!document.hidden) load(); };
+    document.addEventListener("visibilitychange", onVisible);
+    return () => {
+      active = false;
+      clearInterval(interval);
+      document.removeEventListener("visibilitychange", onVisible);
+    };
   }, []);
 
   const t = (en: string, idText: string) => (locale === "id" ? idText : en);
@@ -373,11 +406,11 @@ export function MarketDashboard({ locale }: { locale: string }) {
 
       {/* Sub-tabs */}
       <div className="grid grid-cols-1 gap-3 sm:grid-cols-3">
-        <TabCard active={tab === "crypto"} onClick={() => setTab("crypto")} icon={Bitcoin}
+        <TabCard active={tab === "crypto"} onClick={() => selectTab("crypto")} icon={Bitcoin}
           title="Crypto" desc={t("Coins, trending, movers", "Koin, trending, movers")} />
-        <TabCard active={tab === "stocks"} onClick={() => setTab("stocks")} icon={LineChart}
+        <TabCard active={tab === "stocks"} onClick={() => selectTab("stocks")} icon={LineChart}
           title={t("Stocks", "Saham")} desc={t("US, Indonesia, global", "AS, Indonesia, global")} />
-        <TabCard active={tab === "currency"} onClick={() => setTab("currency")} icon={DollarSign}
+        <TabCard active={tab === "currency"} onClick={() => selectTab("currency")} icon={DollarSign}
           title={t("Currency & Other", "Mata Uang & Lainnya")} desc={t("Forex, commodities, bonds", "Forex, komoditas, obligasi")} />
       </div>
 
@@ -528,7 +561,7 @@ export function MarketDashboard({ locale }: { locale: string }) {
           ? Array.from({ length: 5 }).map((_, i) => <RowSkeleton key={i} />)
           : forex?.pairs?.length
             ? forex.pairs.map((q) => (
-                <Row key={q.symbol} img={q.logo} symbol={q.symbol.replace("=X", "")} name={q.name} price={fmtForex(q.price)} change7d={q.change24h} spark={q.spark} />
+                <Row key={q.symbol} img={q.logo} symbol={q.symbol.replace("=X", "")} name={q.name} price={fmtForex(q.price)} change7d={q.change24h} />
               ))
             : unavailable}
       </Section>
