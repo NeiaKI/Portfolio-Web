@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
-import { fetchQuotes } from "@/lib/market";
+import { fetchQuotes, flag } from "@/lib/market";
 
-export const revalidate = 900; // 15 menit
+export const revalidate = 120; // 2 menit
 
 const US_INDICES = [
   { symbol: "^GSPC", name: "S&P 500" },
@@ -26,11 +26,12 @@ const logoUrl = (domain: string) => `https://www.google.com/s2/favicons?domain=$
 const DOMAIN_BY_SYMBOL = new Map(US_STOCKS.map((s) => [s.symbol, s.domain]));
 
 export async function GET() {
-  const [indices, quotes] = await Promise.all([
+  const [indexQuotes, quotes] = await Promise.all([
     fetchQuotes(US_INDICES),
     fetchQuotes(US_STOCKS),
   ]);
 
+  const indices = indexQuotes.map((q) => ({ ...q, logo: flag("us") }));
   const stocks = quotes.map((q) => {
     const domain = DOMAIN_BY_SYMBOL.get(q.symbol);
     return { ...q, logo: domain ? logoUrl(domain) : null };

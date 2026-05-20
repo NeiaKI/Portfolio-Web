@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 
-export const revalidate = 300; // 5 menit
+export const revalidate = 60; // 1 menit
 
 // Stablecoin di-exclude dari "top 10" (id CoinGecko).
 const STABLECOINS = new Set([
@@ -42,9 +42,9 @@ export async function GET() {
     const [marketsRes, trendingRes] = await Promise.all([
       fetch(
         "https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&order=market_cap_desc&per_page=20&page=1&sparkline=true&price_change_percentage=7d",
-        { next: { revalidate: 300 } }
+        { next: { revalidate: 60 } }
       ),
-      fetch("https://api.coingecko.com/api/v3/search/trending", { next: { revalidate: 300 } }),
+      fetch("https://api.coingecko.com/api/v3/search/trending", { next: { revalidate: 60 } }),
     ]);
 
     if (!marketsRes.ok) throw new Error("CoinGecko markets error");

@@ -1,7 +1,15 @@
 import { NextResponse } from "next/server";
-import { fetchQuote, fetchQuotes } from "@/lib/market";
+import { fetchQuotes, flag } from "@/lib/market";
 
-export const revalidate = 900; // 15 menit
+export const revalidate = 120; // 2 menit
+
+// Indeks pasar Indonesia (selain IHSG: LQ45, IDX30, Jakarta Islamic Index).
+const ID_INDICES = [
+  { symbol: "^JKSE", name: "IHSG (Composite)" },
+  { symbol: "^JKLQ45", name: "LQ45 (45 saham likuid)" },
+  { symbol: "IDX30.JK", name: "IDX30" },
+  { symbol: "^JKII", name: "Jakarta Islamic Index" },
+];
 
 // Top 10 saham Indonesia by market cap (kira-kira). domain dipakai untuk logo perusahaan.
 const ID_STOCKS = [
@@ -21,15 +29,16 @@ const logoUrl = (domain: string) => `https://www.google.com/s2/favicons?domain=$
 const DOMAIN_BY_SYMBOL = new Map(ID_STOCKS.map((s) => [s.symbol, s.domain]));
 
 export async function GET() {
-  const [index, quotes] = await Promise.all([
-    fetchQuote("^JKSE", "IHSG"),
+  const [indexQuotes, quotes] = await Promise.all([
+    fetchQuotes(ID_INDICES, true),
     fetchQuotes(ID_STOCKS),
   ]);
 
+  const indices = indexQuotes.map((q) => ({ ...q, logo: flag("id") }));
   const stocks = quotes.map((q) => {
     const domain = DOMAIN_BY_SYMBOL.get(q.symbol);
     return { ...q, logo: domain ? logoUrl(domain) : null };
   });
 
-  return NextResponse.json({ index, stocks });
+  return NextResponse.json({ indices, stocks });
 }

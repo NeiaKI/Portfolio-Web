@@ -38,6 +38,7 @@ function buildCSP(nonce: string): string {
       "https://coin-images.coingecko.com",       // Crypto coin icons (market tools)
       "https://www.google.com",                  // Company logos via favicon service (market tools)
       "https://*.gstatic.com",                   // favicon redirect target
+      "https://flagcdn.com",                     // Country flags (forex/indices)
     ].join(" "),
 
     // Font: next/font melayani font dari /_next/static (same origin)
