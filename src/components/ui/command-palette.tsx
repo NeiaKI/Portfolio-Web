@@ -2,7 +2,7 @@
 
 import { useEffect, useState, useCallback } from "react";
 import { useRouter, usePathname } from "next/navigation";
-import { useTheme } from "next-themes";
+import { useTheme } from "@/lib/theme";
 import { Command } from "cmdk";
 import { Home, FolderOpen, Newspaper, Award, Coffee, Search, Code2, Layers, Moon, Sun, Clock, ScrollText } from "lucide-react";
 import { CERTIFICATES } from "@/data/certificates";

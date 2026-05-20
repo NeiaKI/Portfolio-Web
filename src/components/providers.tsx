@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect } from "react";
-import { ThemeProvider } from "next-themes";
+import { ThemeProvider } from "@/lib/theme";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { ScrollProgress } from "@/components/ui/scroll-progress";
 import { BackToTop } from "@/components/ui/back-to-top";
@@ -31,15 +31,9 @@ function VimKeys() {
   return null;
 }
 
-export function Providers({ children, nonce }: { children: React.ReactNode; nonce?: string }) {
+export function Providers({ children }: { children: React.ReactNode }) {
   return (
-    <ThemeProvider
-      attribute="class"
-      defaultTheme="dark"
-      enableSystem={false}
-      disableTransitionOnChange={true}
-      scriptProps={{ suppressHydrationWarning: true, nonce }}
-    >
+    <ThemeProvider defaultTheme="dark">
       <TooltipProvider delay={500}>
         <VimKeys />
         <ScrollProgress />

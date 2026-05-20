@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import Link from "next/link";
-import { ThemeProvider } from "next-themes";
+import { ThemeProvider } from "@/lib/theme";
 import { Home } from "lucide-react";
 
 const TERMINAL_LINES = [
@@ -105,7 +105,7 @@ function NotFoundContent() {
 
 export default function NotFound() {
   return (
-    <ThemeProvider attribute="class" defaultTheme="dark" enableSystem={false} scriptProps={{ suppressHydrationWarning: true }}>
+    <ThemeProvider defaultTheme="dark">
       <NotFoundContent />
     </ThemeProvider>
   );

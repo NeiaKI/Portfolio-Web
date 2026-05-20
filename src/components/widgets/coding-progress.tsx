@@ -2,7 +2,7 @@
 
 import { useEffect, useState, useCallback, useRef, cloneElement, type ReactElement } from "react";
 import { GitHubCalendar, type Activity } from "react-github-calendar";
-import { useTheme } from "next-themes";
+import { useTheme } from "@/lib/theme";
 import { Code2 } from "lucide-react";
 
 type WakaStats = {

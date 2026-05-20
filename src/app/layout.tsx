@@ -71,7 +71,7 @@ export default async function RootLayout({
           Skip to content
         </a>
         <LoadingScreen />
-        <Providers nonce={nonce}>{children}</Providers>
+        <Providers>{children}</Providers>
       </body>
     </html>
   );
