@@ -1,6 +1,7 @@
 import { NavSidebar } from "./nav-sidebar";
 import { WidgetSidebar } from "./widget-sidebar";
 import { MobileNav } from "./mobile-nav";
+import { Footer } from "./footer";
 import { PageTransition } from "./page-transition";
 import { ScrollToTop } from "@/components/ui/scroll-to-top";
 import { CommandPalette } from "@/components/ui/command-palette";
@@ -24,6 +25,7 @@ export function MainLayout({ children }: { children: React.ReactNode }) {
           <div className="flex-1 w-full px-4 py-6 sm:px-6 sm:py-8 pb-20 lg:pb-8">
             <PageTransition>{children}</PageTransition>
           </div>
+          <Footer />
         </main>
 
         {/* Right widget sidebar — sticky, hidden below xl */}

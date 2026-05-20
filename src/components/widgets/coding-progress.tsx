@@ -153,6 +153,7 @@ export function CodingProgress() {
       : t("ghContributionsOn", {
           count: activity.count,
           plural: `contribution${activity.count !== 1 ? "s" : ""}`,
+          date: activity.date,
         });
     return cloneElement(block as React.ReactElement<React.HTMLAttributes<SVGRectElement>>, {
       onMouseEnter: () => setHoverLabel(label),
