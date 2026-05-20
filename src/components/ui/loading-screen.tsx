@@ -41,29 +41,26 @@ function TerminalLine({ text, delay }: { text: string; delay: number }) {
   );
 }
 
+// Terminal selalu di-render dari SSR agar ada di HTML dari byte pertama.
+// Blocking script di <head> menambah class "was-booted" ke <html> ketika
+// sessionStorage.__booted sudah di-set → CSS [data-loader]{display:none} langsung
+// menyembunyikannya sebelum browser paint, tanpa menunggu React hydrate.
 export function LoadingScreen() {
-  const [visible, setVisible]   = useState(false);
+  const [active, setActive]   = useState(true); // true = terminal ada di SSR HTML
   const [progress, setProgress] = useState(0);
   const [done, setDone]         = useState(false);
 
   useEffect(() => {
-    if (typeof window === "undefined") return;
-
-    // Jika sudah pernah load session ini — hapus will-load class (safety) dan skip
+    // Sudah pernah boot → sembunyikan terminal (CSS sudah handle sebelum ini)
     if (sessionStorage.getItem("__booted")) {
-      document.documentElement.classList.remove("will-load");
+      setActive(false);
       return;
     }
 
     sessionStorage.setItem("__booted", "1");
-    setVisible(true);
 
-    // Safety: pastikan halaman tidak tersembunyi selamanya jika ada error
-    const safety = setTimeout(() => {
-      document.documentElement.classList.remove("will-load");
-    }, 5000);
+    const safety = setTimeout(() => setDone(true), 5000);
 
-    // Progress bar
     const start = Date.now();
     const tick = setInterval(() => {
       const elapsed = Date.now() - start;
@@ -72,44 +69,34 @@ export function LoadingScreen() {
       if (pct >= 100) clearInterval(tick);
     }, 30);
 
-    // Reveal konten + mulai exit animation
-    const exitTimer = setTimeout(() => {
-      document.documentElement.classList.remove("will-load");
-      setDone(true);
-    }, DURATION);
+    const exitTimer = setTimeout(() => setDone(true), DURATION);
 
     return () => {
       clearTimeout(safety);
       clearInterval(tick);
       clearTimeout(exitTimer);
-      document.documentElement.classList.remove("will-load");
     };
   }, []);
 
-  // Wrapper ini selalu ada di DOM dengan visibility:visible
-  // sehingga loading screen tetap tampil meski html.will-load menyembunyikan semua elemen lain
   return (
-    <div style={{ visibility: "visible" }}>
     <AnimatePresence>
-      {visible && !done && (
+      {active && !done && (
         <motion.div
           key="loader"
+          data-loader
           initial={{ opacity: 1 }}
           exit={{ opacity: 0 }}
           transition={{ duration: 0.5, ease: "easeOut" }}
           className="fixed inset-0 z-[99999] flex items-center justify-center bg-background"
         >
-          {/* Dot pattern */}
           <div className="absolute inset-0 dot-bg opacity-40" />
 
-          {/* Terminal card */}
           <motion.div
             initial={{ opacity: 0, scale: 0.95, y: 12 }}
             animate={{ opacity: 1, scale: 1, y: 0 }}
             transition={{ duration: 0.4, ease: "easeOut" }}
             className="relative w-full max-w-sm rounded-xl border border-border bg-card shadow-2xl overflow-hidden"
           >
-            {/* Title bar */}
             <div className="flex items-center gap-1.5 border-b border-border px-4 py-2.5 bg-muted/40">
               <span className="h-2.5 w-2.5 rounded-full bg-red-500/70" />
               <span className="h-2.5 w-2.5 rounded-full bg-yellow-500/70" />
@@ -119,13 +106,11 @@ export function LoadingScreen() {
               </span>
             </div>
 
-            {/* Terminal body */}
             <div className="flex flex-col gap-1.5 p-5">
               {LINES.map((l) => (
                 <TerminalLine key={l.text} text={l.text} delay={l.delay} />
               ))}
 
-              {/* Progress bar */}
               <div className="mt-3 flex flex-col gap-1.5">
                 <div className="h-1 w-full rounded-full bg-muted overflow-hidden">
                   <motion.div
@@ -144,6 +129,5 @@ export function LoadingScreen() {
         </motion.div>
       )}
     </AnimatePresence>
-    </div>
   );
 }

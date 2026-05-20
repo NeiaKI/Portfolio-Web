@@ -43,20 +43,15 @@ export default async function RootLayout({
     <html
       lang="en"
       suppressHydrationWarning
-      className={`${geistSans.variable} ${jetbrainsMono.variable} h-full antialiased`}
+      className={`dark ${geistSans.variable} ${jetbrainsMono.variable} h-full antialiased`}
     >
       <head>
         <link rel="alternate" type="application/rss+xml" title="Febiyanto Rizki Qurbandi — Blog" href="/feed.xml" />
-        {/* CSS rule untuk sembunyikan konten sebelum loading screen muncul */}
-        <style
-          nonce={nonce}
-          dangerouslySetInnerHTML={{ __html: `html.will-load{visibility:hidden}` }}
-        />
-        {/* Jalankan sebelum body render: tambah class will-load jika belum pernah boot */}
+        <style dangerouslySetInnerHTML={{ __html: `html.was-booted [data-loader]{display:none}` }} />
         <script
           nonce={nonce}
           dangerouslySetInnerHTML={{
-            __html: `try{if(!sessionStorage.getItem('__booted'))document.documentElement.classList.add('will-load')}catch(e){}`,
+            __html: `try{var t=localStorage.getItem('theme');if(t==='light'){document.documentElement.classList.remove('dark')}else{document.documentElement.classList.add('dark')}if(sessionStorage.getItem('__booted')){document.documentElement.classList.add('was-booted')}}catch(e){}`,
           }}
         />
       </head>

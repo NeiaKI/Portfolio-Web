@@ -32,6 +32,9 @@ function buildCSP(nonce: string): string {
       "https://avatars.githubusercontent.com",
       "https://images.unsplash.com",
       "https://res.cloudinary.com",
+      "https://miro.medium.com",           // Medium article cover images
+      "https://cdn-images-1.medium.com",   // Medium article cover images (legacy CDN)
+      "https://dev-to-uploads.s3.amazonaws.com", // Dev.to article cover images
     ].join(" "),
 
     // Font: next/font melayani font dari /_next/static (same origin)
