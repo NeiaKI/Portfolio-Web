@@ -57,53 +57,36 @@ export function LoadingScreen() {
 
     sessionStorage.setItem("__booted", "1");
 
-    const MIN_MS = 700;   // tampil minimal agar animasi tidak flash
-    const MAX_MS = 4000;  // safety: jangan menahan konten lebih lama dari ini
+    // Timeline tetap 3 detik:
+    //   0–2.0s  → merangkak 0 → 90%
+    //   2.0–2.5s → 90 → 95%
+    //   2.5–3.0s → tahan di 99%
+    //   3.0s     → lompat 100% lalu fade out
+    const TOTAL_MS = 3000;
     const start = Date.now();
 
-    let idleId: number | undefined;
-    let doneTimer: ReturnType<typeof setTimeout> | undefined;
-
-    // Progress merangkak ke ~90% selama menunggu konten siap
     const tick = setInterval(() => {
-      setProgress((p) => (p < 90 ? p + 2 : p));
+      const elapsed = Date.now() - start;
+      let p: number;
+      if (elapsed < 2000) {
+        p = (elapsed / 2000) * 90;                 // 0 → 90%
+      } else if (elapsed < 2500) {
+        p = 90 + ((elapsed - 2000) / 500) * 5;     // 90 → 95%
+      } else {
+        p = 99;                                     // tahan di 99%
+      }
+      setProgress(Math.min(99, Math.round(p)));
     }, 40);
 
-    const finish = () => {
+    const doneTimer = setTimeout(() => {
       clearInterval(tick);
       setProgress(100);
-      const wait = Math.max(0, MIN_MS - (Date.now() - start));
-      doneTimer = setTimeout(() => setDone(true), wait);
-    };
-
-    // Reveal saat halaman benar-benar siap (load) lalu browser idle
-    const onReady = () => {
-      if (typeof window.requestIdleCallback === "function") {
-        idleId = window.requestIdleCallback(finish, { timeout: 600 });
-      } else {
-        finish();
-      }
-    };
-
-    if (document.readyState === "complete") {
-      onReady();
-    } else {
-      window.addEventListener("load", onReady, { once: true });
-    }
-
-    const safety = setTimeout(() => {
-      clearInterval(tick);
       setDone(true);
-    }, MAX_MS);
+    }, TOTAL_MS);
 
     return () => {
       clearInterval(tick);
-      clearTimeout(safety);
-      if (doneTimer) clearTimeout(doneTimer);
-      window.removeEventListener("load", onReady);
-      if (idleId !== undefined && typeof window.cancelIdleCallback === "function") {
-        window.cancelIdleCallback(idleId);
-      }
+      clearTimeout(doneTimer);
     };
   }, []);
 
