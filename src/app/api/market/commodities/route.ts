@@ -7,6 +7,7 @@ export const revalidate = 120; // 2 menit
 const COMMODITIES = [
   { symbol: "GC=F", name: "Gold (Emas)", emoji: "🥇" },
   { symbol: "SI=F", name: "Silver (Perak)", emoji: "🥈" },
+  { symbol: "PL=F", name: "Platinum", emoji: "⚪" },
   { symbol: "CL=F", name: "Crude Oil WTI", emoji: "🛢️" },
   { symbol: "BZ=F", name: "Brent Crude Oil", emoji: "🛢️" },
   { symbol: "NG=F", name: "Natural Gas", emoji: "🔥" },

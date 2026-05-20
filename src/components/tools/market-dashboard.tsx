@@ -37,14 +37,15 @@ function OilDrumIcon({ className }: { className?: string }) {
 const COMMODITY_ICON: Record<string, React.ReactNode> = {
   "GC=F": <IngotIcon className="h-3.5 w-3.5 text-amber-500" />,
   "SI=F": <IngotIcon className="h-3.5 w-3.5 text-slate-400" />,
+  "PL=F": <IngotIcon className="h-3.5 w-3.5 text-sky-300" />,
   "CL=F": <OilDrumIcon className="h-3.5 w-3.5 text-zinc-500" />,
   "BZ=F": <OilDrumIcon className="h-3.5 w-3.5 text-zinc-600 dark:text-zinc-400" />,
   "NG=F": <Flame className="h-3.5 w-3.5 text-orange-500" />,
 };
 
-type Crypto = { id: string; symbol: string; name: string; image: string; price: number; change7d: number; spark: number[] };
-type Trending = { id: string; symbol: string; name: string; thumb: string; rank: number | null };
-type Quote = { symbol: string; name: string; price: number; change7d: number; currency: string; spark: number[]; logo?: string | null };
+type Crypto = { id: string; symbol: string; name: string; image: string; price: number; change7d: number; spark: number[]; marketCap: number | null };
+type Trending = { id: string; symbol: string; name: string; thumb: string; rank: number | null; price: number | null; change24h: number; marketCap: number | null };
+type Quote = { symbol: string; name: string; price: number; change7d: number; change24h: number; currency: string; spark: number[]; logo?: string | null };
 
 type Commodity = Quote & { emoji?: string | null };
 
@@ -73,6 +74,14 @@ function fmtForex(n: number): string {
 }
 function fmtPct(n: number): string {
   return `${n.toFixed(2)}%`;
+}
+function fmtMcap(n: number | null): string | null {
+  if (n == null || n <= 0) return null;
+  if (n >= 1e12) return `$${(n / 1e12).toFixed(2)}T`;
+  if (n >= 1e9) return `$${(n / 1e9).toFixed(2)}B`;
+  if (n >= 1e6) return `$${(n / 1e6).toFixed(2)}M`;
+  if (n >= 1e3) return `$${(n / 1e3).toFixed(1)}K`;
+  return `$${n.toFixed(0)}`;
 }
 
 function Change({ value }: { value: number }) {
@@ -105,20 +114,24 @@ function Section({ icon: Icon, title, subtitle, children }: { icon: typeof Bitco
 
 function Row({
   rank,
+  subRank,
   img,
   iconEl,
   symbol,
   name,
+  mcap,
   price,
   change7d,
   spark,
   showChange = true,
 }: {
   rank?: number;
+  subRank?: number | null;
   img?: string | null;
   iconEl?: React.ReactNode;
   symbol: string;
   name: string;
+  mcap?: string | null;
   price: string;
   change7d: number;
   spark?: number[];
@@ -126,7 +139,16 @@ function Row({
 }) {
   return (
     <div className="flex items-center gap-3 px-4 py-2.5">
-      {rank != null && <span className="w-4 shrink-0 text-[11px] text-muted-foreground/60">{rank}</span>}
+      {rank != null && (
+        <span
+          className={`flex shrink-0 flex-col items-center leading-tight text-muted-foreground/60 ${
+            subRank != null ? "w-8" : "w-4"
+          }`}
+        >
+          <span className="text-[11px]">{rank}</span>
+          {subRank != null && <span className="text-[9px] text-muted-foreground/45">#{subRank}</span>}
+        </span>
+      )}
       {iconEl ? (
         <div className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-muted">{iconEl}</div>
       ) : img ? (
@@ -139,7 +161,10 @@ function Row({
       )}
       <div className="min-w-0 flex-1">
         <p className="truncate text-sm font-medium text-foreground">{name}</p>
-        <p className="text-[11px] uppercase text-muted-foreground">{symbol}</p>
+        <p className="text-[11px] uppercase text-muted-foreground">
+          {symbol}
+          {mcap && <span className="normal-case text-muted-foreground/70"> · {mcap}</span>}
+        </p>
       </div>
       {spark && spark.length > 1 && <Sparkline data={spark} positive={change7d >= 0} className="hidden shrink-0 sm:block" />}
       <div className="flex w-28 shrink-0 flex-col items-end">
@@ -226,18 +251,29 @@ export function MarketDashboard({ locale }: { locale: string }) {
           ? Array.from({ length: 10 }).map((_, i) => <RowSkeleton key={i} />)
           : crypto?.top?.length
             ? crypto.top.map((c, i) => (
-                <Row key={c.id} rank={i + 1} img={c.image} symbol={c.symbol} name={c.name} price={fmtUSD(c.price)} change7d={c.change7d} spark={c.spark} />
+                <Row key={c.id} rank={i + 1} img={c.image} symbol={c.symbol} name={c.name} mcap={fmtMcap(c.marketCap)} price={fmtUSD(c.price)} change7d={c.change7d} spark={c.spark} />
               ))
             : unavailable}
       </Section>
 
       {/* Crypto Trending 10 */}
-      <Section icon={Flame} title={t("Crypto — Trending", "Crypto — Trending")} subtitle={t("top 10", "top 10")}>
+      <Section icon={Flame} title={t("Crypto — Trending", "Crypto — Trending")} subtitle={t("24h change", "perubahan 24 jam")}>
         {loading
           ? Array.from({ length: 10 }).map((_, i) => <RowSkeleton key={i} />)
           : crypto?.trending?.length
             ? crypto.trending.map((c, i) => (
-                <Row key={c.id} rank={i + 1} img={c.thumb} symbol={c.symbol} name={c.name} price={c.rank ? `#${c.rank}` : "—"} change7d={0} showChange={false} />
+                <Row
+                  key={c.id}
+                  rank={i + 1}
+                  subRank={c.rank}
+                  img={c.thumb}
+                  symbol={c.symbol}
+                  name={c.name}
+                  mcap={fmtMcap(c.marketCap)}
+                  price={c.price != null ? fmtUSD(c.price) : "—"}
+                  change7d={c.change24h}
+                  showChange={c.price != null}
+                />
               ))
             : unavailable}
       </Section>
@@ -278,13 +314,13 @@ export function MarketDashboard({ locale }: { locale: string }) {
         )}
       </Section>
 
-      {/* Forex */}
-      <Section icon={DollarSign} title={t("Forex", "Forex (Kurs)")} subtitle={sevenDay}>
+      {/* Forex — 24h change */}
+      <Section icon={DollarSign} title={t("Forex", "Forex (Kurs)")} subtitle={t("24h change", "perubahan 24 jam")}>
         {loading
           ? Array.from({ length: 5 }).map((_, i) => <RowSkeleton key={i} />)
           : forex?.pairs?.length
             ? forex.pairs.map((q) => (
-                <Row key={q.symbol} img={q.logo} symbol={q.symbol.replace("=X", "")} name={q.name} price={fmtForex(q.price)} change7d={q.change7d} spark={q.spark} />
+                <Row key={q.symbol} img={q.logo} symbol={q.symbol.replace("=X", "")} name={q.name} price={fmtForex(q.price)} change7d={q.change24h} spark={q.spark} />
               ))
             : unavailable}
       </Section>

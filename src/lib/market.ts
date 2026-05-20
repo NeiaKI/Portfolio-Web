@@ -5,7 +5,8 @@ export type Quote = {
   symbol: string;
   name: string;
   price: number;
-  change7d: number; // persen
+  change7d: number;  // persen, vs close 7 hari lalu
+  change24h: number; // persen, vs close hari sebelumnya
   currency: string;
   spark: number[]; // close harian 7 hari terakhir
   logo?: string | null;
@@ -46,6 +47,10 @@ export async function fetchQuote(symbol: string, fallbackName: string, preferPro
     const first = closes[0] ?? price;
     const change7d = first ? ((price - first) / first) * 100 : 0;
 
+    // 24h: harga sekarang vs close hari sebelumnya (elemen kedua-dari-akhir).
+    const prevDay = closes.length >= 2 ? closes[closes.length - 2] : first;
+    const change24h = prevDay ? ((price - prevDay) / prevDay) * 100 : 0;
+
     // Yahoo shortName kadang punya padding/junk (mis. "DAX           P") — bersihkan.
     // preferProvidedName: paksa pakai nama custom (forex/komoditas/dll yang Yahoo-nya jelek).
     const rawName = preferProvidedName ? fallbackName : meta.shortName ?? meta.longName ?? fallbackName;
@@ -56,6 +61,7 @@ export async function fetchQuote(symbol: string, fallbackName: string, preferPro
       name,
       price,
       change7d,
+      change24h,
       currency: meta.currency ?? "USD",
       spark: closes.length ? [...closes, price] : [price],
     };

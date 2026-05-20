@@ -27,15 +27,30 @@ type CGMarket = {
   name: string;
   image: string;
   current_price: number;
+  market_cap: number;
   price_change_percentage_7d_in_currency?: number;
   sparkline_in_7d?: { price: number[] };
 };
 
 type CGTrending = {
   coins: Array<{
-    item: { id: string; name: string; symbol: string; thumb: string; market_cap_rank: number | null };
+    item: {
+      id: string;
+      name: string;
+      symbol: string;
+      thumb: string;
+      market_cap_rank: number | null;
+      data?: { price?: number; market_cap?: string; price_change_percentage_24h?: { usd?: number } };
+    };
   }>;
 };
+
+// Trending market_cap dari CoinGecko berupa string "$49,989,433" → angka.
+function parseMcap(s?: string): number | null {
+  if (!s) return null;
+  const n = Number(s.replace(/[^0-9.]/g, ""));
+  return Number.isFinite(n) && n > 0 ? n : null;
+}
 
 export async function GET() {
   try {
@@ -60,10 +75,11 @@ export async function GET() {
         image: c.image,
         price: c.current_price,
         change7d: c.price_change_percentage_7d_in_currency ?? 0,
+        marketCap: c.market_cap ?? null,
         spark: c.sparkline_in_7d?.price ?? [],
       }));
 
-    let trending: Array<{ id: string; symbol: string; name: string; thumb: string; rank: number | null }> = [];
+    let trending: Array<{ id: string; symbol: string; name: string; thumb: string; rank: number | null; price: number | null; change24h: number; marketCap: number | null }> = [];
     if (trendingRes.ok) {
       const t = (await trendingRes.json()) as CGTrending;
       trending = t.coins.slice(0, 10).map((x) => ({
@@ -72,6 +88,9 @@ export async function GET() {
         name: x.item.name,
         thumb: x.item.thumb,
         rank: x.item.market_cap_rank,
+        price: x.item.data?.price ?? null,
+        change24h: x.item.data?.price_change_percentage_24h?.usd ?? 0,
+        marketCap: parseMcap(x.item.data?.market_cap),
       }));
     }
 
