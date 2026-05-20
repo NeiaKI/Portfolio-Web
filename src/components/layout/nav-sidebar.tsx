@@ -16,6 +16,7 @@ import {
   ChevronRight,
   Languages,
   Search,
+  LineChart,
 } from "lucide-react";
 import type { LucideIcon } from "lucide-react";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
@@ -123,6 +124,22 @@ export function NavSidebar() {
           </div>
         ))}
       </nav>
+
+      {/* Tools — no keyboard shortcut */}
+      <Link
+        href="/tools"
+        title={t("tools")}
+        className={cn(
+          "mx-1 mb-1 flex items-center gap-3 rounded-lg px-3 py-2 text-sm transition-colors",
+          isActive("/tools")
+            ? "bg-secondary text-foreground font-medium"
+            : "text-muted-foreground hover:bg-secondary/50 hover:text-foreground"
+        )}
+      >
+        <LineChart className="h-4 w-4 shrink-0" />
+        <span className="flex-1">{t("tools")}</span>
+        {isActive("/tools") && <ChevronRight className="h-3.5 w-3.5 text-muted-foreground/60" />}
+      </Link>
 
       {/* Search shortcut */}
       <button

@@ -35,6 +35,9 @@ function buildCSP(nonce: string): string {
       "https://miro.medium.com",           // Medium article cover images
       "https://cdn-images-1.medium.com",   // Medium article cover images (legacy CDN)
       "https://dev-to-uploads.s3.amazonaws.com", // Dev.to article cover images
+      "https://coin-images.coingecko.com",       // Crypto coin icons (market tools)
+      "https://www.google.com",                  // Company logos via favicon service (market tools)
+      "https://*.gstatic.com",                   // favicon redirect target
     ].join(" "),
 
     // Font: next/font melayani font dari /_next/static (same origin)

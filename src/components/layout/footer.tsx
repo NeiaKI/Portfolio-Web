@@ -16,6 +16,11 @@ const SOCIALS = [
   { label: "X / Twitter", href: "https://x.com/nateeki" },
 ];
 
+const LEGAL = [
+  { label: "Privacy Policy", href: "/en/privacy" },
+  { label: "Terms of Service", href: "/en/terms" },
+];
+
 export function Footer() {
   return (
     <footer className="mt-16 border-t border-border/50 px-6 py-8">
@@ -58,9 +63,16 @@ export function Footer() {
         </div>
       </div>
 
-      <div className="mt-8 flex items-center justify-between text-[11px] text-muted-foreground/50">
+      <div className="mt-8 flex flex-col gap-3 border-t border-border/30 pt-5 text-[11px] text-muted-foreground/50 sm:flex-row sm:items-center sm:justify-between">
         <span>© {new Date().getFullYear()} Febiyanto Rizki Qurbandi</span>
-        <span>Built with Next.js & Catppuccin</span>
+        <div className="flex items-center gap-4">
+          {LEGAL.map(({ label, href }) => (
+            <Link key={href} href={href} className="hover:text-foreground transition-colors">
+              {label}
+            </Link>
+          ))}
+          <span>Built with Next.js & Catppuccin</span>
+        </div>
       </div>
     </footer>
   );

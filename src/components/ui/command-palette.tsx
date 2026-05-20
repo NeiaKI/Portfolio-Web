@@ -4,7 +4,7 @@ import { useEffect, useState, useCallback } from "react";
 import { useRouter, usePathname } from "next/navigation";
 import { useTheme } from "@/lib/theme";
 import { Command } from "cmdk";
-import { Home, FolderOpen, Newspaper, Award, Coffee, Search, Code2, Layers, Moon, Sun, Clock, ScrollText } from "lucide-react";
+import { Home, FolderOpen, Newspaper, Award, Coffee, Search, Code2, Layers, Moon, Sun, Clock, ScrollText, LineChart } from "lucide-react";
 import { CERTIFICATES } from "@/data/certificates";
 import type { Project } from "@/types/database";
 import type { PostMeta } from "@/lib/blog";
@@ -146,6 +146,16 @@ export function CommandPalette() {
                 {shortcut && <Kbd>⌘{shortcut}</Kbd>}
               </Command.Item>
             ))}
+            {/* Tools — searchable, tanpa keyboard shortcut */}
+            <Command.Item
+              value="nav-Tools market crypto stocks saham"
+              onSelect={() => go("/tools")}
+              className="flex cursor-pointer items-center gap-3 rounded-lg px-3 py-2.5 text-sm text-foreground data-[selected=true]:bg-primary/10 data-[selected=true]:text-primary"
+            >
+              <LineChart className="h-4 w-4 shrink-0 text-muted-foreground" />
+              <span className="flex-1 font-medium">Tools</span>
+              <span className="text-xs text-muted-foreground">Market 7-day</span>
+            </Command.Item>
           </Command.Group>
 
           <Command.Separator className="my-1 h-px bg-border" />
