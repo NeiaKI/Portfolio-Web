@@ -1,5 +1,6 @@
 import { NextIntlClientProvider } from "next-intl";
 import { getMessages, getTranslations } from "next-intl/server";
+import { headers } from "next/headers";
 import { notFound } from "next/navigation";
 import { routing } from "@/i18n/routing";
 import { safeJsonLd } from "@/lib/utils";
@@ -9,6 +10,13 @@ type Props = {
   children: React.ReactNode;
   params: Promise<{ locale: string }>;
 };
+
+function extractNonce(headerStore: Headers) {
+  return (
+    headerStore.get("x-nonce") ??
+    headerStore.get("Content-Security-Policy")?.match(/'nonce-([^']+)'/)?.[1]
+  );
+}
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { locale } = await params;
@@ -67,6 +75,7 @@ export default async function LocaleLayout({ children, params }: Props) {
   }
 
   const messages = await getMessages();
+  const nonce = extractNonce(await headers());
   const baseUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "https://nateeki.dev";
 
   const jsonLd = {
@@ -102,6 +111,7 @@ export default async function LocaleLayout({ children, params }: Props) {
   return (
     <NextIntlClientProvider messages={messages}>
       <script
+        nonce={nonce}
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: safeJsonLd(jsonLd) }}
       />

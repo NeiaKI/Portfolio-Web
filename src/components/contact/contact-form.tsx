@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Send, CheckCircle } from "lucide-react";
 
 interface Labels {
@@ -21,6 +21,11 @@ interface Labels {
 export function ContactForm({ labels: l }: { labels: Labels }) {
   const [status, setStatus] = useState<"idle" | "sending" | "success" | "error">("idle");
   const [form, setForm] = useState({ name: "", email: "", message: "" });
+  const [isHydrated, setIsHydrated] = useState(false);
+
+  useEffect(() => {
+    setIsHydrated(true);
+  }, []);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -44,7 +49,23 @@ export function ContactForm({ labels: l }: { labels: Labels }) {
     <div className="flex flex-col gap-4 rounded-2xl border border-border/40 bg-card p-6">
       <h2 className="font-semibold text-foreground">{l.title}</h2>
 
-      {status === "success" ? (
+      {!isHydrated ? (
+        <div className="flex flex-col gap-3" aria-hidden="true">
+          <div className="flex flex-col gap-1.5">
+            <div className="h-3 w-12 rounded bg-muted" />
+            <div className="h-9 rounded-lg border border-border bg-background" />
+          </div>
+          <div className="flex flex-col gap-1.5">
+            <div className="h-3 w-12 rounded bg-muted" />
+            <div className="h-9 rounded-lg border border-border bg-background" />
+          </div>
+          <div className="flex flex-col gap-1.5">
+            <div className="h-3 w-16 rounded bg-muted" />
+            <div className="h-[138px] rounded-lg border border-border bg-background" />
+          </div>
+          <div className="mt-1 h-10 rounded-lg bg-primary" />
+        </div>
+      ) : status === "success" ? (
         <div className="flex flex-1 flex-col items-center justify-center gap-3 py-12 text-center">
           <div className="flex h-12 w-12 items-center justify-center rounded-full bg-primary/10">
             <CheckCircle className="h-6 w-6 text-primary" />

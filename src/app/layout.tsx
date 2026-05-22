@@ -30,6 +30,13 @@ export const metadata: Metadata = {
   },
 };
 
+function extractNonce(headerStore: Headers) {
+  return (
+    headerStore.get("x-nonce") ??
+    headerStore.get("Content-Security-Policy")?.match(/'nonce-([^']+)'/)?.[1]
+  );
+}
+
 export default async function RootLayout({
   children,
 }: Readonly<{
@@ -37,7 +44,7 @@ export default async function RootLayout({
 }>) {
   // Nonce di-generate oleh middleware per-request dan dikirim via x-nonce header.
   // Next.js otomatis menambahkan nonce ini ke framework scripts (hydration, __NEXT_DATA__).
-  const nonce = (await headers()).get("x-nonce") ?? undefined;
+  const nonce = extractNonce(await headers());
 
   return (
     <html

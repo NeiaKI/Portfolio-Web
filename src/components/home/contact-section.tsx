@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useTranslations } from "next-intl";
 import { Send, CheckCircle, MessageSquare, Mail } from "lucide-react";
 import { SOCIAL_LINKS } from "@/lib/social-links";
@@ -12,6 +12,11 @@ export function ContactSection() {
   const t = useTranslations("contact");
   const [status, setStatus] = useState<"idle" | "sending" | "success" | "error">("idle");
   const [form, setForm] = useState({ name: "", email: "", message: "" });
+  const [isHydrated, setIsHydrated] = useState(false);
+
+  useEffect(() => {
+    setIsHydrated(true);
+  }, []);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -92,7 +97,25 @@ export function ContactSection() {
           </div>
           <p className="px-5 pt-3 pb-1 text-xs text-muted-foreground">{t("formSub")}</p>
 
-          {status === "success" ? (
+          {!isHydrated ? (
+            <div className="flex flex-col gap-3 p-5" aria-hidden="true">
+              <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
+                <div className="flex flex-col gap-1.5">
+                  <div className="h-3 w-12 rounded bg-muted" />
+                  <div className="h-10 rounded-lg border border-border bg-muted/40" />
+                </div>
+                <div className="flex flex-col gap-1.5">
+                  <div className="h-3 w-12 rounded bg-muted" />
+                  <div className="h-10 rounded-lg border border-border bg-muted/40" />
+                </div>
+              </div>
+              <div className="flex flex-col gap-1.5">
+                <div className="h-3 w-16 rounded bg-muted" />
+                <div className="h-[155px] rounded-lg border border-border bg-muted/40" />
+              </div>
+              <div className="h-10 rounded-lg bg-foreground/90" />
+            </div>
+          ) : status === "success" ? (
             <div className="flex flex-1 flex-col items-center justify-center gap-3 py-16 text-center px-5">
               <div className="flex h-12 w-12 items-center justify-center rounded-full bg-primary/10">
                 <CheckCircle className="h-6 w-6 text-primary" />
