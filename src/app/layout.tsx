@@ -57,6 +57,7 @@ export default async function RootLayout({
         <style dangerouslySetInnerHTML={{ __html: `html.was-booted [data-loader]{display:none}` }} />
         <script
           nonce={nonce}
+          suppressHydrationWarning
           dangerouslySetInnerHTML={{
             __html: `try{var t=localStorage.getItem('theme');if(t==='light'){document.documentElement.classList.remove('dark');document.documentElement.style.colorScheme='light'}else{document.documentElement.classList.add('dark');document.documentElement.style.colorScheme='dark'}if(sessionStorage.getItem('__booted')){document.documentElement.classList.add('was-booted')}}catch(e){}`,
           }}
