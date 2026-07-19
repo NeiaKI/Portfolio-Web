@@ -79,10 +79,10 @@ export function ContactSection() {
                 <span className="text-sm font-medium text-foreground">{t("preferEmail")}</span>
                 <span className="text-xs text-muted-foreground mt-0.5">{t("preferEmailSub")}</span>
                 <a
-                  href="mailto:febieki562@gmail.com"
+                  href="mailto:febieki562@proton.me"
                   className="mt-1 text-xs text-primary hover:underline"
                 >
-                  febieki562@gmail.com
+                  febieki562@proton.me
                 </a>
               </div>
             </div>
