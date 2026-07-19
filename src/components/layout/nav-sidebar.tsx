@@ -45,18 +45,12 @@ const NAV_GROUPS: NavGroup[] = [
 export function NavSidebar() {
   const t = useTranslations("nav");
   const pathname = usePathname();
-  const { theme, mode, setTheme, toggleMode } = useTheme();
+  const { mode, toggleMode } = useTheme();
   const [mounted, setMounted] = useState(false);
 
   useEffect(() => { setMounted(true); }, []);
 
-  // Read from DOM immediately so the value is correct before `mounted` — prevents
-  // animation when transitions are enabled on the same render that isDark flips.
-  const isDark = mounted
-    ? mode === "dark"
-    : typeof window !== "undefined"
-      ? document.documentElement.classList.contains("dark")
-      : true;
+  const isDark = mode === "dark";
 
   useEffect(() => {
     const handler = (e: KeyboardEvent) => {

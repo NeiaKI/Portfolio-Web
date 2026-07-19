@@ -187,25 +187,53 @@ function chunk<T>(arr: T[], size: number): T[][] {
 const PER_ROW = Math.ceil(UNIQUE.length / 3);
 const [row1, row2, row3] = chunk(UNIQUE, PER_ROW);
 
-function SkillPill({ skill }: { skill: Skill }) {
+function SkillPill({
+  skill,
+  paused,
+  duplicate = false,
+  onToggle,
+}: {
+  skill: Skill;
+  paused: boolean;
+  duplicate?: boolean;
+  onToggle: () => void;
+}) {
   const Icon = skill.icon;
   return (
-    <span className="inline-flex shrink-0 items-center gap-1.5 rounded-full border border-border bg-card px-3 py-1.5 text-xs font-medium text-foreground hover:border-primary/40 hover:text-primary transition-colors cursor-default select-none">
+    <button
+      type="button"
+      tabIndex={duplicate ? -1 : 0}
+      aria-pressed={paused}
+      aria-label={`${paused ? "Resume" : "Pause"} skills animation at ${skill.name}`}
+      onClick={onToggle}
+      className="inline-flex shrink-0 items-center gap-1.5 rounded-full border border-border bg-card px-3 py-1.5 text-xs font-medium text-foreground transition-colors hover:border-primary/40 hover:text-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring/60 select-none"
+    >
       <Icon className="h-3.5 w-3.5 shrink-0 text-muted-foreground" aria-hidden="true" />
       {skill.name}
-    </span>
+    </button>
   );
 }
 
-function MarqueeRow({ skills, reverse = false }: { skills: Skill[]; reverse?: boolean }) {
+function MarqueeRow({
+  skills,
+  reverse = false,
+  paused,
+  onToggle,
+}: {
+  skills: Skill[];
+  reverse?: boolean;
+  paused: boolean;
+  onToggle: () => void;
+}) {
   const cls = reverse ? "animate-marquee-reverse" : "animate-marquee";
+  const animationStyle = { animationPlayState: paused ? "paused" : "running" };
   return (
     <div className="flex gap-2 overflow-hidden">
-      <div className={`flex shrink-0 gap-2 ${cls}`}>
-        {skills.map((s) => <SkillPill key={`a-${s.name}`} skill={s} />)}
+      <div className={`flex shrink-0 gap-2 ${cls}`} style={animationStyle}>
+        {skills.map((s) => <SkillPill key={`a-${s.name}`} skill={s} paused={paused} onToggle={onToggle} />)}
       </div>
-      <div className={`flex shrink-0 gap-2 ${cls}`} aria-hidden>
-        {skills.map((s) => <SkillPill key={`b-${s.name}`} skill={s} />)}
+      <div className={`flex shrink-0 gap-2 ${cls}`} style={animationStyle} aria-hidden>
+        {skills.map((s) => <SkillPill key={`b-${s.name}`} skill={s} paused={paused} duplicate onToggle={onToggle} />)}
       </div>
     </div>
   );
@@ -241,6 +269,7 @@ function CategoryCard({ category }: { category: Category }) {
 export function SkillsSection() {
   const t = useTranslations("home");
   const [expanded, setExpanded] = useState(false);
+  const [marqueePaused, setMarqueePaused] = useState(false);
 
   return (
     <section className="flex flex-col gap-4">
@@ -262,10 +291,14 @@ export function SkillsSection() {
       </div>
 
       {/* 3-row marquee */}
-      <div className="flex flex-col gap-2 overflow-hidden [mask-image:linear-gradient(to_right,transparent,black_5%,black_95%,transparent)]">
-        <MarqueeRow skills={row1} />
-        <MarqueeRow skills={row2} reverse />
-        <MarqueeRow skills={row3} />
+      <div
+        className="flex flex-col gap-2 overflow-hidden [mask-image:linear-gradient(to_right,transparent,black_5%,black_95%,transparent)]"
+        onPointerMove={() => marqueePaused && setMarqueePaused(false)}
+        onPointerEnter={() => marqueePaused && setMarqueePaused(false)}
+      >
+        <MarqueeRow skills={row1} paused={marqueePaused} onToggle={() => setMarqueePaused((paused) => !paused)} />
+        <MarqueeRow skills={row2} reverse paused={marqueePaused} onToggle={() => setMarqueePaused((paused) => !paused)} />
+        <MarqueeRow skills={row3} paused={marqueePaused} onToggle={() => setMarqueePaused((paused) => !paused)} />
       </div>
 
       {/* Expandable grid */}

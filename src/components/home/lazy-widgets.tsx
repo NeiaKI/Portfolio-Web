@@ -2,6 +2,7 @@
 
 import dynamic from "next/dynamic";
 import { ErrorBoundary } from "@/components/ui/error-boundary";
+import BrilliantProgress from "@/components/widgets/brilliant-progress";
 
 function SectionSkeleton({ rows = 4 }: { rows?: number }) {
   return (
@@ -56,6 +57,10 @@ export function LazyCodingProgress() {
 
 export function LazyDuolingoProgress() {
   return <ErrorBoundary><DuolingoProgress /></ErrorBoundary>;
+}
+
+export function LazyBrilliantProgress() {
+  return <ErrorBoundary><BrilliantProgress /></ErrorBoundary>;
 }
 
 export function LazyMonkeyTypeWidget() {

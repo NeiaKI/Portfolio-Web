@@ -62,11 +62,15 @@ export function ThemeProvider({
 }: {
   children: React.ReactNode;
 }) {
-  const [theme, setThemeState] = useState<ThemeId>(() => readStoredTheme());
+  const [theme, setThemeState] = useState<ThemeId>(DEFAULT_THEME_ID);
 
-  // Sync DOM + localStorage on mount so React state, DOM attr, and
-  // colorScheme are all consistent regardless of SSR/hydration order.
-  useEffect(() => { applyTheme(theme); }, []); // eslint-disable-line react-hooks/exhaustive-deps
+  // Render awal harus sama dengan SSR. Tema tersimpan baru disinkronkan
+  // setelah hydration; script di layout sudah mencegah flash warna.
+  useEffect(() => {
+    const storedTheme = readStoredTheme();
+    applyTheme(storedTheme);
+    setThemeState(storedTheme);
+  }, []);
 
   const setTheme = useCallback((id: ThemeId) => {
     applyTheme(id);

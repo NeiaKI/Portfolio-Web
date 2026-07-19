@@ -5,7 +5,7 @@ import { useRouter, usePathname } from "next/navigation";
 import { useTranslations } from "next-intl";
 import { useTheme } from "@/lib/theme";
 import { Command } from "cmdk";
-import { Home, FolderOpen, Newspaper, Award, Coffee, Search, Code2, Layers, Moon, Sun, Clock, ScrollText, LineChart, Palette } from "lucide-react";
+import { Home, FolderOpen, Newspaper, Award, Coffee, Search, Code2, Layers, Moon, Sun, Clock, ScrollText, LineChart, Check } from "lucide-react";
 import { CERTIFICATES } from "@/data/certificates";
 import { THEMES } from "@/lib/themes";
 import type { Project } from "@/types/database";
@@ -38,7 +38,7 @@ export function CommandPalette() {
   const [posts, setPosts] = useState<PostMeta[]>([]);
   const router = useRouter();
   const pathname = usePathname();
-  const { theme, setTheme, toggleMode } = useTheme();
+  const { theme, mode, setTheme, toggleMode } = useTheme();
   const t = useTranslations("nav");
 
   useEffect(() => {
@@ -183,9 +183,9 @@ export function CommandPalette() {
               onSelect={() => { toggleMode(); setOpen(false); }}
               className="flex cursor-pointer items-center gap-3 rounded-lg px-3 py-2.5 text-sm text-foreground data-[selected=true]:bg-primary/10 data-[selected=true]:text-primary"
             >
-              {theme === "dark" ? <Sun className="h-4 w-4 shrink-0 text-muted-foreground" /> : <Moon className="h-4 w-4 shrink-0 text-muted-foreground" />}
+              {mode === "dark" ? <Sun className="h-4 w-4 shrink-0 text-muted-foreground" /> : <Moon className="h-4 w-4 shrink-0 text-muted-foreground" />}
               <span className="flex-1 font-medium">{t("toggleTheme")}</span>
-              <span className="text-xs text-muted-foreground">{theme === "dark" ? t("switchToLight") : t("switchToDark")}</span>
+              <span className="text-xs text-muted-foreground">{mode === "dark" ? t("switchToLight") : t("switchToDark")}</span>
               <Kbd>⌘⇧L</Kbd>
             </Command.Item>
           </Command.Group>
@@ -193,26 +193,36 @@ export function CommandPalette() {
           <Command.Separator className="my-1 h-px bg-border" />
 
           {/* Themes */}
-          <Command.Group heading={t("themes")}>
-            {THEMES.map((th) => (
-              <Command.Item
-                key={th.id}
-                value={`theme:${th.name} ${th.id}`}
-                onSelect={() => { setTheme(th.id); setOpen(false); }}
-                className="flex cursor-pointer items-center gap-3 rounded-lg px-3 py-2.5 text-sm text-foreground data-[selected=true]:bg-primary/10 data-[selected=true]:text-primary"
+          <p className="px-3 pb-1 pt-2 text-[10px] font-semibold uppercase tracking-widest text-muted-foreground/60">
+            {t("themes")}
+          </p>
+          {(["dark", "light"] as const).map((themeMode, index) => (
+            <div key={themeMode}>
+              {index > 0 && <Command.Separator className="mx-3 my-2 h-px bg-border/70" />}
+              <Command.Group
+                heading={themeMode === "dark" ? t("darkThemes") : t("lightThemes")}
+                className="[&_[cmdk-group-heading]]:px-3 [&_[cmdk-group-heading]]:py-1.5 [&_[cmdk-group-heading]]:text-[10px] [&_[cmdk-group-heading]]:font-medium [&_[cmdk-group-heading]]:uppercase [&_[cmdk-group-heading]]:tracking-widest [&_[cmdk-group-heading]]:text-muted-foreground/60"
               >
-                <span
-                  className="flex h-5 w-5 shrink-0 items-center justify-center rounded-full border border-border"
-                  style={{ background: th.preview[0] }}
-                >
-                  <span className="h-2.5 w-2.5 rounded-full" style={{ background: th.preview[1] }} />
-                </span>
-                <span className="flex-1 font-medium">{th.name}</span>
-                {theme === th.id && <span className="text-xs text-primary">●</span>}
-                <span className="text-xs text-muted-foreground">{th.mode === "dark" ? "Dark" : "Light"}</span>
-              </Command.Item>
-            ))}
-          </Command.Group>
+                {THEMES.filter((th) => th.mode === themeMode).map((th) => (
+                  <Command.Item
+                    key={th.id}
+                    value={`theme:${th.name} ${th.id} ${themeMode}`}
+                    onSelect={() => { setTheme(th.id); setOpen(false); }}
+                    className="flex cursor-pointer items-center gap-3 rounded-lg px-3 py-2.5 text-sm text-foreground data-[selected=true]:bg-primary/10 data-[selected=true]:text-primary"
+                  >
+                    <span
+                      className="flex h-5 w-5 shrink-0 items-center justify-center rounded-full border border-border"
+                      style={{ background: th.preview[0] }}
+                    >
+                      <span className="h-2.5 w-2.5 rounded-full" style={{ background: th.preview[1] }} />
+                    </span>
+                    <span className="flex-1 font-medium">{th.name}</span>
+                    {theme === th.id && <Check className="h-4 w-4 text-primary" aria-label={t("activeTheme")} />}
+                  </Command.Item>
+                ))}
+              </Command.Group>
+            </div>
+          ))}
 
           <Command.Separator className="my-1 h-px bg-border" />
 

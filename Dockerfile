@@ -22,6 +22,9 @@ COPY . .
 # prebuild (bump SW version) otomatis jalan sebelum `next build` via npm script.
 RUN npm run build
 
+# Buang CLI/tooling dev dari image runtime setelah build selesai.
+RUN npm prune --omit=dev
+
 # ---------- Stage 2: runner ----------
 FROM node:22-alpine AS runner
 
@@ -39,6 +42,7 @@ RUN addgroup --system --gid 1001 nodejs \
 # Hanya copy hasil build + file runtime yang dibutuhkan `next start`.
 COPY --from=builder --chown=nextjs:nodejs /app/.next ./.next
 COPY --from=builder --chown=nextjs:nodejs /app/public ./public
+COPY --from=builder --chown=nextjs:nodejs /app/content ./content
 COPY --from=builder --chown=nextjs:nodejs /app/package.json ./package.json
 COPY --from=builder --chown=nextjs:nodejs /app/node_modules ./node_modules
 

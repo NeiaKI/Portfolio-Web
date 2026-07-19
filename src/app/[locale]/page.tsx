@@ -9,6 +9,7 @@ import {
   LazySkillsSection,
   LazyCodingProgress,
   LazyDuolingoProgress,
+  LazyBrilliantProgress,
   LazyMonkeyTypeWidget,
 } from "@/components/home/lazy-widgets";
 
@@ -26,6 +27,7 @@ export default function HomePage() {
         <FadeSection><EducationSection /></FadeSection>
         <FadeSection><LazyCodingProgress /></FadeSection>
         <FadeSection><LazyDuolingoProgress /></FadeSection>
+        <FadeSection><LazyBrilliantProgress /></FadeSection>
         <FadeSection><LazyMonkeyTypeWidget /></FadeSection>
         <FadeSection><ContactSection /></FadeSection>
       </div>

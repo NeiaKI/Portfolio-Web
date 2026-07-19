@@ -24,6 +24,10 @@ Isi semua di **Coolify UI → Environment / Secrets** (jangan hardcode di `docke
 | `SPOTIFY_REFRESH_TOKEN` | ⚠️ | Spotify (opsional) | generate via OAuth |
 | `WAKATIME_API_KEY` | ⚠️ | Widget WakaTime (opsional) | wakatime.com → settings → API key |
 | `GITHUB_TOKEN` | ⚠️ | Fallback data proyek (read-only) | github.com → settings → tokens |
+| `BRILLIANT_STREAK` | ⚠️ | Streak Brilliant (manual) | Angka, mis. `42` |
+| `BRILLIANT_TOTAL_XP` | ⚠️ | Total XP Brilliant (manual) | Angka, mis. `12500` |
+| `BRILLIANT_LESSONS_COMPLETED` | ⚠️ | Lesson Brilliant selesai (manual) | Angka, mis. `87` |
+| `BRILLIANT_COURSES_JSON` | ⚠️ | Progres kursus Brilliant (manual) | `[{"title":"Computer Science","progress":65}]` |
 | `MEDIUM_USERNAME` | ⚠️ | Default `nateeki` | — |
 | `DEVTO_USERNAME` | ⚠️ | Default `nateeki` | — |
 | `NEXT_PUBLIC_ETH_ADDRESS` | ⚠️ | Tip ETH (opsional) | — |
