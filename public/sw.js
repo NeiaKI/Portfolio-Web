@@ -43,7 +43,12 @@ self.addEventListener('fetch', (e) => {
     e.respondWith(
       caches.match(request).then(
         (hit) => hit || fetch(request).then((res) => {
-          if (res.ok) caches.open(CACHE).then((c) => c.put(request, res.clone()));
+          // Clone SEBELUM body dipakai consumer, agar tidak throw
+          // "Response body is already used" saat di-cache.
+          if (res.ok) {
+            const copy = res.clone();
+            caches.open(CACHE).then((c) => c.put(request, copy)).catch(() => {});
+          }
           return res;
         })
       )
@@ -55,7 +60,10 @@ self.addEventListener('fetch', (e) => {
   e.respondWith(
     fetch(request)
       .then((res) => {
-        if (res.ok) caches.open(CACHE).then((c) => c.put(request, res.clone()));
+        if (res.ok) {
+          const copy = res.clone();
+          caches.open(CACHE).then((c) => c.put(request, copy)).catch(() => {});
+        }
         return res;
       })
       .catch(() => caches.match(request))
