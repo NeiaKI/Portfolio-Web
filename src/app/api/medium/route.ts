@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 
-export const revalidate = 1800;
+export const revalidate = 300;
 
 const MEDIUM_USERNAME = process.env.MEDIUM_USERNAME ?? "nateeki";
 

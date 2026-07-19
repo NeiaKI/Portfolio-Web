@@ -133,7 +133,7 @@ export function BlogList({ source }: { source: "devto" | "medium" }) {
   useEffect(() => {
     setLoading(true);
     setArticles([]);
-    fetch(source === "devto" ? "/api/devto" : "/api/medium")
+    fetch(source === "devto" ? "/api/devto" : "/api/medium", { cache: "no-store" })
       .then((r) => r.json())
       .then((d) => setArticles(Array.isArray(d) ? d : []))
       .catch(() => setArticles([]))
