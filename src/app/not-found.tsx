@@ -105,7 +105,7 @@ function NotFoundContent() {
 
 export default function NotFound() {
   return (
-    <ThemeProvider defaultTheme="dark">
+    <ThemeProvider>
       <NotFoundContent />
     </ThemeProvider>
   );

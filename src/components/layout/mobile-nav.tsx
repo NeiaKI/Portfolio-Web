@@ -4,6 +4,8 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useTranslations } from "next-intl";
 import { useTheme } from "@/lib/theme";
+
+type ThemeMode = "dark" | "light";
 import { Home, FolderOpen, Newspaper, Award, Coffee, Search, Moon, Sun } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { LanguageSwitcher } from "./language-switcher";
@@ -23,7 +25,7 @@ function triggerSearch() {
 export function MobileNav() {
   const t = useTranslations("nav");
   const pathname = usePathname();
-  const { theme, setTheme } = useTheme();
+  const { mode, toggleMode } = useTheme();
 
   const isActive = (href: string) => {
     if (href === "/") return /^\/(en|id)?$/.test(pathname);
@@ -48,7 +50,7 @@ export function MobileNav() {
           <LanguageSwitcher />
 
           <button
-            onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
+            onClick={() => toggleMode()}
             aria-label="Toggle theme"
             className="flex h-8 w-8 items-center justify-center rounded-lg text-muted-foreground hover:bg-muted hover:text-foreground transition-colors"
           >

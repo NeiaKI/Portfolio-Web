@@ -24,6 +24,10 @@ function VimKeys() {
       } else if (e.key === "k") {
         e.preventDefault();
         window.scrollBy({ top: -SCROLL_STEP, behavior: "smooth" });
+      } else if (e.key === "/") {
+        // Buka command palette langsung di mode pemilih tema.
+        e.preventDefault();
+        window.dispatchEvent(new Event("open-theme-picker"));
       }
     }
     window.addEventListener("keydown", onKeyDown);
@@ -34,7 +38,7 @@ function VimKeys() {
 
 export function Providers({ children }: { children: React.ReactNode }) {
   return (
-    <ThemeProvider defaultTheme="dark">
+    <ThemeProvider>
       <MotionProvider>
         <TooltipProvider delay={500}>
           <VimKeys />

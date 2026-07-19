@@ -69,7 +69,7 @@ function ProgressRow({ name, percent, animStarted }: { name: string; percent: nu
 
 export function CodingProgress() {
   const t = useTranslations("home");
-  const { resolvedTheme } = useTheme();
+  const { mode } = useTheme();
   const [mounted, setMounted] = useState(false);
   const [waka, setWaka] = useState<WakaStats | null>(null);
   const [ghStats, setGhStats] = useState<GHStats | null>(null);
@@ -125,9 +125,9 @@ export function CodingProgress() {
     return data;
   }, []);
 
-  const colorScheme = resolvedTheme === "dark" ? "dark" : "light";
+  const colorScheme = mode === "dark" ? "dark" : "light";
   const [hoverLabel, setHoverLabel] = useState<string | null>(null);
-  const legendColors = resolvedTheme === "dark" ? GH_THEME.dark : GH_THEME.light;
+  const legendColors = mode === "dark" ? GH_THEME.dark : GH_THEME.light;
 
   const padData = useCallback((data: Activity[]) => {
     if (data.length === 0) return data;

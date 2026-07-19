@@ -85,8 +85,8 @@ export function MonkeyTypeWidget() {
   const [loading, setLoading] = useState(true);
   const [animStarted, setAnimStarted] = useState(false);
   const sectionRef = useRef<HTMLElement>(null);
-  const { resolvedTheme } = useTheme();
-  const isDark = resolvedTheme === "dark";
+  const { mode } = useTheme();
+  const isDark = mode === "dark";
 
   const C = {
     primary:    isDark ? "#89b4fa" : "#1e66f5",

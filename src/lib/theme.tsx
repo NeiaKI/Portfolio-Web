@@ -7,75 +7,93 @@ import {
   useEffect,
   useState,
 } from "react";
+import { DEFAULT_THEME_ID, getTheme, THEMES } from "@/lib/themes";
 
-type Theme = "dark" | "light";
+type ThemeId = string;
+type ThemeMode = "dark" | "light";
 
 interface ThemeContextValue {
-  theme: Theme;
-  setTheme: (theme: Theme) => void;
-  resolvedTheme: Theme;
+  /** ID tema aktif, mis. "catppuccin-mocha". */
+  theme: ThemeId;
+  /** "dark" | "light" — basis tema aktif. */
+  mode: ThemeMode;
+  setTheme: (id: ThemeId) => void;
+  /** Toggle hanya basis dark/light, pertahankan palet tema terdekat. */
+  toggleMode: () => void;
+  themes: typeof THEMES;
 }
 
 const ThemeContext = createContext<ThemeContextValue>({
-  theme: "dark",
+  theme: DEFAULT_THEME_ID,
+  mode: "dark",
   setTheme: () => {},
-  resolvedTheme: "dark",
+  toggleMode: () => {},
+  themes: THEMES,
 });
 
 export function useTheme(): ThemeContextValue {
   return useContext(ThemeContext);
 }
 
-function readStoredTheme(defaultTheme: Theme): Theme {
-  if (typeof window === "undefined") return defaultTheme;
+function readStoredTheme(): ThemeId {
+  if (typeof window === "undefined") return DEFAULT_THEME_ID;
   try {
-    return (localStorage.getItem("theme") as Theme) || defaultTheme;
+    const id = localStorage.getItem("theme");
+    return getTheme(id ?? "").id;
   } catch {
-    return defaultTheme;
+    return DEFAULT_THEME_ID;
   }
 }
 
-function applyTheme(theme: Theme) {
+function applyTheme(id: ThemeId) {
+  const def = getTheme(id);
   const root = document.documentElement;
-  if (theme === "dark") {
-    root.classList.add("dark");
-    root.classList.remove("light");
-    root.style.colorScheme = "dark";
-  } else {
-    root.classList.remove("dark");
-    root.classList.add("light");
-    root.style.colorScheme = "light";
-  }
+  root.setAttribute("data-theme", def.id);
+  root.classList.toggle("dark", def.mode === "dark");
+  root.classList.toggle("light", def.mode === "light");
+  root.style.colorScheme = def.mode;
   try {
-    localStorage.setItem("theme", theme);
+    localStorage.setItem("theme", def.id);
   } catch {}
 }
 
 export function ThemeProvider({
   children,
-  defaultTheme = "dark",
 }: {
   children: React.ReactNode;
-  defaultTheme?: Theme;
 }) {
-  const [theme, setThemeState] = useState<Theme>(() =>
-    readStoredTheme(defaultTheme)
-  );
+  const [theme, setThemeState] = useState<ThemeId>(() => readStoredTheme());
 
-  // Sync DOM + localStorage on mount so React state, DOM class, and
+  // Sync DOM + localStorage on mount so React state, DOM attr, and
   // colorScheme are all consistent regardless of SSR/hydration order.
   useEffect(() => { applyTheme(theme); }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
-  const setTheme = useCallback(
-    (next: Theme) => {
-      applyTheme(next);
-      setThemeState(next);
-    },
-    []
-  );
+  const setTheme = useCallback((id: ThemeId) => {
+    applyTheme(id);
+    setThemeState(id);
+  }, []);
+
+  const toggleMode = useCallback(() => {
+    setThemeState((curr) => {
+      const currMode = getTheme(curr).mode;
+      const want: ThemeMode = currMode === "dark" ? "light" : "dark";
+      // Cari tema dengan mode berlawanan yang paletnya mirip (sama prefix).
+      const base = curr.replace(/-(dark|light|mocha|latte|night|day)$/i, "");
+      const alt =
+        THEMES.find((t) => t.id !== curr && t.mode === want && t.id.startsWith(base)) ??
+        THEMES.find((t) => t.mode === want) ??
+        THEMES[0];
+      applyTheme(alt.id);
+      return alt.id;
+    });
+  }, []);
+
+  const def = getTheme(theme);
 
   return (
-    <ThemeContext.Provider value={{ theme, setTheme, resolvedTheme: theme }}>
+    <ThemeContext.Provider
+      value={{ theme, mode: def.mode, setTheme, toggleMode, themes: THEMES }}
+    >
       {children}
     </ThemeContext.Provider>
   );

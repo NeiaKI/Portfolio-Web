@@ -50,7 +50,8 @@ export default async function RootLayout({
     <html
       lang="en"
       suppressHydrationWarning
-      className={`dark ${geistSans.variable} ${jetbrainsMono.variable} h-full antialiased`}
+          className={`dark ${geistSans.variable} ${jetbrainsMono.variable} h-full antialiased`}
+          data-theme="catppuccin-mocha"
     >
       <head>
         <link rel="alternate" type="application/rss+xml" title="Febiyanto Rizki Qurbandi — Blog" href="/feed.xml" />
@@ -59,7 +60,7 @@ export default async function RootLayout({
           nonce={nonce}
           suppressHydrationWarning
           dangerouslySetInnerHTML={{
-            __html: `try{var t=localStorage.getItem('theme');if(t==='light'){document.documentElement.classList.remove('dark');document.documentElement.style.colorScheme='light'}else{document.documentElement.classList.add('dark');document.documentElement.style.colorScheme='dark'}if(sessionStorage.getItem('__booted')){document.documentElement.classList.add('was-booted')}}catch(e){}`,
+            __html: `try{var t=localStorage.getItem('theme');var m=document.documentElement;if(t){m.setAttribute('data-theme',t);var d=t.endsWith('light')||t==='catppuccin-latte'||t==='tokyo-day'||t==='gruvbox-light'||t==='solarized-light';if(d){m.classList.remove('dark');m.classList.add('light');m.style.colorScheme='light'}else{m.classList.add('dark');m.classList.remove('light');m.style.colorScheme='dark'}}if(sessionStorage.getItem('__booted')){m.classList.add('was-booted')}}catch(e){}`,
           }}
         />
       </head>

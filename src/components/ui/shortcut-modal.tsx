@@ -18,6 +18,7 @@ const SHORTCUTS = [
     items: [
       { keys: ["⌘", "K"], desc: "Command Palette" },
       { keys: ["⌘", "⇧", "L"], desc: "Toggle Dark / Light mode" },
+      { keys: ["/"], desc: "Pick a theme" },
       { keys: ["?"], desc: "Show keyboard shortcuts" },
       { keys: ["Esc"], desc: "Close modal / palette" },
     ],

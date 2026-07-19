@@ -5,8 +5,9 @@ import { useRouter, usePathname } from "next/navigation";
 import { useTranslations } from "next-intl";
 import { useTheme } from "@/lib/theme";
 import { Command } from "cmdk";
-import { Home, FolderOpen, Newspaper, Award, Coffee, Search, Code2, Layers, Moon, Sun, Clock, ScrollText, LineChart } from "lucide-react";
+import { Home, FolderOpen, Newspaper, Award, Coffee, Search, Code2, Layers, Moon, Sun, Clock, ScrollText, LineChart, Palette } from "lucide-react";
 import { CERTIFICATES } from "@/data/certificates";
+import { THEMES } from "@/lib/themes";
 import type { Project } from "@/types/database";
 import type { PostMeta } from "@/lib/blog";
 import type { LucideIcon } from "lucide-react";
@@ -37,7 +38,7 @@ export function CommandPalette() {
   const [posts, setPosts] = useState<PostMeta[]>([]);
   const router = useRouter();
   const pathname = usePathname();
-  const { theme, setTheme } = useTheme();
+  const { theme, setTheme, toggleMode } = useTheme();
   const t = useTranslations("nav");
 
   useEffect(() => {
@@ -61,6 +62,17 @@ export function CommandPalette() {
 
   // Close on route change
   useEffect(() => { setOpen(false); }, [pathname]);
+
+  // Buka palette langsung di mode pencarian tema (dipanggil dari shortcut "/").
+  useEffect(() => {
+    const handler = () => {
+      setOpen(true);
+      const input = document.querySelector<HTMLInputElement>("[cmdk-input]");
+      if (input) { input.value = "theme:"; input.dispatchEvent(new Event("input", { bubbles: true })); }
+    };
+    window.addEventListener("open-theme-picker", handler as EventListener);
+    return () => window.removeEventListener("open-theme-picker", handler as EventListener);
+  }, []);
 
   // Global keyboard shortcuts
   useEffect(() => {
@@ -168,7 +180,7 @@ export function CommandPalette() {
           <Command.Group heading={t("actions")}>
             <Command.Item
               value="toggle theme dark light"
-              onSelect={() => { setTheme(theme === "dark" ? "light" : "dark"); setOpen(false); }}
+              onSelect={() => { toggleMode(); setOpen(false); }}
               className="flex cursor-pointer items-center gap-3 rounded-lg px-3 py-2.5 text-sm text-foreground data-[selected=true]:bg-primary/10 data-[selected=true]:text-primary"
             >
               {theme === "dark" ? <Sun className="h-4 w-4 shrink-0 text-muted-foreground" /> : <Moon className="h-4 w-4 shrink-0 text-muted-foreground" />}
@@ -176,6 +188,30 @@ export function CommandPalette() {
               <span className="text-xs text-muted-foreground">{theme === "dark" ? t("switchToLight") : t("switchToDark")}</span>
               <Kbd>⌘⇧L</Kbd>
             </Command.Item>
+          </Command.Group>
+
+          <Command.Separator className="my-1 h-px bg-border" />
+
+          {/* Themes */}
+          <Command.Group heading={t("themes")}>
+            {THEMES.map((th) => (
+              <Command.Item
+                key={th.id}
+                value={`theme:${th.name} ${th.id}`}
+                onSelect={() => { setTheme(th.id); setOpen(false); }}
+                className="flex cursor-pointer items-center gap-3 rounded-lg px-3 py-2.5 text-sm text-foreground data-[selected=true]:bg-primary/10 data-[selected=true]:text-primary"
+              >
+                <span
+                  className="flex h-5 w-5 shrink-0 items-center justify-center rounded-full border border-border"
+                  style={{ background: th.preview[0] }}
+                >
+                  <span className="h-2.5 w-2.5 rounded-full" style={{ background: th.preview[1] }} />
+                </span>
+                <span className="flex-1 font-medium">{th.name}</span>
+                {theme === th.id && <span className="text-xs text-primary">●</span>}
+                <span className="text-xs text-muted-foreground">{th.mode === "dark" ? "Dark" : "Light"}</span>
+              </Command.Item>
+            ))}
           </Command.Group>
 
           <Command.Separator className="my-1 h-px bg-border" />

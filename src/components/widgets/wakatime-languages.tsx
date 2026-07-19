@@ -53,8 +53,8 @@ function bar(color: string, percent: number, animated: boolean) {
 }
 
 export function WakaTimeLanguages() {
-  const { resolvedTheme } = useTheme();
-  const LANG_COLORS = resolvedTheme === "light" ? LANG_COLORS_LIGHT : LANG_COLORS_DARK;
+  const { mode } = useTheme();
+  const LANG_COLORS = mode === "light" ? LANG_COLORS_LIGHT : LANG_COLORS_DARK;
   const [data, setData] = useState<LangData | null>(null);
   const [loading, setLoading] = useState(true);
   const [animated, setAnimated] = useState(false);

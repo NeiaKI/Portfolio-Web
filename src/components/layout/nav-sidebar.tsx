@@ -13,6 +13,7 @@ import {
   Coffee,
   Layers,
   Moon,
+  Sun,
   ChevronRight,
   Languages,
   Search,
@@ -44,7 +45,7 @@ const NAV_GROUPS: NavGroup[] = [
 export function NavSidebar() {
   const t = useTranslations("nav");
   const pathname = usePathname();
-  const { theme, setTheme } = useTheme();
+  const { theme, mode, setTheme, toggleMode } = useTheme();
   const [mounted, setMounted] = useState(false);
 
   useEffect(() => { setMounted(true); }, []);
@@ -52,7 +53,7 @@ export function NavSidebar() {
   // Read from DOM immediately so the value is correct before `mounted` — prevents
   // animation when transitions are enabled on the same render that isDark flips.
   const isDark = mounted
-    ? theme === "dark"
+    ? mode === "dark"
     : typeof window !== "undefined"
       ? document.documentElement.classList.contains("dark")
       : true;
@@ -61,12 +62,12 @@ export function NavSidebar() {
     const handler = (e: KeyboardEvent) => {
       if ((e.metaKey || e.ctrlKey) && e.shiftKey && e.key === "L") {
         e.preventDefault();
-        setTheme(isDark ? "light" : "dark");
+        toggleMode();
       }
     };
     window.addEventListener("keydown", handler);
     return () => window.removeEventListener("keydown", handler);
-  }, [isDark, setTheme]);
+  }, [toggleMode]);
 
   const isActive = (href: string) => {
     if (href === "/") return pathname === "/" || pathname === "/id" || pathname === "/en";
@@ -161,15 +162,15 @@ export function NavSidebar() {
         </p>
         <div className="flex items-center justify-between rounded-lg px-3 py-2">
           <div className="flex items-center gap-3">
-            <Moon className="h-4 w-4 text-muted-foreground" />
-            <span className="text-sm text-muted-foreground">{t("darkMode")}</span>
+            {isDark ? <Moon className="h-4 w-4 text-muted-foreground" /> : <Sun className="h-4 w-4 text-muted-foreground" />}
+            <span className="text-sm text-muted-foreground">{isDark ? t("darkMode") : t("lightMode")}</span>
           </div>
           <button
             role="switch"
             suppressHydrationWarning
             aria-checked={isDark}
             title={isDark ? "Switch to Light (⌘⇧L)" : "Switch to Dark (⌘⇧L)"}
-            onClick={() => setTheme(isDark ? "light" : "dark")}
+            onClick={() => toggleMode()}
             className={cn(
               "relative inline-flex h-5 w-9 shrink-0 cursor-pointer rounded-full border-2 border-transparent",
               mounted && "transition-colors",
