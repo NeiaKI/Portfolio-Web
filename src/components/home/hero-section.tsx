@@ -8,6 +8,11 @@ import Image from "next/image";
 import { cn } from "@/lib/utils";
 import { SOCIAL_LINKS } from "@/lib/social-links";
 
+// Toggle badge "Open to Work".
+// NYALAKAN  -> const SHOW_OPEN_TO_WORK = true;
+// MATIKAN   -> const SHOW_OPEN_TO_WORK = false;
+const SHOW_OPEN_TO_WORK = true;
+
 export function HeroSection() {
   const t = useTranslations("home");
   const roles: string[] = t.raw("roles") as string[];
@@ -57,20 +62,22 @@ export function HeroSection() {
         </div>
       </m.div>
 
-      {/* Status badge */}
-      <m.div
-        initial={{ opacity: 0, y: -8 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.4, delay: 0.0 }}
-      >
-        <span className="inline-flex items-center gap-2 rounded-full border border-green-500/30 bg-green-500/10 px-3 py-1 text-xs font-medium text-green-400">
-          <span className="relative flex h-2 w-2">
-            <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-green-400 opacity-75" />
-            <span className="relative inline-flex h-2 w-2 rounded-full bg-green-500" />
+      {/* Status badge "Open to Work" — tampil hanya jika SHOW_OPEN_TO_WORK aktif */}
+      {SHOW_OPEN_TO_WORK && (
+        <m.div
+          initial={{ opacity: 0, y: -8 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.4, delay: 0.0 }}
+        >
+          <span className="inline-flex items-center gap-2 rounded-full border border-green-500/30 bg-green-500/10 px-3 py-1 text-xs font-medium text-green-400">
+            <span className="relative flex h-2 w-2">
+              <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-green-400 opacity-75" />
+              <span className="relative inline-flex h-2 w-2 rounded-full bg-green-500" />
+            </span>
+            {t("openToWork") as string}
           </span>
-          {t("openToWork") as string}
-        </span>
-      </m.div>
+        </m.div>
+      )}
 
       {/* Heading + typewriter */}
       <m.div
