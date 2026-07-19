@@ -1,0 +1,40 @@
+# Docker Compose untuk Coolify (Next.js 16 + Tailwind v4).
+# Jalankan sebagai "Docker Compose" service di Coolify.
+# Semua secret diisi di UI Coolify (Environment > Secrets) — JANGAN hardcode di sini.
+
+services:
+  web:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    # Coolify injects PORT & domain; map ke container port 3000.
+    ports:
+      - "3000:3000"
+    environment:
+      # --- Supabase (cloud) ---
+      # Kode membaca NEXT_PUBLIC_SUPABASE_ANON_KEY (== publishable key di Supabase baru).
+      NEXT_PUBLIC_SUPABASE_URL: "${NEXT_PUBLIC_SUPABASE_URL}"
+      NEXT_PUBLIC_SUPABASE_ANON_KEY: "${NEXT_PUBLIC_SUPABASE_ANON_KEY}"
+      # Opsional: untuk tulis api_cache. ISI DI COOLIFY SECRETS DENGAN KEY BARU
+      # SETELAH REGENERATE (key lama sudah bocor di chat). Bypass RLS — jangan commit.
+      SUPABASE_SERVICE_ROLE_KEY: "${SUPABASE_SERVICE_ROLE_KEY}"
+
+      # --- External API (isi di Coolify Secrets) ---
+      FMP_API_KEY: "${FMP_API_KEY}"                 # AUM ETF
+      WEB3FORMS_ACCESS_KEY: "${WEB3FORMS_ACCESS_KEY}" # contact form
+      SPOTIFY_CLIENT_ID: "${SPOTIFY_CLIENT_ID}"
+      SPOTIFY_CLIENT_SECRET: "${SPOTIFY_CLIENT_SECRET}"
+      SPOTIFY_REFRESH_TOKEN: "${SPOTIFY_REFRESH_TOKEN}"
+      WAKATIME_API_KEY: "${WAKATIME_API_KEY}"
+      GITHUB_TOKEN: "${GITHUB_TOKEN}"               # read-only, fallback projects
+      NEXT_PUBLIC_SITE_URL: "${NEXT_PUBLIC_SITE_URL}" # https://domain-anda
+
+      NODE_ENV: "production"
+    restart: unless-stopped
+    healthcheck:
+      # next start merespons di /; pakai wget (ada di alpine).
+      test: ["CMD", "wget", "--no-verbose", "--tries=1", "--spider", "http://localhost:3000/"]
+      interval: 30s
+      timeout: 5s
+      retries: 5
+      start_period: 40s
