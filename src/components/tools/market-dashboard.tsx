@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { Bitcoin, TrendingUp, TrendingDown, Flame, LineChart, Building2, DollarSign, Gem, Globe, Landmark, Gauge, ArrowUpRight, ArrowDownRight } from "lucide-react";
+import { Bitcoin, TrendingUp, TrendingDown, Flame, LineChart, Building2, DollarSign, Gem, Globe, Landmark, Gauge, ArrowUpRight, ArrowDownRight, PieChart } from "lucide-react";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Sparkline } from "./sparkline";
 
@@ -58,6 +58,9 @@ type UsResp = { indices: Quote[]; stocks: Quote[] };
 type IdResp = { indices: Quote[]; stocks: Quote[] };
 type ForexResp = { pairs: Quote[] };
 type CommodResp = { items: Commodity[] };
+type Etf = Quote & { aum: number | null };
+type EtfCategory = { key: string; en: string; id: string; items: Etf[] };
+type EtfResp = { top: Etf[]; categories: EtfCategory[] };
 type GlobalResp = { asia: Quote[]; europe: Quote[] };
 type RatesResp = { treasury: Quote[]; vix: Quote | null };
 
@@ -288,7 +291,7 @@ function FearGreedGauge({ f }: { f: FearGreed; locale: string }) {
   );
 }
 
-type TabKey = "crypto" | "stocks" | "currency";
+type TabKey = "crypto" | "stocks" | "etf" | "currency";
 
 function TabCard({
   active,
@@ -336,6 +339,7 @@ export function MarketDashboard({ locale }: { locale: string }) {
   const [id, setId] = useState<IdResp | null>(null);
   const [forex, setForex] = useState<ForexResp | null>(null);
   const [commod, setCommod] = useState<CommodResp | null>(null);
+  const [etf, setEtf] = useState<EtfResp | null>(null);
   const [global, setGlobal] = useState<GlobalResp | null>(null);
   const [rates, setRates] = useState<RatesResp | null>(null);
   const [loading, setLoading] = useState(true);
@@ -345,7 +349,7 @@ export function MarketDashboard({ locale }: { locale: string }) {
   // Sinkron tab dengan URL (?tab=) agar bisa di-bookmark / share.
   useEffect(() => {
     const p = new URLSearchParams(window.location.search).get("tab");
-    if (p === "stocks" || p === "currency") setTab(p);
+    if (p === "stocks" || p === "etf" || p === "currency") setTab(p);
   }, []);
   const selectTab = (k: TabKey) => {
     setTab(k);
@@ -359,17 +363,18 @@ export function MarketDashboard({ locale }: { locale: string }) {
     const getJson = (url: string) => fetch(url).then((r) => r.json()).catch(() => null);
 
     const load = async () => {
-      const [c, u, i, fx, cm, gl, rt] = await Promise.all([
+      const [c, u, i, fx, cm, ef, gl, rt] = await Promise.all([
         getJson("/api/market/crypto"),
         getJson("/api/market/us"),
         getJson("/api/market/id"),
         getJson("/api/market/forex"),
         getJson("/api/market/commodities"),
+        getJson("/api/market/etf"),
         getJson("/api/market/global"),
         getJson("/api/market/rates"),
       ]);
       if (!active) return;
-      setCrypto(c); setUs(u); setId(i); setForex(fx); setCommod(cm); setGlobal(gl); setRates(rt);
+      setCrypto(c); setUs(u); setId(i); setForex(fx); setCommod(cm); setEtf(ef); setGlobal(gl); setRates(rt);
       setUpdatedAt(new Date());
       setLoading(false);
     };
@@ -405,11 +410,13 @@ export function MarketDashboard({ locale }: { locale: string }) {
       </div>
 
       {/* Sub-tabs */}
-      <div className="grid grid-cols-1 gap-3 sm:grid-cols-3">
+      <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-4">
         <TabCard active={tab === "crypto"} onClick={() => selectTab("crypto")} icon={Bitcoin}
           title="Crypto" desc={t("Coins, trending, movers", "Koin, trending, movers")} />
         <TabCard active={tab === "stocks"} onClick={() => selectTab("stocks")} icon={LineChart}
           title={t("Stocks", "Saham")} desc={t("US, Indonesia, global", "AS, Indonesia, global")} />
+        <TabCard active={tab === "etf"} onClick={() => selectTab("etf")} icon={PieChart}
+          title="ETF" desc={t("Halal, S&P 500, tech, dividend", "Halal, S&P 500, teknologi, dividen")} />
         <TabCard active={tab === "currency"} onClick={() => selectTab("currency")} icon={DollarSign}
           title={t("Currency & Other", "Mata Uang & Lainnya")} desc={t("Forex, commodities, bonds", "Forex, komoditas, obligasi")} />
       </div>
@@ -550,6 +557,48 @@ export function MarketDashboard({ locale }: { locale: string }) {
           unavailable
         )}
       </Section>
+      </div>
+      )}
+
+      {tab === "etf" && (
+      <div className="flex flex-col gap-5">
+      {/* Top 10 ETF global by AUM */}
+      <Section icon={PieChart} title={t("ETF — Top 10 by AUM", "ETF — 10 Terbesar by AUM")} subtitle={sevenDay}>
+        {loading
+          ? Array.from({ length: 10 }).map((_, i) => <RowSkeleton key={i} />)
+          : etf?.top?.length
+            ? etf.top.map((q, i) => {
+                const aum = fmtMcap(q.aum);
+                return (
+                  <Row key={q.symbol} rank={i + 1} img={q.logo} symbol={q.symbol.replace(".L", "")} name={q.name} mcap={aum ? `AUM ${aum}` : null} price={fmtUSD(q.price)} change7d={q.change7d} spark={q.spark} />
+                );
+              })
+            : unavailable}
+      </Section>
+
+      {/* Kategori ETF */}
+      <div className="grid grid-cols-1 items-start gap-5 lg:grid-cols-2">
+      {loading
+        ? Array.from({ length: 4 }).map((_, i) => (
+            <Section key={i} icon={PieChart} title="…" subtitle={sevenDay}>
+              {Array.from({ length: 4 }).map((_, j) => <RowSkeleton key={j} />)}
+            </Section>
+          ))
+        : etf?.categories?.length
+          ? etf.categories.map((cat) => (
+              <Section key={cat.key} icon={PieChart} title={locale === "id" ? cat.id : cat.en} subtitle={sevenDay}>
+                {cat.items.length
+                  ? cat.items.map((q, i) => {
+                      const aum = fmtMcap(q.aum);
+                      return (
+                        <Row key={q.symbol} rank={i + 1} img={q.logo} symbol={q.symbol.replace(".L", "")} name={q.name} mcap={aum ? `AUM ${aum}` : null} price={fmtUSD(q.price)} change7d={q.change7d} spark={q.spark} />
+                      );
+                    })
+                  : unavailable}
+              </Section>
+            ))
+          : unavailable}
+      </div>
       </div>
       )}
 
