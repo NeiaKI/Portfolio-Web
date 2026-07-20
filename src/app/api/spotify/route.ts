@@ -3,6 +3,9 @@ import { withCache } from "@/lib/api-cache";
 
 export const dynamic = "force-dynamic";
 
+const SPOTIFY_TIMEOUT_MS = 10_000;
+const NO_STORE_HEADERS = { "Cache-Control": "no-store" };
+
 type SpotifyResponse =
   | { isPlaying: false; configured: false; reason?: string }
   | { isPlaying: false; configured: true; title?: string; artist?: string; album?: string; albumArt?: string | null; songUrl?: string }
@@ -27,10 +30,13 @@ async function getAccessToken(clientId: string, clientSecret: string, refreshTok
     },
     body: new URLSearchParams({ grant_type: "refresh_token", refresh_token: refreshToken }),
     cache: "no-store",
+    signal: AbortSignal.timeout(SPOTIFY_TIMEOUT_MS),
   });
-  if (!res.ok) throw new Error(`Token error: ${res.status} ${await res.text()}`);
-  const data = await res.json();
-  if (!data.access_token) throw new Error(`No access_token in response: ${JSON.stringify(data)}`);
+  if (!res.ok) throw new Error(`Spotify token request failed (${res.status})`);
+  const data = await res.json() as { access_token?: unknown };
+  if (typeof data.access_token !== "string" || !data.access_token) {
+    throw new Error("Spotify token response is invalid");
+  }
   return data.access_token;
 }
 
@@ -41,6 +47,7 @@ async function fetchSpotify(clientId: string, clientSecret: string, refreshToken
   const nowRes = await fetch("https://api.spotify.com/v1/me/player/currently-playing", {
     headers,
     cache: "no-store",
+    signal: AbortSignal.timeout(SPOTIFY_TIMEOUT_MS),
   });
 
   if (nowRes.status === 200) {
@@ -70,7 +77,7 @@ async function fetchSpotify(clientId: string, clientSecret: string, refreshToken
 
   const recentRes = await fetch(
     "https://api.spotify.com/v1/me/player/recently-played?limit=1",
-    { headers, cache: "no-store" }
+    { headers, cache: "no-store", signal: AbortSignal.timeout(SPOTIFY_TIMEOUT_MS) }
   );
 
   if (!recentRes.ok) return { isPlaying: false, configured: true };
@@ -104,7 +111,10 @@ export async function GET() {
   const REFRESH_TOKEN = process.env.SPOTIFY_REFRESH_TOKEN;
 
   if (!CLIENT_ID || !CLIENT_SECRET || !REFRESH_TOKEN) {
-    return NextResponse.json({ isPlaying: false, configured: false, reason: "missing_env" });
+    return NextResponse.json(
+      { isPlaying: false, configured: false, reason: "missing_env" },
+      { headers: NO_STORE_HEADERS }
+    );
   }
 
   try {
@@ -112,9 +122,11 @@ export async function GET() {
     const data = await withCache<SpotifyResponse>("spotify:now", 30, () =>
       fetchSpotify(CLIENT_ID, CLIENT_SECRET, REFRESH_TOKEN)
     );
-    return NextResponse.json(data);
-  } catch (err) {
-    console.error("[spotify]", err);
-    return NextResponse.json({ isPlaying: false, configured: false });
+    return NextResponse.json(data, { headers: NO_STORE_HEADERS });
+  } catch {
+    return NextResponse.json(
+      { isPlaying: false, configured: false },
+      { headers: NO_STORE_HEADERS }
+    );
   }
 }

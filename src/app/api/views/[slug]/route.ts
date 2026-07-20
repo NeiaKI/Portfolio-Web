@@ -1,9 +1,11 @@
 import { NextRequest, NextResponse } from "next/server";
 import { rateLimit, getClientIp } from "@/lib/rate-limit";
+import { getPostBySlug } from "@/lib/blog";
 
 export const dynamic = "force-dynamic";
 
 const SLUG_RE = /^[a-z0-9-]{1,100}$/;
+const NO_STORE_HEADERS = { "Cache-Control": "no-store" };
 
 const isConfigured =
   !!process.env.NEXT_PUBLIC_SUPABASE_URL &&
@@ -26,28 +28,38 @@ async function readViews(slug: string): Promise<number> {
   return row?.views ?? 0;
 }
 
+function viewsResponse(views: number, configured: boolean, status = 200) {
+  return NextResponse.json(
+    { views, configured },
+    { status, headers: NO_STORE_HEADERS }
+  );
+}
+
 export async function GET(_req: NextRequest, { params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
-  if (!SLUG_RE.test(slug) || !isConfigured) return NextResponse.json({ views: 0, configured: false });
+  if (!SLUG_RE.test(slug)) return viewsResponse(0, false, 400);
+  if (!getPostBySlug(slug)?.published) return viewsResponse(0, false, 404);
+  if (!isConfigured) return viewsResponse(0, false);
 
   try {
-    return NextResponse.json({ views: await readViews(slug), configured: true });
+    return viewsResponse(await readViews(slug), true);
   } catch {
-    return NextResponse.json({ views: 0, configured: false });
+    return viewsResponse(0, false);
   }
 }
 
 export async function POST(req: NextRequest, { params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
-  if (!SLUG_RE.test(slug)) return NextResponse.json({ views: 0, configured: false });
+  if (!SLUG_RE.test(slug)) return viewsResponse(0, false, 400);
+  if (!getPostBySlug(slug)?.published) return viewsResponse(0, false, 404);
 
   // Tanpa service_role tidak bisa increment → kembalikan count saat ini saja.
   if (!isAdminConfigured) {
-    if (!isConfigured) return NextResponse.json({ views: 0, configured: false });
+    if (!isConfigured) return viewsResponse(0, false);
     try {
-      return NextResponse.json({ views: await readViews(slug), configured: true });
+      return viewsResponse(await readViews(slug), true);
     } catch {
-      return NextResponse.json({ views: 0, configured: false });
+      return viewsResponse(0, false);
     }
   }
 
@@ -56,9 +68,9 @@ export async function POST(req: NextRequest, { params }: { params: Promise<{ slu
   const ip = getClientIp(req);
   if (!rateLimit(`views:${ip}:${slug}`, 1, 10 * 60 * 1000)) {
     try {
-      return NextResponse.json({ views: await readViews(slug), configured: true });
+      return viewsResponse(await readViews(slug), true);
     } catch {
-      return NextResponse.json({ views: 0, configured: false });
+      return viewsResponse(0, false);
     }
   }
 
@@ -73,8 +85,8 @@ export async function POST(req: NextRequest, { params }: { params: Promise<{ slu
       { post_slug: slug },
     );
     if (error) throw new Error(error.message);
-    return NextResponse.json({ views: data ?? 0, configured: true });
+    return viewsResponse(data ?? 0, true);
   } catch {
-    return NextResponse.json({ views: 0, configured: false });
+    return viewsResponse(0, false);
   }
 }
