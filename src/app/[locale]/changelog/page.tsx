@@ -22,6 +22,8 @@ interface Release {
   version: string;
   date: string;
   label?: string;
+  /** Label semver untuk major update, mis. "v2.0". */
+  semver?: string;
   changes: Change[];
 }
 
@@ -41,19 +43,13 @@ const TYPE_LABEL: Record<ChangeType, string> = {
 
 const RELEASES: Release[] = [
   {
-    version: "v2.7.1",
+    version: "2026.08",
     date: "Aug 2026",
     label: "Latest",
     changes: [
       { type: "fix",     text: "Right widget sidebar remains visible when browser vertical tabs reduce the available viewport width" },
       { type: "improve", text: "Widget sidebar now appears from the lg breakpoint with responsive width for narrower desktop layouts" },
       { type: "improve", text: "Portfolio metadata title updated to Febiyanto Rizki Qurbandi Portfolio" },
-    ],
-  },
-  {
-    version: "v2.7",
-    date: "Aug 2026",
-    changes: [
       { type: "feat",    text: "Skills section expanded — 130+ skills across 16 categories including AI Coding Tools, Networking & DNS, Self-Hosting, Browsers, and Editors" },
       { type: "feat",    text: "Click-to-toggle brand colors on skill icons in marquee" },
       { type: "feat",    text: "Show all grid displays all icons in brand colors by default" },
@@ -68,7 +64,7 @@ const RELEASES: Release[] = [
     ],
   },
   {
-    version: "v2.6",
+    version: "2026.05",
     date: "May 2026",
     changes: [
       { type: "feat",    text: "Terminal-style loading screen on first visit (session-based)" },
@@ -82,18 +78,6 @@ const RELEASES: Release[] = [
       { type: "feat",    text: "SW cache version auto-bump saat build via prebuild script" },
       { type: "feat",    text: "Now Reading widget terhubung ke /api/now-reading — update buku cukup edit now-reading.json" },
       { type: "feat",    text: "Blog listing page metadata (title, description, OG image)" },
-      { type: "improve", text: "Lazy load SkillsSection — react-icons bundle di-defer untuk performa LCP lebih baik" },
-      { type: "improve", text: "Icon dekoratif di skills section diberi aria-hidden untuk accessibility" },
-      { type: "improve", text: "Social links diekstrak ke shared constant — tidak ada duplikasi kode" },
-      { type: "improve", text: "Dark mode toggle tidak animasi saat pindah halaman" },
-      { type: "fix",     text: "Production domain diupdate ke nateeki.dev di semua metadata, sitemap, dan RSS" },
-      { type: "remove",  text: "Dead code local-post-list.tsx dihapus" },
-    ],
-  },
-  {
-    version: "v2.5",
-    date: "May 2026",
-    changes: [
       { type: "feat",    text: "PWA service worker — offline support untuk halaman & aset yang sudah dikunjungi" },
       { type: "feat",    text: "404 page bilingual — EN/ID otomatis berdasarkan locale URL" },
       { type: "feat",    text: "Related posts di akhir setiap blog post berdasarkan tag" },
@@ -101,12 +85,18 @@ const RELEASES: Release[] = [
       { type: "feat",    text: "Facebook link di hero social links" },
       { type: "feat",    text: "Mobile avatar dengan animated gradient ring di hero section" },
       { type: "feat",    text: "Command palette: blog search, theme toggle, Uses page shortcut" },
+      { type: "improve", text: "Lazy load SkillsSection — react-icons bundle di-defer untuk performa LCP lebih baik" },
+      { type: "improve", text: "Icon dekoratif di skills section diberi aria-hidden untuk accessibility" },
+      { type: "improve", text: "Social links diekstrak ke shared constant — tidak ada duplikasi kode" },
+      { type: "improve", text: "Dark mode toggle tidak animasi saat pindah halaman" },
       { type: "improve", text: "Light mode — contrast dikurangi agar lebih nyaman di mata" },
       { type: "improve", text: "Certificate icons Frontend Masters & Dicoding Indonesia" },
+      { type: "fix",     text: "Production domain diupdate ke nateeki.dev di semua metadata, sitemap, dan RSS" },
+      { type: "remove",  text: "Dead code local-post-list.tsx dihapus" },
     ],
   },
   {
-    version: "v2.4",
+    version: "2026.04",
     date: "Apr 2026",
     changes: [
       { type: "feat",    text: "Clock widget (Jakarta GMT+7) di widget sidebar" },
@@ -118,27 +108,21 @@ const RELEASES: Release[] = [
       { type: "feat",    text: "Back-to-top floating button" },
       { type: "feat",    text: "Per-post OG image dari MDX frontmatter" },
       { type: "feat",    text: "Web app manifest (PWA-ready)" },
-      { type: "improve", text: "Rate limiting di API contact (3 req / 15 menit)" },
-      { type: "improve", text: "Canonical URL + hreflang alternates di setiap halaman" },
-    ],
-  },
-  {
-    version: "v2.3",
-    date: "Apr 2026",
-    changes: [
       { type: "feat",    text: "Command palette (Ctrl+K) dengan real data projects & certificates" },
       { type: "feat",    text: "Now Reading widget di sidebar kanan" },
       { type: "feat",    text: "Contact form via Web3Forms" },
       { type: "feat",    text: "OG image per halaman (project, blog, certificates, contact)" },
       { type: "feat",    text: "JSON-LD structured data (Person + WebSite schema)" },
       { type: "feat",    text: "Sitemap.xml + robots.txt otomatis" },
+      { type: "improve", text: "Rate limiting di API contact (3 req / 15 menit)" },
+      { type: "improve", text: "Canonical URL + hreflang alternates di setiap halaman" },
       { type: "improve", text: "Project card hover shadow + lift effect" },
       { type: "improve", text: "Skeleton loaders konsisten di semua widget" },
       { type: "improve", text: "Page transitions staggered fade per section" },
     ],
   },
   {
-    version: "v2.2",
+    version: "2026.03",
     date: "Mar 2026",
     changes: [
       { type: "feat",    text: "Project detail page /project/[slug]" },
@@ -151,7 +135,7 @@ const RELEASES: Release[] = [
     ],
   },
   {
-    version: "v2.1",
+    version: "2026.02",
     date: "Feb 2026",
     changes: [
       { type: "feat",    text: "Widget sidebar: Weather, Spotify, Duolingo, WakaTime, MonkeyType" },
@@ -161,8 +145,9 @@ const RELEASES: Release[] = [
     ],
   },
   {
-    version: "v2.0",
+    version: "2026.01",
     date: "Jan 2026",
+    semver: "v2.0",
     changes: [
       { type: "feat",    text: "Portfolio v2 — rebuild dari nol dengan Next.js 16 App Router" },
       { type: "feat",    text: "Catppuccin Mocha (dark) + Latte (light) theme" },
@@ -181,7 +166,9 @@ export default async function ChangelogPage({ params }: Props) {
         <div className="text-center">
           <h1 className="text-2xl font-bold text-foreground">Changelog</h1>
           <p className="mt-1 text-sm text-muted-foreground">
-            {locale === "id" ? "Riwayat perubahan dan update portfolio ini" : "History of changes and updates to this portfolio"}
+            {locale === "id"
+              ? "Riwayat perubahan dan update portfolio ini — dikelompokkan per bulan (CalVer)"
+              : "History of changes and updates to this portfolio — grouped by month (CalVer)"}
           </p>
         </div>
 
@@ -198,6 +185,11 @@ export default async function ChangelogPage({ params }: Props) {
                 {/* Header */}
                 <div className="flex items-center gap-2 flex-wrap">
                   <span className="font-bold text-foreground text-base">{release.version}</span>
+                  {release.semver && (
+                    <span className="rounded border border-border bg-muted px-1.5 py-0.5 text-[10px] font-semibold text-muted-foreground">
+                      {release.semver}
+                    </span>
+                  )}
                   {release.label && (
                     <span className="rounded-full bg-primary/15 px-2 py-0.5 text-[10px] font-semibold text-primary border border-primary/20">
                       {release.label}
