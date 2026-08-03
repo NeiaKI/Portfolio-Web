@@ -28,8 +28,8 @@ export function MainLayout({ children }: { children: React.ReactNode }) {
           <Footer />
         </main>
 
-        {/* Right widget sidebar — sticky, hidden below xl */}
-        <div className="hidden xl:flex xl:flex-col xl:w-64 xl:shrink-0 sticky top-0 h-screen overflow-y-auto scrollbar-hide border-l border-border/50">
+        {/* Right widget sidebar — visible from lg so browser sidebars do not hide it */}
+        <div className="hidden lg:flex lg:flex-col lg:w-56 xl:w-64 lg:shrink-0 sticky top-0 h-screen overflow-y-auto scrollbar-hide border-l border-border/50">
           <WidgetSidebar />
         </div>
       </div>

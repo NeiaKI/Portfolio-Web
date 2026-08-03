@@ -19,14 +19,14 @@ const jetbrainsMono = JetBrains_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Eki — Software Engineer",
+  title: "Febiyanto Rizki Qurbandi Portfolio",
   description:
-    "Personal portfolio of Eki — Software Engineer and Linux Enthusiast.",
+    "Personal portfolio of Febiyanto Rizki Qurbandi — Software Engineer and Linux Enthusiast.",
   openGraph: {
     type: "website",
     locale: "en_US",
     alternateLocale: "id_ID",
-    siteName: "Eki Portfolio",
+    siteName: "Febiyanto Rizki Qurbandi Portfolio",
   },
 };
 

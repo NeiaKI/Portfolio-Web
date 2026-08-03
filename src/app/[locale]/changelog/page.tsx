@@ -41,9 +41,18 @@ const TYPE_LABEL: Record<ChangeType, string> = {
 
 const RELEASES: Release[] = [
   {
-    version: "v2.7",
+    version: "v2.7.1",
     date: "Aug 2026",
     label: "Latest",
+    changes: [
+      { type: "fix",     text: "Right widget sidebar remains visible when browser vertical tabs reduce the available viewport width" },
+      { type: "improve", text: "Widget sidebar now appears from the lg breakpoint with responsive width for narrower desktop layouts" },
+      { type: "improve", text: "Portfolio metadata title updated to Febiyanto Rizki Qurbandi Portfolio" },
+    ],
+  },
+  {
+    version: "v2.7",
+    date: "Aug 2026",
     changes: [
       { type: "feat",    text: "Skills section expanded — 130+ skills across 16 categories including AI Coding Tools, Networking & DNS, Self-Hosting, Browsers, and Editors" },
       { type: "feat",    text: "Click-to-toggle brand colors on skill icons in marquee" },
