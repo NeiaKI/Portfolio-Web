@@ -79,9 +79,19 @@ export function ThemeProvider({
 
   const toggleMode = useCallback(() => {
     setThemeState((curr) => {
-      const currMode = getTheme(curr).mode;
-      const want: ThemeMode = currMode === "dark" ? "light" : "dark";
-      // Cari tema dengan mode berlawanan yang paletnya mirip (sama prefix).
+      const def = getTheme(curr);
+      const want: ThemeMode = def.mode === "dark" ? "light" : "dark";
+
+      // 1. Gunakan pasangan eksplisit jika ada.
+      if (def.pair) {
+        const paired = getTheme(def.pair);
+        if (paired.mode === want) {
+          applyTheme(paired.id);
+          return paired.id;
+        }
+      }
+
+      // 2. Fallback: cari tema berlawanan dengan prefix yang mirip.
       const base = curr.replace(/-(dark|light|mocha|latte|night|day)$/i, "");
       const alt =
         THEMES.find((t) => t.id !== curr && t.mode === want && t.id.startsWith(base)) ??

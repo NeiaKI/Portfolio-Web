@@ -141,9 +141,9 @@ export default async function UsesPage({ params }: Props) {
             </li>
             <li>
               {id ? (
-                <>Untuk code editor, saya bergantian antara tiga: <A href="https://code.visualstudio.com">VS Code</A> untuk pemakaian umum, <A href="https://cursor.com">Cursor</A> ketika ingin editing berbantuan AI, dan <A href="https://zed.dev">Zed</A> ketika butuh kecepatan — terasa jauh lebih cepat dari yang lain untuk file besar.</>
+                <>Untuk code editor, saya bergantian antara tiga: <A href="https://code.visualstudio.com">VS Code</A> untuk pemakaian umum, <A href="https://cursor.com">Cursor</A> ketika ingin editing berbantuan AI, dan <A href="https://zed.dev">Zed</A> ketika butuh kecepatan murni. Zed bukan fork dari VSCode — ini editor original yang ditulis dari nol dengan Rust, dan perbedaan kecepatannya sangat terasa untuk file besar.</>
               ) : (
-                <>For code editors, I rotate between three: <A href="https://code.visualstudio.com">VS Code</A> for general use, <A href="https://cursor.com">Cursor</A> when I want AI-assisted editing, and <A href="https://zed.dev">Zed</A> when I need raw speed — it's noticeably faster than the others for large files.</>
+                <>For code editors, I rotate between three: <A href="https://code.visualstudio.com">VS Code</A> for general use, <A href="https://cursor.com">Cursor</A> when I want AI-assisted editing, and <A href="https://zed.dev">Zed</A> when I need raw speed. Zed is not a VSCode fork — it's an original editor built from scratch in Rust, and the speed difference is very noticeable for large files.</>
               )}
             </li>
             <li>
@@ -252,6 +252,13 @@ export default async function UsesPage({ params }: Props) {
                 <><A href="https://github.com/sst/opencode">OpenCode</A> adalah agen coding AI berbasis terminal saya. Ini terintegrasi langsung ke alur kerja terminal dan bekerja baik bersama Ghostty dan Zed.</>
               ) : (
                 <><A href="https://github.com/sst/opencode">OpenCode</A> is my terminal-based AI coding agent. It integrates directly into the terminal workflow and works well alongside Ghostty and Zed.</>
+              )}
+            </li>
+            <li>
+              {id ? (
+                <><A href="https://pi.ai">Pi</A> dari Inflection AI adalah AI harness yang saya gunakan untuk eksperimen dan iterasi cepat. Konfigurasinya saya kelola melalui <A href="https://lazypi.org">LazyPi</A> — interface yang memudahkan setup dan manajemen prompt tanpa harus menulis konfigurasi manual.</>
+              ) : (
+                <><A href="https://pi.ai">Pi</A> by Inflection AI is the AI harness I use for quick experimentation and iteration. I manage its configuration through <A href="https://lazypi.org">LazyPi</A> — an interface that simplifies setup and prompt management without writing manual config.</>
               )}
             </li>
           </ul>

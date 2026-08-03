@@ -41,9 +41,26 @@ const TYPE_LABEL: Record<ChangeType, string> = {
 
 const RELEASES: Release[] = [
   {
+    version: "v2.7",
+    date: "Aug 2026",
+    label: "Latest",
+    changes: [
+      { type: "feat",    text: "Skills section expanded — 130+ skills across 16 categories including AI Coding Tools, Networking & DNS, Self-Hosting, Browsers, and Editors" },
+      { type: "feat",    text: "Click-to-toggle brand colors on skill icons in marquee" },
+      { type: "feat",    text: "Show all grid displays all icons in brand colors by default" },
+      { type: "feat",    text: "Theme pairing system — explicit dark/light pairs for Catppuccin, Tokyo Night, Gruvbox, and Solarized" },
+      { type: "feat",    text: "Custom SVG icons for Omarchy, Hyprland, Ghostty, Kitty, Zed, Cursor, OpenCode, Pi, Claude Code, Helium Browser, shadcn/ui, and Niri" },
+      { type: "feat",    text: "Pi AI harness added to /uses page with LazyPi config link" },
+      { type: "improve", text: "All brand icon hex colors verified against simpleicons.org" },
+      { type: "improve", text: "About section copy updated — removed location, reframed as open source enthusiast" },
+      { type: "improve", text: "Hero typing roles updated — Open Source Enthusiast replaces Contributor" },
+      { type: "improve", text: "Zed editor description in /uses clarifies it's an original Rust-built editor, not a VSCode fork" },
+      { type: "improve", text: "Zod moved to Backend, Sentry to Monitoring, Blender to Desktop & Mobile — proper category placement" },
+    ],
+  },
+  {
     version: "v2.6",
     date: "May 2026",
-    label: "Latest",
     changes: [
       { type: "feat",    text: "Terminal-style loading screen on first visit (session-based)" },
       { type: "feat",    text: "Experience section redesign — vertical timeline, pulsing dot, duration badge, collapsible highlights" },
