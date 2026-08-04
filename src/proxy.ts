@@ -15,7 +15,6 @@ function buildCSP(nonce: string): string {
     // 'strict-dynamic' → script yang dimuat oleh nonce'd script (Next.js chunks) juga dipercaya
     // 'unsafe-eval' hanya di dev — React butuh eval() untuk debug/callstack reconstruction
     `script-src 'self' 'nonce-${nonce}' 'strict-dynamic'${isDev ? " 'unsafe-eval'" : ""}`,
-    `script-src-elem 'self' 'nonce-${nonce}'`,
 
     // Styles: 'unsafe-inline' diperlukan untuk React inline styles (style={{ ... }})
     // dan Framer Motion — tidak bisa dihindari tanpa refactor besar

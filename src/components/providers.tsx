@@ -5,7 +5,6 @@ import { ThemeProvider } from "@/lib/theme";
 import { MotionProvider } from "@/components/motion-provider";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { ScrollProgress } from "@/components/ui/scroll-progress";
-import { BackToTop } from "@/components/ui/back-to-top";
 import { ShortcutModal } from "@/components/ui/shortcut-modal";
 
 const SCROLL_STEP = 96;
@@ -43,7 +42,6 @@ export function Providers({ children }: { children: React.ReactNode }) {
         <TooltipProvider delay={500}>
           <VimKeys />
           <ScrollProgress />
-          <BackToTop />
           <ShortcutModal />
           {children}
         </TooltipProvider>

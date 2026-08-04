@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState, useCallback } from "react";
+import { useEffect, useState, useCallback, useRef } from "react";
 import { useRouter, usePathname } from "next/navigation";
 import { useTranslations } from "next-intl";
 import { useTheme } from "@/lib/theme";
@@ -36,13 +36,17 @@ export function CommandPalette() {
   const [open, setOpen] = useState(false);
   const [projects, setProjects] = useState<Project[]>([]);
   const [posts, setPosts] = useState<PostMeta[]>([]);
+  const loaded = useRef(false);
   const router = useRouter();
   const pathname = usePathname();
   const { theme, mode, setTheme, toggleMode } = useTheme();
   const t = useTranslations("nav");
 
+  // Defer fetch sampai palette pertama kali dibuka — hindari request di setiap mount halaman.
   useEffect(() => {
-    fetch("/api/github", { cache: "no-store" })
+    if (!open || loaded.current) return;
+    loaded.current = true;
+    fetch("/api/github")
       .then((r) => r.ok ? r.json() : [])
       .then(setProjects)
       .catch(() => {});
@@ -50,7 +54,7 @@ export function CommandPalette() {
       .then((r) => r.ok ? r.json() : [])
       .then((all: PostMeta[]) => setPosts(all.slice(0, 5)))
       .catch(() => {});
-  }, []);
+  }, [open]);
 
   const go = useCallback(
     (href: string) => {
