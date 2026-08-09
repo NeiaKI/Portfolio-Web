@@ -3,6 +3,7 @@ import { FadeSection } from "@/components/layout/page-transition";
 import { HeroSection } from "@/components/home/hero-section";
 import { AboutSection } from "@/components/home/about-section";
 import { ExperienceSection } from "@/components/home/experience-section";
+import { CoursesSection } from "@/components/home/courses-section";
 import { EducationSection } from "@/components/home/education-section";
 import { ContactSection } from "@/components/home/contact-section";
 import {
@@ -24,6 +25,7 @@ export default function HomePage() {
 
         <FadeSection><LazySkillsSection /></FadeSection>
         <FadeSection><ExperienceSection /></FadeSection>
+        <FadeSection><CoursesSection /></FadeSection>
         <FadeSection><EducationSection /></FadeSection>
         <FadeSection><LazyCodingProgress /></FadeSection>
         <FadeSection><LazyDuolingoProgress /></FadeSection>

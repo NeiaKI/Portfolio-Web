@@ -81,6 +81,13 @@
     "skillsTitle": "Skills & Technologies",
     "experienceTitle": "Work Experience",
     "educationTitle": "Education",
+    "coursesTitle": "Courses",
+    "coursesTotal": "courses",
+    "showAllCourses": "Show all",
+    "showLessCourses": "Show less",
+    "completedLabel": "Completed",
+    "viewCertificate": "View certificate",
+    "certificateUnavailable": "Certificate unavailable",
     "presentLabel": "Present",
     "certificatesTitle": "Latest Certifications",
     "activityTitle": "Activity",
@@ -148,6 +155,14 @@
     "planned": "Planned",
     "inProgress": "In Progress",
     "done": "Done"
+  },
+  "widgets": {
+    "routerUsageTitle": "Router Usage",
+    "routerUsageTokens": "tokens (30d)",
+    "routerUsageCost": "cost (30d)",
+    "routerUsageRequests": "requests",
+    "routerUsagePrompt": "prompt tokens",
+    "routerUsageUpdated": "Synced"
   },
   "common": {
     "loading": "Loading...",

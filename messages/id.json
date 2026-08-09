@@ -80,6 +80,13 @@
     "skillsTitle": "Skill & Teknologi",
     "experienceTitle": "Pengalaman Kerja",
     "educationTitle": "Pendidikan",
+    "coursesTitle": "Kursus",
+    "coursesTotal": "kursus",
+    "showAllCourses": "Tampilkan semua",
+    "showLessCourses": "Tampilkan sedikit",
+    "completedLabel": "Selesai",
+    "viewCertificate": "Lihat sertifikat",
+    "certificateUnavailable": "Sertifikat tidak tersedia",
     "presentLabel": "Sekarang",
     "certificatesTitle": "Sertifikat Terbaru",
     "activityTitle": "Aktivitas",
@@ -147,6 +154,14 @@
     "planned": "Direncanakan",
     "inProgress": "Dalam Proses",
     "done": "Selesai"
+  },
+  "widgets": {
+    "routerUsageTitle": "Penggunaan Router",
+    "routerUsageTokens": "token (30h)",
+    "routerUsageCost": "biaya (30h)",
+    "routerUsageRequests": "request",
+    "routerUsagePrompt": "token prompt",
+    "routerUsageUpdated": "Tersinkron"
   },
   "common": {
     "loading": "Memuat...",
