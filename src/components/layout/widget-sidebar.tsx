@@ -5,6 +5,7 @@ import { ClockWidget } from "@/components/widgets/clock-widget";
 import { WeatherWidget } from "@/components/widgets/weather-widget";
 import { SpotifyWidget } from "@/components/widgets/spotify-widget";
 import { NowReading } from "@/components/widgets/now-reading";
+import { RouterUsageWidget } from "@/components/widgets/router-usage-widget";
 import { ErrorBoundary } from "@/components/ui/error-boundary";
 
 // Container parent hanya tampil di ≥lg (CSS), tapi komponen tetap mount & fetch
@@ -28,6 +29,7 @@ export function WidgetSidebar() {
           <ErrorBoundary><WeatherWidget /></ErrorBoundary>
           <ErrorBoundary><SpotifyWidget /></ErrorBoundary>
           <ErrorBoundary><NowReading /></ErrorBoundary>
+          <ErrorBoundary><RouterUsageWidget /></ErrorBoundary>
         </>
       )}
     </aside>
